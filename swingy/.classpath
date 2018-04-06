@@ -1,0 +1,5 @@
+./target/classes;
+./target/classes/App;
+
+./target/test-classes;
+./target/test-classes/AppTest;
