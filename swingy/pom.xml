@@ -25,6 +25,7 @@
                 <archive>
                     <manifest>
                         <mainClass>cmutti.App</mainClass>
+						<addClasspath>true</addClasspath>
                     </manifest>
                 </archive>
             </configuration>
