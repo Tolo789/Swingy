@@ -1,6 +1,6 @@
 package cmutti;
 
-import cmutti.view.basic.components.MyFrame;
+import cmutti.view.gui.FrameGUI;
 import javax.swing.SwingUtilities;
 
 /**
@@ -16,7 +16,9 @@ public class App
 		// User Swing thread for performance reasons
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				new MyFrame("yo");
+				FrameGUI guiFrame = new FrameGUI("Swingy");
+				guiFrame.StartMainPanel();
+				//new MyFrame("yo");
 			}
 		});
     }
