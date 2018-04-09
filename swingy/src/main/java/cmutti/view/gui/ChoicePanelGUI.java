@@ -1,20 +1,34 @@
 package cmutti.view.gui;
 
+import cmutti.controller.Swingy;
 import cmutti.view.IChoicePanel;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class ChoicePanelGUI extends JPanel implements IChoicePanel {
-	String[] directions = new String[]{"North", "South", "West", "East"};
-	JComboBox<String> dirCombo = new JComboBox<String>(directions);
+	private static Swingy swingy = Swingy.getInstance();
+	JComboBox<String> dirCombo = new JComboBox<String>(swingy.directions);
+	JButton confirmButton = new JButton("Confirm");
 
 	ChoicePanelGUI() {
 		JLabel label = new JLabel("String");
-		add(label);
-		//add(dirCombo);
+
+		confirmButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				swingy.directionChosen(dirCombo.getSelectedIndex());
+			}
+
+		});
+
 	    this.setBorder(BorderFactory.createMatteBorder(3, 0, 0, 0, Color.BLUE));
+		add(label);
+		add(dirCombo);
+		add(confirmButton);
 	}
 }
