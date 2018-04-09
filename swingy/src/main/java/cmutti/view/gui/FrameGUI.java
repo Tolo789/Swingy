@@ -1,5 +1,6 @@
 package cmutti.view.gui;
 
+import cmutti.model.heroes.AHero;
 import cmutti.view.IFrame;
 import javax.swing.JFrame;
 
@@ -24,8 +25,8 @@ public class FrameGUI extends JFrame implements IFrame {
 		mainPanel = new MainPanelGUI();
 	}
 
-	public void StartMainPanel() {
-		mainPanel.start();
+	public void StartMainPanel(AHero hero) {
+		mainPanel.start(hero);
 		add(mainPanel);
 	}
 }

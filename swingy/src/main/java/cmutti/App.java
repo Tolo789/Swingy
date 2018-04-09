@@ -11,6 +11,7 @@ public class App
 {
     public static void main( String[] args )
     {
+		/*
 		System.out.println( "Hello World!" );
 
 		// User Swing thread for performance reasons
@@ -21,5 +22,6 @@ public class App
 				//new MyFrame("yo");
 			}
 		});
+		*/
     }
 }

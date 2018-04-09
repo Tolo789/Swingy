@@ -1,4 +1,7 @@
 package cmutti.view;
 
+import cmutti.model.heroes.AHero;
+
 public interface IHeroPanel {
+	public void updateInfo(AHero hero);
 }

@@ -1,5 +1,6 @@
 package cmutti.view.gui;
 
+import cmutti.model.heroes.AHero;
 import cmutti.view.IMainPanel;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,7 +12,7 @@ public class MainPanelGUI extends JPanel implements IMainPanel {
 	StoryPanelGUI storyPanel = null;
 	ChoicePanelGUI choicePanel = null;
 
-	public void start() {
+	public void start(AHero hero) {
 		AssignAllPanels();
 		setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -23,6 +24,7 @@ public class MainPanelGUI extends JPanel implements IMainPanel {
 		constraints.weighty = 1;
 		constraints.gridwidth = 1;
 		constraints.gridheight = 3;
+		heroPanel.updateInfo(hero);
 		add(heroPanel, constraints);
 
 		constraints.gridx = 1;

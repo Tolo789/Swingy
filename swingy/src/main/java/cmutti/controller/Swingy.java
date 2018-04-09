@@ -1,5 +1,7 @@
 package cmutti.controller;
 
+import cmutti.model.heroes.AHero;
+import cmutti.model.heroes.KarateMan;
 import cmutti.view.gui.FrameGUI;
 import javax.swing.SwingUtilities;
 
@@ -23,7 +25,8 @@ public class Swingy
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				FrameGUI guiFrame = new FrameGUI("Swingy");
-				guiFrame.StartMainPanel();
+				AHero hero = new KarateMan("yo2");
+				guiFrame.StartMainPanel(hero);
 				//new MyFrame("yo");
 			}
 		});
