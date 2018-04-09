@@ -12,27 +12,28 @@ public class MainPanelGUI extends JPanel implements IMainPanel {
 	StoryPanelGUI storyPanel = null;
 	ChoicePanelGUI choicePanel = null;
 
-	public void start(AHero hero) {
-		AssignAllPanels();
+	MainPanelGUI(AHero hero) {
 		setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
 
+		heroPanel = new HeroPanelGUI(hero);
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.weightx = 1;
 		constraints.weighty = 1;
 		constraints.gridwidth = 1;
 		constraints.gridheight = 3;
-		heroPanel.updateInfo(hero);
 		add(heroPanel, constraints);
 
+		mapPanel = new MapPanelGUI();
 		constraints.gridx = 1;
 		constraints.gridy = 0;
 		constraints.weightx = 3;
 		constraints.gridwidth = 3;
 		add(mapPanel, constraints);
 
+		storyPanel = new StoryPanelGUI();
 		constraints.gridx = 4;
 		constraints.gridy = 0;
 		constraints.gridheight = 2;
@@ -41,6 +42,7 @@ public class MainPanelGUI extends JPanel implements IMainPanel {
 		constraints.weighty = 2;
 		add(storyPanel, constraints);
 
+		choicePanel = new ChoicePanelGUI();
 		constraints.gridx = 4;
 		constraints.gridy = 2;
 		constraints.gridheight = 1;
@@ -49,11 +51,7 @@ public class MainPanelGUI extends JPanel implements IMainPanel {
 
 	}
 
-	void AssignAllPanels() {
-		heroPanel = new HeroPanelGUI();
-		mapPanel = new MapPanelGUI();
-		storyPanel = new StoryPanelGUI();
-		choicePanel = new ChoicePanelGUI();
+	private void AssignAllPanels() {
 	}
 
 }

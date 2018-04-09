@@ -7,9 +7,13 @@ import javax.swing.SwingUtilities;
 
 public class Swingy
 {
+	// Static vars
 	private static Swingy instance = new Swingy(); // Singleton for easier function calling from views
+	public static String[] directions = new String[]{"North", "South", "West", "East"};
 
-	public final String[] directions = new String[]{"North", "South", "West", "East"};
+	// Game vars
+	FrameGUI guiFrame = null;
+	AHero hero = null;
 
 	private Swingy() {}
 
@@ -24,17 +28,23 @@ public class Swingy
 		// User Swing thread for performance reasons
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				FrameGUI guiFrame = new FrameGUI("Swingy");
-				AHero hero = new KarateMan("yo2");
-				guiFrame.StartMainPanel(hero);
-				//new MyFrame("yo");
+				guiFrame = new FrameGUI("Swingy");
+
+				// TODO: create/load hero
+				hero = new KarateMan("yo2");
+				StartMainGame();
 			}
 		});
+	}
+
+	private void StartMainGame() {
+		guiFrame.StartMainPanel(hero);
 	}
 
 	// Call from view when user choose a direction
 	public void directionChosen(int dirIdx) {
 		System.out.println(dirIdx);
+		//hero.levelUp();
 	}
 
 

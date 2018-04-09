@@ -14,19 +14,13 @@ public class FrameGUI extends JFrame implements IFrame {
 		setResizable(false);
 		setLocationRelativeTo(null);
 
-		AssignAllPanels();
-
 		//add(new MyPanel());
 
 		setVisible(true);
 	}
 
-	void AssignAllPanels() {
-		mainPanel = new MainPanelGUI();
-	}
-
 	public void StartMainPanel(AHero hero) {
-		mainPanel.start(hero);
+		mainPanel = new MainPanelGUI(hero);
 		add(mainPanel);
 	}
 }

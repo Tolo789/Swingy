@@ -1,14 +1,12 @@
 package cmutti.model;
 
-import java.awt.Image;
+import lombok.Getter;
 
+@Getter
 public abstract class AMapElement {
+	public static String spritePath = "sprites/test.png";
+
+	protected String name = "";
 	protected int posX = 0;
 	protected int posY = 0;
-	protected String name = "";
-	protected Image image = null;
-
-	public String getName() {
-		return name;
-	}
 }
