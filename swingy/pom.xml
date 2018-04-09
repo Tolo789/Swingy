@@ -24,7 +24,7 @@
             <configuration>
                 <archive>
                     <manifest>
-                        <mainClass>cmutti.App</mainClass>
+                        <mainClass>cmutti.controller.Swingy</mainClass>
 						<addClasspath>true</addClasspath>
                     </manifest>
                 </archive>

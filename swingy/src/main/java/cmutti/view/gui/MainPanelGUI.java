@@ -36,11 +36,13 @@ public class MainPanelGUI extends JPanel implements IMainPanel {
 		constraints.gridheight = 2;
 		constraints.gridwidth = 1;
 		constraints.weightx = 1;
+		constraints.weighty = 2;
 		add(storyPanel, constraints);
 
 		constraints.gridx = 4;
 		constraints.gridy = 2;
 		constraints.gridheight = 1;
+		constraints.weighty = 1;
 		add(choicePanel, constraints);
 
 	}
