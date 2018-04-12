@@ -9,4 +9,9 @@ public abstract class AMapElement {
 	protected String name = "";
 	protected int posX = 0;
 	protected int posY = 0;
+	protected int direction = 0;
+
+	protected AMapElement(String name) {
+		this.name = name;
+	}
 }

@@ -9,33 +9,44 @@ import javax.swing.JPanel;
 public class HeroPanelGUI extends JPanel implements IHeroPanel {
 	protected AHero hero = null;
 
+	SpritePanel sprite = null;
 	JLabel name = new JLabel("");
 	JLabel level = new JLabel("");
-	JLabel life = new JLabel("");
 	JLabel experience = new JLabel("");
+	JLabel life = new JLabel("");
+	JLabel attack = new JLabel("");
+	JLabel defense = new JLabel("");
+	JLabel agility = new JLabel("");
 	JLabel coordinates = new JLabel("");
-	SpritePanel sprite = null;
 
 	HeroPanelGUI(AHero hero) {
 		this.hero = hero;
 
-		sprite = new SpritePanel(hero.spritePath);
+		System.out.println("1 " + hero.getNeededXp());
 		updateInfo();
+		System.out.println("2 " + hero.getNeededXp());
 
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		sprite = new SpritePanel(hero.mainImg);
 		add(sprite);
 		add(name);
 		add(level);
-		add(life);
 		add(experience);
+		add(life);
+		add(attack);
+		add(defense);
+		add(agility);
 		add(coordinates);
 	}
 
 	public void updateInfo() {
 		name.setText("Name: " + hero.getName());
-		level.setText("Level: " + hero.getLevel());
-		life.setText("Life: " + hero.getHp() + "/" + hero.getMaxHp());
-		experience.setText("Experience: " + hero.getXp() + "/" + hero.getNeededXp());
+		level.setText("Lvl.: " + hero.getLevel());
+		experience.setText("Xp: " + hero.getXp() + "/" + hero.getNeededXp());
+		life.setText("Hp: " + hero.getHp() + "/" + hero.getMaxHp());
+		attack.setText("Attack: " + hero.getAttack());
+		defense.setText("Defense: " + hero.getDefense());
+		agility.setText("Agility: " + hero.getAgility());
 		coordinates.setText("Coordinates: " + hero.getPosX() + "-" + hero.getPosY());
 	}
 }
