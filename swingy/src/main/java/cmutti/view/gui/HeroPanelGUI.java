@@ -22,12 +22,10 @@ public class HeroPanelGUI extends JPanel implements IHeroPanel {
 	HeroPanelGUI(AHero hero) {
 		this.hero = hero;
 
-		System.out.println("1 " + hero.getNeededXp());
 		updateInfo();
-		System.out.println("2 " + hero.getNeededXp());
 
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		sprite = new SpritePanel(hero.mainImg);
+		sprite = new SpritePanel(hero.mainImg, "");
 		add(sprite);
 		add(name);
 		add(level);

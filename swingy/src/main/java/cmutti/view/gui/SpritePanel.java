@@ -8,19 +8,25 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class SpritePanel extends JPanel {
-	protected String spritePath = "";
+	protected String mainSprite = "";
+	protected String bckSprite = "";
 
-	SpritePanel(String path) {
-		spritePath = path;
+	SpritePanel(String mainSprite, String bckSprite) {
+		this.mainSprite = mainSprite;
+		this.bckSprite = bckSprite;
 	}
 
 	public void paintComponent(Graphics g) {
-		if (spritePath == "")
-			return;
-
 		try {
-			Image image = ImageIO.read(new File(spritePath));
-			g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+			if (bckSprite != "") {
+				Image image = ImageIO.read(new File(bckSprite));
+				g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+			}
+
+			if (mainSprite != "") {
+				Image image = ImageIO.read(new File(mainSprite));
+				g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+			}
 		}
 		catch (IOException e) {
 			e.printStackTrace();

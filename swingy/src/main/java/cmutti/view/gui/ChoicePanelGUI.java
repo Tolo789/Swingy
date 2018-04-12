@@ -21,12 +21,12 @@ public class ChoicePanelGUI extends JPanel implements IChoicePanel {
 
 		confirmButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				swingy.directionChosen(dirCombo.getSelectedIndex());
+				swingy.getMainGame().directionChosen(dirCombo.getSelectedIndex());
 			}
 
 		});
 
-	    this.setBorder(BorderFactory.createMatteBorder(3, 0, 0, 0, Color.BLUE));
+    this.setBorder(BorderFactory.createMatteBorder(3, 0, 0, 0, Color.BLUE));
 		add(label);
 		add(dirCombo);
 		add(confirmButton);

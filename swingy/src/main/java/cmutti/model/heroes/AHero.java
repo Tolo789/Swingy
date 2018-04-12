@@ -35,18 +35,21 @@ public abstract class AHero extends ACharacter {
 	// protected Helm helm = null;
 
 	protected AHero(String name, int level) {
-		super(name, level);
-		System.out.println("need2: " + neededXp);
+		super(name, level, 0, 0); // Do not mind x-y pos since thay will be changed when level starts
 	}
 
 	// Update neededXp after base levelUp
-	public void levelUp() {
-		super.levelUp();
+	public void levelUp(int newLvl) {
+		super.levelUp(newLvl);
 
 		// Update after levelUp
 		neededXp = level * 1000 + (int)Math.pow(level - 1, 2) * 450;
-		System.out.println("need: " + neededXp);
 		xp = tmpXp;
 		tmpXp = 0;
+	}
+
+	public void setPosition(int posY, int posX) {
+		this.posY = posY;
+		this.posX = posX;
 	}
 }

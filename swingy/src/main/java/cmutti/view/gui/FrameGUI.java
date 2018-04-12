@@ -1,11 +1,13 @@
 package cmutti.view.gui;
 
+import cmutti.model.AMapElement;
 import cmutti.model.heroes.AHero;
 import cmutti.view.IFrame;
 import javax.swing.JFrame;
 
 public class FrameGUI extends JFrame implements IFrame {
 	MainPanelGUI mainPanel = null;
+	LoadingGUI loadingPanel = null;
 
 	public FrameGUI(String title) {
 		setTitle(title);
@@ -17,10 +19,21 @@ public class FrameGUI extends JFrame implements IFrame {
 		//add(new MyPanel());
 
 		setVisible(true);
+
+		loadingPanel = new LoadingGUI();
 	}
 
 	public void StartMainPanel(AHero hero) {
+		add(loadingPanel);
+
 		mainPanel = new MainPanelGUI(hero);
 		add(mainPanel);
+
+		remove(loadingPanel);
+	}
+
+	// Create a GUI controller
+	public void updateMap(AMapElement[][] mapElems) {
+		mainPanel.mapPanel.update(mapElems);
 	}
 }

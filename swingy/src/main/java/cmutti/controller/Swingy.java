@@ -4,6 +4,7 @@ import cmutti.model.heroes.AHero;
 import cmutti.model.heroes.KarateMan;
 import cmutti.view.gui.FrameGUI;
 import javax.swing.SwingUtilities;
+import lombok.Getter;
 
 public class Swingy
 {
@@ -12,8 +13,13 @@ public class Swingy
 	public static String[] directions = new String[]{"North", "South", "West", "East"};
 
 	// Game vars
-	FrameGUI guiFrame = null;
 	AHero hero = null;
+
+	// Child controllers
+	@Getter private MainGame mainGame = null;
+
+	// UIs
+	FrameGUI guiFrame = null;
 
 	private Swingy() {}
 
@@ -38,19 +44,12 @@ public class Swingy
 	}
 
 	private void StartMainGame() {
-		guiFrame.StartMainPanel(hero);
+		mainGame = new MainGame(hero, guiFrame);
 	}
-
-	// Call from view when user choose a direction
-	public void directionChosen(int dirIdx) {
-		System.out.println(dirIdx);
-		//hero.levelUp();
-	}
-
 
 	// Entry point of application
-    public static void main(String[] args)
-    {
+  public static void main(String[] args)
+  {
 		Swingy.getInstance().startGame(args);
-    }
+  }
 }

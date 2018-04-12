@@ -30,10 +30,10 @@ public abstract class ACharacter extends AMapElement {
 	@Getter protected int maxHp = 0;
 	@Getter protected int agility = 0;
 
-	protected ACharacter(String name, int level) {
-		super(name);
+	protected ACharacter(String name, int level, int posY, int posX) {
+		super(name, posY, posX);
 
-		levelUp();
+		levelUp(level);
 	}
 
 	// Controllers will call this func to levelUp

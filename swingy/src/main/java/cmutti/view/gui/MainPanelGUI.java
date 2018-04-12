@@ -5,6 +5,8 @@ import cmutti.view.IMainPanel;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 public class MainPanelGUI extends JPanel implements IMainPanel {
 	HeroPanelGUI heroPanel = null;
@@ -31,7 +33,7 @@ public class MainPanelGUI extends JPanel implements IMainPanel {
 		constraints.gridy = 0;
 		constraints.weightx = 3;
 		constraints.gridwidth = 3;
-		add(mapPanel, constraints);
+		add(new JScrollPane(mapPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS), constraints);
 
 		storyPanel = new StoryPanelGUI();
 		constraints.gridx = 4;
