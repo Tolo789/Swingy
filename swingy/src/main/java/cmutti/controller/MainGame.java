@@ -5,10 +5,18 @@ import cmutti.model.heroes.AHero;
 import cmutti.view.gui.FrameGUI;
 
 public class MainGame {
+	private enum GameState {
+		Loading,
+		WaitingMove,
+		WaitingCombat
+	}
+
+	public static String[] directions = new String[]{"North", "South", "West", "East"};
 	// Game vars
 	AHero hero;
   int mapSize;
   AMapElement[][] mapElems;
+	GameState gameState = GameState.Loading;
 
 	// UIs
 	FrameGUI guiFrame;
@@ -26,6 +34,7 @@ public class MainGame {
     generateLevel();
 
     guiFrame.updateMap(mapElems);
+		gameState = GameState.WaitingMove;
   }
 
   private void generateLevel() {
@@ -49,8 +58,63 @@ public class MainGame {
   }
 
 	// Call to move in a direction
-	public void directionChosen(int dirIdx) {
-		System.out.println(dirIdx);
-		//hero.levelUp();
+	public void directionChosen(String direction) {
+		if (gameState != GameState.WaitingMove) // Prevent spam click of button
+			return;
+		gameState = GameState.Loading;
+
+		boolean moved = false;
+		int heroX = hero.getPosX();
+		int heroY = hero.getPosY();
+
+		if (direction == "North") {
+			if (heroY == 0) {
+				onLevelFinished();
+				return;
+			}
+
+			hero.moveNorth();
+			moved = true;
+		}
+		else if (direction == "South") {
+			if (heroY == mapElems.length) {
+				onLevelFinished();
+				return;
+			}
+
+			hero.moveSouth();
+			moved = true;
+		}
+		else if (direction == "West") {
+			if (heroX == 0) {
+				onLevelFinished();
+				return;
+			}
+
+			hero.moveWest();
+			moved = true;
+		}
+		else if (direction == "East") {
+			if (heroX == mapElems.length) {
+				onLevelFinished();
+				return;
+			}
+
+			hero.moveEast();
+			moved = true;
+		}
+
+		if (moved) {
+			mapElems[hero.getPosY()][hero.getPosX()] = hero;
+			mapElems[heroY][heroX] = null;
+	    guiFrame.updateMap(mapElems);
+		}
+
+		gameState = GameState.WaitingMove;
+	}
+
+	private void onLevelFinished() {
+		System.out.println("Level Won !");
+		return;
 	}
 }

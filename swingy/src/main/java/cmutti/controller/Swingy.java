@@ -10,7 +10,6 @@ public class Swingy
 {
 	// Static vars
 	private static Swingy instance = new Swingy(); // Singleton for easier function calling from views
-	public static String[] directions = new String[]{"North", "South", "West", "East"};
 
 	// Game vars
 	AHero hero = null;
@@ -37,7 +36,7 @@ public class Swingy
 				guiFrame = new FrameGUI("Swingy");
 
 				// TODO: create/load hero
-				hero = new KarateMan("yo2", 5);
+				hero = new KarateMan("yo2", 3);
 				StartMainGame();
 			}
 		});

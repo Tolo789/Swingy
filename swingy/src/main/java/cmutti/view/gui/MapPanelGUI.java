@@ -1,12 +1,14 @@
 package cmutti.view.gui;
 
 import cmutti.model.AMapElement;
+import cmutti.model.heroes.AHero;
 import cmutti.view.IMapPanel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Point;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -53,6 +55,8 @@ public class MapPanelGUI extends JPanel implements IMapPanel {
 		String frontPath = "";
 		AMapElement elem = null;
 		SpritePanel spritePanel = null;
+		int heroX = 0;
+		int heroY = 0;
     for (int y = 0; y < mapElems.length; y++) {
       for (int x = 0; x < mapElems.length; x++) {
 				elem = mapElems[y][x];
@@ -66,6 +70,11 @@ public class MapPanelGUI extends JPanel implements IMapPanel {
 					else
 						backPath = "";
 
+					if (elem instanceof AHero) {
+						heroX = elem.getPosX();
+						heroY = elem.getPosY();
+					}
+
 					frontPath = elem.spritePath;
 				}
 
@@ -75,6 +84,12 @@ public class MapPanelGUI extends JPanel implements IMapPanel {
       }
     }
 
+		// int actualsSquareSize = scrollPane.getViewport().getViewSize().width / mapElems.length;
+		// actualsSquareSize /= 2;
+		// scrollPane.getViewport().setViewPosition(new Point(heroX * actualsSquareSize, heroY * actualsSquareSize));
+
+		scrollPane.validate();
+		scrollPane.repaint();
 		dirty = true;
 	}
 }

@@ -55,4 +55,20 @@ public abstract class ACharacter extends AMapElement {
 
 		level = newLvl;
 	}
+
+	public void moveNorth() {
+		posY -= 1;
+	}
+
+	public void moveSouth() {
+		posY += 1;
+	}
+
+	public void moveWest() {
+		posX -= 1;
+	}
+
+	public void moveEast() {
+		posX += 1;
+	}
 }

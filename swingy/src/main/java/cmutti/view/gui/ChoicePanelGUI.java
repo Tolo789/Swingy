@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 public class ChoicePanelGUI extends JPanel implements IChoicePanel {
 	private static Swingy swingy = Swingy.getInstance();
-	JComboBox<String> dirCombo = new JComboBox<String>(swingy.directions);
+	JComboBox<String> dirCombo = new JComboBox<String>(swingy.getMainGame().directions);
 	JButton confirmButton = new JButton("Confirm");
 
 	ChoicePanelGUI() {
@@ -21,7 +21,7 @@ public class ChoicePanelGUI extends JPanel implements IChoicePanel {
 
 		confirmButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				swingy.getMainGame().directionChosen(dirCombo.getSelectedIndex());
+				swingy.getMainGame().directionChosen(dirCombo.getSelectedItem().toString());
 			}
 
 		});
