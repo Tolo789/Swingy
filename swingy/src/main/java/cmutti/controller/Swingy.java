@@ -37,7 +37,7 @@ public class Swingy
 				guiFrame = new FrameGUI("Swingy");
 
 				// TODO: create/load hero
-				hero = new KarateMan("yo2", 1);
+				hero = new KarateMan("yo2", 5);
 				StartMainGame();
 			}
 		});

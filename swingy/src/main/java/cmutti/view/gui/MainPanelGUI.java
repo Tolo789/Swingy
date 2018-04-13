@@ -2,6 +2,7 @@ package cmutti.view.gui;
 
 import cmutti.model.heroes.AHero;
 import cmutti.view.IMainPanel;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.JPanel;
@@ -33,7 +34,10 @@ public class MainPanelGUI extends JPanel implements IMainPanel {
 		constraints.gridy = 0;
 		constraints.weightx = 3;
 		constraints.gridwidth = 3;
-		add(new JScrollPane(mapPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS), constraints);
+		JScrollPane scrollPane = new JScrollPane(mapPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		// scrollPane.setPreferredSize(new Dimension(640, 640));
+		add(scrollPane, constraints);
+		// add(mapPanel, constraints);
 
 		storyPanel = new StoryPanelGUI();
 		constraints.gridx = 4;
