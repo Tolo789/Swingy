@@ -2,11 +2,11 @@ package cmutti.view.gui;
 
 import cmutti.model.AMapElement;
 import cmutti.view.IMapPanel;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,12 +23,10 @@ public class MapPanelGUI extends JPanel implements IMapPanel {
 	private GridBagConstraints constraints = null;
 
 	MapPanelGUI() {
-    // this.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 3, Color.BLUE));
-		// setLayout(null);
+		setLayout(new GridBagLayout());
 
 		container = new JPanel();
-    container.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 3, Color.RED));
-		setLayout(new GridBagLayout());
+
 		constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.gridx = 0;
@@ -37,22 +35,19 @@ public class MapPanelGUI extends JPanel implements IMapPanel {
 		constraints.weighty = 1;
 		constraints.gridwidth = 1;
 		constraints.gridheight = 1;
-		// add(container);
 
-		// scrollPane = new JScrollPane(container, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		// scrollPane.setPreferredSize(new Dimension(getWidth(), getHeight()));
-		// scrollPane.setLayout(null);
-		// add(scrollPane);
+		scrollPane = new JScrollPane(container);
+		add(scrollPane, constraints);
 	}
 
 	public void update(AMapElement[][] mapElems) {
 		// If any, delete prev elem
-    if (dirty)
-			removeAll();
+    if (dirty) {
+			container.removeAll();
+		}
 
-		// spritePanels = spritePanels[mapElems.length][mapElems.length];
-		setSize(10 * squareSize * mapElems.length, 10 * squareSize * mapElems.length);
-		// scrollPane.setPreferredSize(new Dimension(squareSize * mapElems.length, squareSize * mapElems.length));
+		container.setLayout(new GridLayout(mapElems.length, mapElems.length, 0, 0));
+		container.setPreferredSize(new Dimension(squareSize * mapElems.length, squareSize * mapElems.length));
 
 		String backPath = "";
 		String frontPath = "";
@@ -72,17 +67,11 @@ public class MapPanelGUI extends JPanel implements IMapPanel {
 						backPath = "";
 
 					frontPath = elem.spritePath;
-									// spritePanel = new SpritePanel(frontPath, backPath);
-									// spritePanel.setLocation(x * squareSize, y * squareSize);
-									// spritePanel.setSize(squareSize, squareSize);
-									// add(spritePanel);
 				}
 
 				spritePanel = new SpritePanel(frontPath, backPath);
 				spritePanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
-				constraints.gridx = x;
-				constraints.gridy = y;
-				add(spritePanel, constraints);
+				container.add(spritePanel);
       }
     }
 

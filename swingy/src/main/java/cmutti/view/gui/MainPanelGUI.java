@@ -34,10 +34,7 @@ public class MainPanelGUI extends JPanel implements IMainPanel {
 		constraints.gridy = 0;
 		constraints.weightx = 3;
 		constraints.gridwidth = 3;
-		JScrollPane scrollPane = new JScrollPane(mapPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		// scrollPane.setPreferredSize(new Dimension(640, 640));
-		add(scrollPane, constraints);
-		// add(mapPanel, constraints);
+		add(mapPanel, constraints);
 
 		storyPanel = new StoryPanelGUI();
 		constraints.gridx = 4;
