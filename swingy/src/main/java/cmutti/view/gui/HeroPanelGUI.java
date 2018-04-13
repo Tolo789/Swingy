@@ -25,7 +25,7 @@ public class HeroPanelGUI extends JPanel implements IHeroPanel {
 		updateInfo();
 
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-		sprite = new SpritePanel(hero.mainImg, "");
+		sprite = new SpritePanel(hero.getMainSprite(), null);
 		add(sprite);
 		add(name);
 		add(level);

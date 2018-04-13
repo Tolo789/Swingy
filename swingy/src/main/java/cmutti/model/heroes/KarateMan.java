@@ -2,6 +2,7 @@ package cmutti.model.heroes;
 
 public class KarateMan extends AHero {
 	static {
+		spritePath = "sprites/heroes/karateMan/walkSheet.png";
 		mainImg = "sprites/heroes/karateMan/mainImg.png";
 
 		// Only change growth stats which are differnt for this class

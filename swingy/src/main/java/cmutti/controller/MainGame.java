@@ -73,16 +73,14 @@ public class MainGame {
 				return;
 			}
 
-			hero.moveNorth();
 			moved = true;
 		}
 		else if (direction == "South") {
-			if (heroY == mapElems.length) {
+			if (heroY == mapElems.length - 1) {
 				onLevelFinished();
 				return;
 			}
 
-			hero.moveSouth();
 			moved = true;
 		}
 		else if (direction == "West") {
@@ -91,20 +89,19 @@ public class MainGame {
 				return;
 			}
 
-			hero.moveWest();
 			moved = true;
 		}
 		else if (direction == "East") {
-			if (heroX == mapElems.length) {
+			if (heroX == mapElems.length - 1) {
 				onLevelFinished();
 				return;
 			}
 
-			hero.moveEast();
 			moved = true;
 		}
 
 		if (moved) {
+			hero.moveTowards(direction);
 			mapElems[hero.getPosY()][hero.getPosX()] = hero;
 			mapElems[heroY][heroX] = null;
 	    guiFrame.updateMap(mapElems);
@@ -115,6 +112,7 @@ public class MainGame {
 
 	private void onLevelFinished() {
 		System.out.println("Level Won !");
+		newLevel();
 		return;
 	}
 }

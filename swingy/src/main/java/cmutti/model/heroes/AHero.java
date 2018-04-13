@@ -2,6 +2,10 @@ package cmutti.model.heroes;
 
 import cmutti.model.ACharacter;
 import cmutti.model.artifacts.weapons.AWeapon;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import lombok.Getter;
 
 @Getter
@@ -23,7 +27,9 @@ public abstract class AHero extends ACharacter {
 			gAgility = 1;
 
 	}
-	public static String mainImg = "";
+	protected static String mainImg = "";
+
+	private BufferedImage mainSprite = null;
 
 	// Xp vars
 	protected int neededXp;
@@ -36,6 +42,13 @@ public abstract class AHero extends ACharacter {
 
 	protected AHero(String name, int level) {
 		super(name, level, 0, 0); // Do not mind x-y pos since thay will be changed when level starts
+
+		try {
+			this.mainSprite = ImageIO.read(new File(mainImg));
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// Update neededXp after base levelUp
@@ -51,5 +64,8 @@ public abstract class AHero extends ACharacter {
 	public void setPosition(int posY, int posX) {
 		this.posY = posY;
 		this.posX = posX;
+
+		direction = "South";
+		steps = 0;
 	}
 }

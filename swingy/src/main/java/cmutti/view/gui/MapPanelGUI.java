@@ -9,6 +9,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,12 +23,19 @@ public class MapPanelGUI extends JPanel implements IMapPanel {
 	private static String grassPath = "sprites/grass.jpeg";
 	private static int squareSize = 32;
 
+	private BufferedImage bckSprite = null;
 	private boolean dirty = false;
 	private JPanel container = null;
 	private JScrollPane scrollPane = null;
 	private GridBagConstraints constraints = null;
 
 	MapPanelGUI() {
+		try {
+			this.bckSprite = ImageIO.read(new File(grassPath));
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
 		setLayout(new GridBagLayout());
 
 		container = new JPanel();
@@ -51,8 +62,8 @@ public class MapPanelGUI extends JPanel implements IMapPanel {
 		container.setLayout(new GridLayout(mapElems.length, mapElems.length, 0, 0));
 		container.setPreferredSize(new Dimension(squareSize * mapElems.length, squareSize * mapElems.length));
 
-		String backPath = "";
-		String frontPath = "";
+		BufferedImage backSprite = null;
+		BufferedImage frontSprite = null;
 		AMapElement elem = null;
 		SpritePanel spritePanel = null;
 		int heroX = 0;
@@ -61,24 +72,24 @@ public class MapPanelGUI extends JPanel implements IMapPanel {
       for (int x = 0; x < mapElems.length; x++) {
 				elem = mapElems[y][x];
 				if (elem == null) {
-					frontPath = "";
-					backPath = grassPath;
+					frontSprite = null;
+					backSprite = bckSprite;
 				}
 				else {
 					if (elem.needGrass)
-						backPath = grassPath;
+						backSprite = bckSprite;
 					else
-						backPath = "";
+						backSprite = null;
 
 					if (elem instanceof AHero) {
 						heroX = elem.getPosX();
 						heroY = elem.getPosY();
 					}
 
-					frontPath = elem.spritePath;
+					frontSprite = elem.getSprite();
 				}
 
-				spritePanel = new SpritePanel(frontPath, backPath);
+				spritePanel = new SpritePanel(frontSprite, backSprite);
 				spritePanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
 				container.add(spritePanel);
       }
