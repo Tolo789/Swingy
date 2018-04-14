@@ -2,6 +2,8 @@ package cmutti.controller;
 
 import cmutti.model.AMapElement;
 import cmutti.model.heroes.AHero;
+import cmutti.model.monsters.AMonster;
+import cmutti.model.monsters.MonsterFactory;
 import cmutti.view.gui.FrameGUI;
 
 public class MainGame {
@@ -14,48 +16,79 @@ public class MainGame {
 	public static String[] directions = new String[]{"North", "South", "West", "East"};
 	// Game vars
 	AHero hero;
-  int mapSize;
-  AMapElement[][] mapElems;
+	int mapSize;
+	AMapElement[][] mapElems;
 	GameState gameState = GameState.Loading;
 
 	// UIs
 	FrameGUI guiFrame;
 
-  MainGame(AHero hero, FrameGUI guiFrame) {
-    this.hero = hero;
-    this.guiFrame = guiFrame;
+	MainGame(AHero hero, FrameGUI guiFrame) {
+		this.hero = hero;
+		this.guiFrame = guiFrame;
 
-    guiFrame.StartMainPanel(hero);
+		guiFrame.StartMainPanel(hero);
 
-    newLevel();
-  }
+		newLevel();
+	}
 
-  private void newLevel() {
-    generateLevel();
+	private void newLevel() {
+		generateLevel();
 
-    guiFrame.updateMap(mapElems);
+		guiFrame.updateMap(mapElems);
 		gameState = GameState.WaitingMove;
-  }
+	}
 
-  private void generateLevel() {
-    mapSize = (hero.getLevel() - 1) * 5 + 10 - (hero.getLevel() % 2);
-    System.out.println("MapSize: " + mapSize);
+	private void generateLevel() {
+		mapSize = (hero.getLevel() - 1) * 5 + 10 - (hero.getLevel() % 2);
+		System.out.println("MapSize: " + mapSize);
 
-    mapElems = new AMapElement[mapSize][mapSize];
+		mapElems = new AMapElement[mapSize][mapSize];
 
-    // Add hero to center
-    hero.setPosition(mapSize / 2, mapSize / 2);
-    mapElems[mapSize / 2][mapSize / 2] = hero;
+		// Add hero to center
+		hero.setPosition(mapSize / 2, mapSize / 2);
+		mapElems[mapSize / 2][mapSize / 2] = hero;
 
-    // TODO: add landscape
+		// Get monster list and add legendary
+		AMonster[] monsterList = MonsterFactory.generateMonsterList(hero.getLevel(), mapSize);
+		int monstersAdded = 0;
+		if (monsterList[0].isLegendary()) {
+			int pos = Swingy.getInstance().rand.nextInt(4);
+			int posX;
+			int posY;
 
-    // TODO: Add monsters
-    // for (int y = 0; y < mapSize; y++) {
-    //     for (int x = 0; x < mapSize; x++) {
-    //
-    //     }
-    // }
-  }
+			if (pos == 0) { // North
+				posX = mapSize / 2;
+				posY = 1;
+			}
+			else if (pos == 1) { // South
+				posX = mapSize / 2;
+				posY = mapSize - 2;
+			}
+			else if (pos == 2) { // West
+				posY = mapSize / 2;
+				posX = 1;
+			}
+			else { // East
+				posY = mapSize / 2;
+				posX = mapSize - 2;
+			}
+
+
+			monsterList[0].setPosition(posY, posX);
+			mapElems[posY][posX] = monsterList[0];
+			monstersAdded++;
+		}
+
+		// TODO: add landscape
+
+		// TODO: Add other monsters
+		// for (int y = 0; y < mapSize; y++) {
+		//     for (int x = 0; x < mapSize; x++) {
+		//
+		//     }
+		// }
+	}
 
 	// Call to move in a direction
 	public void directionChosen(String direction) {

@@ -3,15 +3,20 @@ package cmutti.controller;
 import cmutti.model.heroes.AHero;
 import cmutti.model.heroes.KarateMan;
 import cmutti.view.gui.FrameGUI;
+import java.util.Random;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
+
+import cmutti.model.heroes.KarateMan;
+import javax.swing.SwingUtilities;
 
 public class Swingy
 {
 	// Static vars
-	private static Swingy instance = new Swingy(); // Singleton for easier function calling from views
+	@Getter private static Swingy instance = new Swingy(); // Singleton for easier function calling from views
 
 	// Game vars
+	public Random rand = new Random(); // every part of the game should use this rand
 	AHero hero = null;
 
 	// Child controllers

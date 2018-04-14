@@ -76,6 +76,16 @@ public abstract class ACharacter extends AMapElement {
 			posX++;
 	}
 
+	protected void configImgWidth() {
+		// 3 sprites for each direction
+		imgWidth = img.getWidth() / 3;
+	}
+
+	protected void configImgHeight() {
+		// Characters all have sprites for different directions
+		imgHeight = img.getHeight() / 4;
+	}
+
 	protected int getSpriteStep() {
 		// 3 sprites for each direction, must put middle steps between left/right steps
 		if (steps % 2 == 0)

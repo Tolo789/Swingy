@@ -17,14 +17,14 @@ public abstract class AMapElement {
 
 	// GUI-only vars
 	protected BufferedImage img = null;
-	int imgWidth = 0;
-	int imgHeight = 0;
+	protected int imgWidth = 0;
+	protected int imgHeight = 0;
 
 	protected AMapElement(String name, int posY, int posX) {
 		try {
 			img = ImageIO.read(new File(spritePath));
-			imgWidth = img.getWidth() / 3;
-			imgHeight = img.getHeight() / 4;
+			configImgWidth();
+			configImgHeight();
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -32,6 +32,14 @@ public abstract class AMapElement {
 		this.name = name;
 		this.posY = posY;
 		this.posX = posX;
+	}
+
+	protected void configImgWidth() {
+		imgWidth = img.getWidth();
+	}
+
+	protected void configImgHeight() {
+		imgHeight = img.getHeight();
 	}
 
 	public BufferedImage getSprite() {

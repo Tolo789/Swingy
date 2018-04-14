@@ -12,20 +12,19 @@ import lombok.Getter;
 public abstract class AHero extends ACharacter {
 	// Define "standard" hero stats
 	static {
-			// Base stats
-			bXp = 0;
-			bAttack = 20;
-			bDefense = 20;
-			bHp = 30;
-			bAgility = 5;
+		// Base stats
+		bXp = 0;
+		bAttack = 20;
+		bDefense = 20;
+		bHp = 30;
+		bAgility = 5;
 
-			// Growth stats
-			gXp = 0;
-			gAttack = 2;
-			gDefense = 2;
-			gHp = 3;
-			gAgility = 1;
-
+		// Growth stats
+		gXp = 0;
+		gAttack = 2;
+		gDefense = 2;
+		gHp = 3;
+		gAgility = 1;
 	}
 	protected static String mainImg = "";
 
