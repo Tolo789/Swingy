@@ -12,10 +12,10 @@ public abstract class AMonster extends ACharacter {
 	static {
 			// Base stats
 			bXp = 100;
-			bAttack = 10;
-			bDefense = 10;
-			bHp = 20;
-			bAgility = 3;
+			bAttack = 5;
+			bDefense = 5;
+			bHp = 10;
+			bAgility = 1;
 
 			// Growth stats
 			gXp = 30;

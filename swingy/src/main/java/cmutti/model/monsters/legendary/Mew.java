@@ -10,10 +10,10 @@ public class Mew extends AMonster {
 
 		// Base stats
 		bXp = 1000;
-		bAttack = 20;
-		bDefense = 20;
-		bHp = 30;
-		bAgility = 5;
+		bAttack = 15;
+		bDefense = 15;
+		bHp = 25;
+		bAgility = 3;
 
 		// Growth stats
 		gXp = 500;

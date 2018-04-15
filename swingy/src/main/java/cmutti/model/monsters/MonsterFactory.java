@@ -7,8 +7,9 @@ public class MonsterFactory {
 	public static AMonster[] generateMonsterList(int heroLvl, int mapSize) {
 		if (heroLvl == 1) { // only display Mew if hero is lvl 1
 			AMonster[] monsterList = new AMonster[1];
-			// TODO: populate
-			monsterList[0] = new Mew(1);
+			monsterList[0] = setLegendaryPosition(new Mew(1), mapSize);
+			setLegendaryPosition(monsterList[0], mapSize);
+
 			return monsterList;
 		}
 
@@ -50,5 +51,32 @@ public class MonsterFactory {
 		AMonster[] monsterList = new AMonster[monstersNbr];
 		// TODO: populate
 		return monsterList;
+	}
+
+	private static AMonster setLegendaryPosition(AMonster monster, int mapSize) {
+		int pos = Swingy.getInstance().rand.nextInt(4);
+		int posX;
+		int posY;
+
+		if (pos == 0) { // North
+			posX = mapSize / 2;
+			posY = 1;
+		}
+		else if (pos == 1) { // South
+			posX = mapSize / 2;
+			posY = mapSize - 2;
+		}
+		else if (pos == 2) { // West
+			posY = mapSize / 2;
+			posX = 1;
+		}
+		else { // East
+			posY = mapSize / 2;
+			posX = mapSize - 2;
+		}
+
+
+		monster.setPosition(posY, posX);
+		return monster;
 	}
 }

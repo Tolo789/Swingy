@@ -61,6 +61,15 @@ public abstract class ACharacter extends AMapElement {
 		level = newLvl;
 	}
 
+	public void getDamage(int damage) {
+		if (damage < 0)	// Avoid errors
+			return;
+
+		this.hp -= damage;
+		if (this.hp < 0)
+			this.hp = 0;
+	}
+
 	public void moveTowards(String dir) {
 		if (dir != direction)
 			direction = dir;
