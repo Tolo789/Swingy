@@ -23,8 +23,9 @@ public class MainGame {
 	int tmpX;	// used when fleeing monster
 	int tmpY;	// used when fleeing monster
 	AMonster[] monsterList;	// all the monsters of the level
-	int mapSize;
 	AMapElement[][] mapElems; // easy way to find elem instead of iterating over list
+	int mapSize;
+	int mapXp;	// calculated on creation of map
 	GameState gameState = GameState.Loading; // used to know if accepting user input
 
 	// UIs
@@ -42,6 +43,7 @@ public class MainGame {
 	private void newLevel() {
 		// Create map
 		mapSize = (hero.getLevel() - 1) * 5 + 10 - (hero.getLevel() % 2);
+		mapXp = hero.getLevel() * 1000;
 		System.out.println("MapSize: " + mapSize);
 
 		// Add hero to center
@@ -63,8 +65,11 @@ public class MainGame {
 		mapElems[hero.getPosY()][hero.getPosX()] = hero;
 
 		// Monsters
-		for (AMonster monster : monsterList) {
-			mapElems[monster.getPosY()][monster.getPosX()] = monster;
+		if (monsterList != null && monsterList.length > 0) {
+			for (AMonster monster : monsterList) {
+				if (monster != null)
+					mapElems[monster.getPosY()][monster.getPosX()] = monster;
+			}
 		}
 
 		// TODO: Landscape
@@ -121,7 +126,7 @@ public class MainGame {
 		if (elem != null) {
 			if (elem instanceof AMonster) {
 				// TODO: Ask player if fight or flee
-				startFight((AMonster)elem, true);
+				simulateFight((AMonster)elem, true);
 				return;
 			}
 			// set hero back to prev pos if he is moving towards landscape elem
@@ -130,13 +135,13 @@ public class MainGame {
 	}
 
 	private void onLevelFinished() {
-		System.out.println("Level Won !");
-		// TODO: reward xp for finishing level
+		System.out.println("Level Finished !   You gained " + mapXp + " xp");
+		hero.gainXp(mapXp);
 		newLevel();
 		return;
 	}
 
-	private void startFight(AMonster monster, boolean heroStarts) {
+	private void simulateFight(AMonster monster, boolean heroStarts) {
 		System.out.println("Fight against " + monster.getName() + " lvl. " + monster.getLevel() + " started !");
 		boolean fightEnded = false;
 
@@ -180,6 +185,13 @@ public class MainGame {
 			tmpChar = attacker;
 			attacker = defender;
 			defender = tmpChar;
+		}
+
+		if (monster.getHp() == 0) {
+			System.out.println("You gained " + monster.getXp());
+			hero.gainXp(monster.getXp());
+			// TODO use list instead of array
+			mapElems[monster.getPosY()][monster.getPosX()] = null;
 		}
 	}
 }

@@ -50,7 +50,8 @@ public class MonsterFactory {
 		System.out.println(minMonsters + "-" + maxMonsters + " => " + monstersNbr);
 		AMonster[] monsterList = new AMonster[monstersNbr];
 		// TODO: populate
-		return monsterList;
+		return null; // tmp solution
+		// return monsterList;
 	}
 
 	private static AMonster setLegendaryPosition(AMonster monster, int mapSize) {

@@ -57,7 +57,18 @@ public abstract class AHero extends ACharacter {
 		// Update after levelUp
 		neededXp = level * 1000 + (int)Math.pow(level - 1, 2) * 450;
 		xp = tmpXp;
-		tmpXp = 0;
+	}
+
+	public boolean gainXp(int gain) {
+		xp += gain;
+
+		if (xp >= neededXp) {
+			tmpXp = xp - neededXp;
+			this.levelUp();
+			System.out.println("Level-Up !\nMaxHp: " + maxHp + "\nAtk: " + attack + "\nDef: " + defense + "\nAgi: " + agility);
+			return true;
+		}
+		return false;
 	}
 
 	public void setPosition(int posY, int posX) {

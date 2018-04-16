@@ -5,7 +5,7 @@ import cmutti.model.monsters.AMonster;
 public class Mew extends AMonster {
 	// Mew stats
 	static {
-		spritePath = "sprites/test.png";
+		spritePath = "sprites/monsters/mew.png";
 		legendary = true;
 
 		// Base stats
@@ -25,23 +25,5 @@ public class Mew extends AMonster {
 
 	public Mew(int level) {
 		super("Mew", level);
-	}
-
-	protected void configImgWidth() {
-		imgWidth = img.getWidth();
-	}
-
-	protected void configImgHeight() {
-		imgHeight = img.getHeight();
-	}
-
-	protected int getSpriteStep() {
-		// Basic MapElems have only one img
-		return 0;
-	}
-
-	protected int getSpriteLine() {
-		// Basic MapElems have only one img
-		return 0;
 	}
 }
