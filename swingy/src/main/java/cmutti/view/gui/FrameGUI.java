@@ -36,4 +36,8 @@ public class FrameGUI extends JFrame implements IFrame {
 	public void updateMap(AMapElement[][] mapElems) {
 		mainPanel.mapPanel.update(mapElems);
 	}
+
+	public void updateHero() {
+		mainPanel.heroPanel.update();
+	}
 }

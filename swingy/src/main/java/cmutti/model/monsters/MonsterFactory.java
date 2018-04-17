@@ -1,14 +1,16 @@
 package cmutti.model.monsters;
 
+import cmutti.controller.Swingy;
 import cmutti.model.monsters.legendary.Mew;
+import java.util.ArrayList;
+
 import cmutti.controller.Swingy;
 
 public class MonsterFactory {
-	public static AMonster[] generateMonsterList(int heroLvl, int mapSize) {
+	public static ArrayList<AMonster> generateMonsterList(int heroLvl, int mapSize) {
+		ArrayList<AMonster> monsterList = new ArrayList<AMonster>();
 		if (heroLvl == 1) { // only display Mew if hero is lvl 1
-			AMonster[] monsterList = new AMonster[1];
-			monsterList[0] = setLegendaryPosition(new Mew(1), mapSize);
-			setLegendaryPosition(monsterList[0], mapSize);
+			monsterList.add(setLegendaryPosition(new Mew(1), mapSize));
 
 			return monsterList;
 		}
@@ -48,10 +50,8 @@ public class MonsterFactory {
 		}
 		monstersNbr = Swingy.getInstance().rand.nextInt((maxMonsters - minMonsters) + 1) + minMonsters;
 		System.out.println(minMonsters + "-" + maxMonsters + " => " + monstersNbr);
-		AMonster[] monsterList = new AMonster[monstersNbr];
 		// TODO: populate
-		return null; // tmp solution
-		// return monsterList;
+		return monsterList;
 	}
 
 	private static AMonster setLegendaryPosition(AMonster monster, int mapSize) {

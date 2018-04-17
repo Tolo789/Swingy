@@ -3,12 +3,13 @@ package cmutti.controller;
 import cmutti.model.ACharacter;
 import cmutti.model.AMapElement;
 import cmutti.model.heroes.AHero;
+import cmutti.model.heroes.AHero;
 import cmutti.model.monsters.AMonster;
 import cmutti.model.monsters.MonsterFactory;
 import cmutti.view.gui.FrameGUI;
+import java.util.ArrayList;
+import java.util.Iterator;
 
-import cmutti.model.heroes.AHero;
-import cmutti.model.monsters.MonsterFactory;
 
 public class MainGame {
 	private enum GameState {
@@ -22,7 +23,7 @@ public class MainGame {
 	AHero hero;
 	int tmpX;	// used when fleeing monster
 	int tmpY;	// used when fleeing monster
-	AMonster[] monsterList;	// all the monsters of the level
+	ArrayList<AMonster> monsterList = new ArrayList<AMonster>();	// all the monsters of the level
 	AMapElement[][] mapElems; // easy way to find elem instead of iterating over list
 	int mapSize;
 	int mapXp;	// calculated on creation of map
@@ -52,12 +53,13 @@ public class MainGame {
 		monsterList = MonsterFactory.generateMonsterList(hero.getLevel(), mapSize);
 
 		// TODO: Add landscape
+		// TODO: be sure that landscape doesnt blocks path to exit
 
-		updateMapElems();
+		updateUI();
 		gameState = GameState.WaitingMove;
 	}
 
-	private void updateMapElems() {
+	private void updateUI() {
 		// Recreate each time since old elem position must be overridden
 		mapElems = new AMapElement[mapSize][mapSize];
 
@@ -65,16 +67,14 @@ public class MainGame {
 		mapElems[hero.getPosY()][hero.getPosX()] = hero;
 
 		// Monsters
-		if (monsterList != null && monsterList.length > 0) {
-			for (AMonster monster : monsterList) {
-				if (monster != null)
-					mapElems[monster.getPosY()][monster.getPosX()] = monster;
-			}
+		for (AMonster monster : monsterList) {
+			mapElems[monster.getPosY()][monster.getPosX()] = monster;
 		}
 
 		// TODO: Landscape
 
 		guiFrame.updateMap(mapElems);
+		guiFrame.updateHero();
 	}
 
 	// Call to move in a direction
@@ -112,8 +112,11 @@ public class MainGame {
 			tryMovePlayer(direction);
 		}
 
-		// TODO: update monster position
-		updateMapElems();
+		if (!monstersUpdate()) {
+
+			return;
+		}
+		updateUI();
 		gameState = GameState.WaitingMove;
 	}
 
@@ -126,22 +129,33 @@ public class MainGame {
 		if (elem != null) {
 			if (elem instanceof AMonster) {
 				// TODO: Ask player if fight or flee
-				simulateFight((AMonster)elem, true);
+				if (simulateFight((AMonster)elem, true)) {
+					updateMapWithCharacterMove((ACharacter)hero, tmpY, tmpX);
+				}
 				return;
 			}
 			// set hero back to prev pos if he is moving towards landscape elem
 			hero.setPosition(tmpY, tmpX);
 		}
+
+		updateMapWithCharacterMove((ACharacter)hero, tmpY, tmpX);
+	}
+
+	private void updateMapWithCharacterMove(ACharacter character, int oldY, int oldX) {
+		mapElems[oldY][oldX] = null;
+		mapElems[character.getPosY()][character.getPosX()] = character;
 	}
 
 	private void onLevelFinished() {
 		System.out.println("Level Finished !   You gained " + mapXp + " xp");
-		hero.gainXp(mapXp);
+		if (hero.gainXp(mapXp)) {
+			System.out.println("Level-Up ! " + hero.getGrowthString());
+		}
+
 		newLevel();
-		return;
 	}
 
-	private void simulateFight(AMonster monster, boolean heroStarts) {
+	private boolean simulateFight(AMonster monster, boolean heroStarts) {
 		System.out.println("Fight against " + monster.getName() + " lvl. " + monster.getLevel() + " started !");
 		boolean fightEnded = false;
 
@@ -187,11 +201,34 @@ public class MainGame {
 			defender = tmpChar;
 		}
 
-		if (monster.getHp() == 0) {
-			System.out.println("You gained " + monster.getXp());
-			hero.gainXp(monster.getXp());
-			// TODO use list instead of array
-			mapElems[monster.getPosY()][monster.getPosX()] = null;
+		if (hero.getHp() == 0) {
+			onHeroDeath();
+			return false;
 		}
+		System.out.println("You gained " + monster.getXp());
+		if (hero.gainXp(monster.getXp())) {
+			System.out.println("Level-Up ! " + hero.getGrowthString());
+		}
+		monsterList.remove(monster);
+		return true;
+	}
+
+	private boolean monstersUpdate() {
+		int tmpX;
+		int tmpY;
+		for (AMonster monster : monsterList) {
+			tmpX = monster.getPosX();
+			tmpY = monster.getPosY();
+			monster.doAction(hero, mapElems);
+
+			// TODO: Check if need fight simulation
+			updateMapWithCharacterMove((ACharacter)monster, tmpY, tmpX);
+		}
+
+		return true;
+	}
+
+	private void onHeroDeath() {
+		// TODO: manage lose
 	}
 }

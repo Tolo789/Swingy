@@ -65,7 +65,6 @@ public abstract class AHero extends ACharacter {
 		if (xp >= neededXp) {
 			tmpXp = xp - neededXp;
 			this.levelUp();
-			System.out.println("Level-Up !\nMaxHp: " + maxHp + "\nAtk: " + attack + "\nDef: " + defense + "\nAgi: " + agility);
 			return true;
 		}
 		return false;
@@ -77,5 +76,9 @@ public abstract class AHero extends ACharacter {
 
 		direction = "South";
 		steps = 0;
+	}
+
+	public String getGrowthString() {
+		return "MaxHp: +" + gHp + ", Atk: +" + gAttack + ", Def: +" + gDefense + ", Agi: +" + gAgility;
 	}
 }

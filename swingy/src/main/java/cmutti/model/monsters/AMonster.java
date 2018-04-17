@@ -2,7 +2,9 @@ package cmutti.model.monsters;
 
 import cmutti.model.AArtifact;
 import cmutti.model.ACharacter;
+import cmutti.model.AMapElement;
 import cmutti.model.artifacts.weapons.AWeapon;
+import cmutti.model.heroes.AHero;
 import java.awt.image.BufferedImage;
 import lombok.Getter;
 
@@ -40,6 +42,10 @@ public abstract class AMonster extends ACharacter {
 
 		direction = "South";
 		steps = 0;
+	}
+
+	public void doAction(AHero hero, AMapElement[][] mapElems) {
+		// TODO
 	}
 
 	protected void configImgWidth() {

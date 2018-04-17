@@ -50,6 +50,7 @@ public abstract class ACharacter extends AMapElement {
 	protected void levelUp(int newLvl) {
 		if (newLvl <= 0)
 			return;
+		System.out.println("New lvl. " + newLvl);
 
 		xp = bXp + gXp * newLvl;
 		attack = bAttack + gAttack * newLvl;

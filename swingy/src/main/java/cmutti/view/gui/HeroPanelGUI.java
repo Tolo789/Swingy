@@ -22,10 +22,12 @@ public class HeroPanelGUI extends JPanel implements IHeroPanel {
 	HeroPanelGUI(AHero hero) {
 		this.hero = hero;
 
-		updateInfo();
-
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+
 		sprite = new SpritePanel(hero.getMainSprite(), null);
+		name.setText("Name: " + hero.getName());
+		update();
+
 		add(sprite);
 		add(name);
 		add(level);
@@ -37,8 +39,7 @@ public class HeroPanelGUI extends JPanel implements IHeroPanel {
 		add(coordinates);
 	}
 
-	public void updateInfo() {
-		name.setText("Name: " + hero.getName());
+	public void update() {
 		level.setText("Lvl.: " + hero.getLevel());
 		experience.setText("Xp: " + hero.getXp() + "/" + hero.getNeededXp());
 		life.setText("Hp: " + hero.getHp() + "/" + hero.getMaxHp());
