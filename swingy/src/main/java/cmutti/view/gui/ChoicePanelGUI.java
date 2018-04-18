@@ -13,22 +13,56 @@ import javax.swing.JPanel;
 
 public class ChoicePanelGUI extends JPanel implements IChoicePanel {
 	private static Swingy swingy = Swingy.getInstance();
+	// Generic label
+	JLabel label = new JLabel("String");
+
+	// Direction utils
 	JComboBox<String> dirCombo = new JComboBox<String>(swingy.getMainGame().directions);
 	JButton confirmButton = new JButton("Confirm");
 
+	// Fight utils
+	JButton fightButton = new JButton("Fight");
+	JButton fleeButton = new JButton("Flee");
+
 	ChoicePanelGUI() {
-		JLabel label = new JLabel("String");
 
 		confirmButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				swingy.getMainGame().directionChosen(dirCombo.getSelectedItem().toString());
 			}
-
 		});
 
-    this.setBorder(BorderFactory.createMatteBorder(3, 0, 0, 0, Color.BLUE));
+
+		fightButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				swingy.getMainGame().fightDecision(true);
+			}
+		});
+
+
+		fleeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				swingy.getMainGame().fightDecision(false);
+			}
+		});
+
+		this.setBorder(BorderFactory.createMatteBorder(3, 0, 0, 0, Color.BLUE));
+		showDirectionChoices();
+	}
+
+	public void showDirectionChoices() {
+		label.setText("Choose direction");
+		this.removeAll();
 		add(label);
 		add(dirCombo);
 		add(confirmButton);
+	}
+
+	public void showFightChoices() {
+		label.setText("Fight or try flee ?");
+		this.removeAll();
+		add(label);
+		add(fightButton);
+		add(fleeButton);
 	}
 }

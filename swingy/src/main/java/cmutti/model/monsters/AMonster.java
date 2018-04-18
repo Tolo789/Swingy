@@ -10,23 +10,6 @@ import lombok.Getter;
 
 @Getter
 public abstract class AMonster extends ACharacter {
-	// Define "standard" monster stats
-	static {
-			// Base stats
-			bXp = 100;
-			bAttack = 5;
-			bDefense = 5;
-			bHp = 10;
-			bAgility = 1;
-
-			// Growth stats
-			gXp = 30;
-			gAttack = 1;
-			gDefense = 1;
-			gHp = 2;
-			gAgility = 1;
-
-	}
 	@Getter protected static boolean legendary = false;
 
 	// Artifacts that can be droppped
@@ -34,6 +17,47 @@ public abstract class AMonster extends ACharacter {
 
 	protected AMonster(String name, int level) {
 		super(name, level, 0, 0); // Do not mind x-y pos since thay will be changed when level starts
+	}
+
+	// Define "standard" monster stats
+	public int getBaseXp() {
+		return 100;
+	}
+
+	public int getBaseHp() {
+		return 10;
+	}
+
+	public int getBaseAttack() {
+		return 5;
+	}
+
+	public int getBaseDefense() {
+		return 5;
+	}
+
+	public int getBaseAgility() {
+		return 1;
+	}
+
+	public int getGrowthXp() {
+		return 30;
+	}
+
+	public int getGrowthHp() {
+		return 2;
+	}
+
+	public int getGrowthAttack() {
+		return 1;
+	}
+
+	public int getGrowthDefense() {
+		return 1;
+	}
+
+	public int getGrowthAgility() {
+		return 1;
 	}
 
 	public void setPosition(int posY, int posX) {

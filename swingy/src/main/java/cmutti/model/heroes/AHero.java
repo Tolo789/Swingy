@@ -10,22 +10,6 @@ import lombok.Getter;
 
 @Getter
 public abstract class AHero extends ACharacter {
-	// Define "standard" hero stats
-	static {
-		// Base stats
-		bXp = 0;
-		bAttack = 20;
-		bDefense = 20;
-		bHp = 30;
-		bAgility = 5;
-
-		// Growth stats
-		gXp = 0;
-		gAttack = 2;
-		gDefense = 2;
-		gHp = 3;
-		gAgility = 1;
-	}
 	protected static String mainImg = "";
 
 	private BufferedImage mainSprite = null;
@@ -48,6 +32,47 @@ public abstract class AHero extends ACharacter {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	// Define "standard" hero stats
+	public int getBaseXp() {
+		return 0;
+	}
+
+	public int getBaseHp() {
+		return 30;
+	}
+
+	public int getBaseAttack() {
+		return 20;
+	}
+
+	public int getBaseDefense() {
+		return 20;
+	}
+
+	public int getBaseAgility() {
+		return 5;
+	}
+
+	public int getGrowthXp() {
+		return 0;
+	}
+
+	public int getGrowthHp() {
+		return 3;
+	}
+
+	public int getGrowthAttack() {
+		return 2;
+	}
+
+	public int getGrowthDefense() {
+		return 2;
+	}
+
+	public int getGrowthAgility() {
+		return 1;
 	}
 
 	// Update neededXp after base levelUp
@@ -79,6 +104,11 @@ public abstract class AHero extends ACharacter {
 	}
 
 	public String getGrowthString() {
-		return "MaxHp: +" + gHp + ", Atk: +" + gAttack + ", Def: +" + gDefense + ", Agi: +" + gAgility;
+		String str = "";
+		str = "MaxHp: " + maxHp + " (+" + getGrowthHp() + ")";
+		str += ", Atk: " + attack + " (+" + getGrowthAttack() + ")";
+		str += ", Def: " + defense + " (+" + getGrowthDefense() + ")";
+		str += ", Agi: " + agility + " (+" + getGrowthAgility() + ")";
+		return str;
 	}
 }

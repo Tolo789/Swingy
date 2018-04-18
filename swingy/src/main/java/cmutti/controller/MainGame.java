@@ -14,13 +14,14 @@ import java.util.Iterator;
 public class MainGame {
 	private enum GameState {
 		Loading,
-		WaitingMove,
-		WaitingCombat
+		WaitingDirectionChoice,
+		WaitingFightChoice
 	}
 
 	public static String[] directions = new String[]{"North", "South", "West", "East"};
 	// Game vars
 	AHero hero;
+	AMapElement elem;	// tmp MapElem, can be monster or landscape
 	int tmpX;	// used when fleeing monster
 	int tmpY;	// used when fleeing monster
 	ArrayList<AMonster> monsterList = new ArrayList<AMonster>();	// all the monsters of the level
@@ -56,7 +57,6 @@ public class MainGame {
 		// TODO: be sure that landscape doesnt blocks path to exit
 
 		updateUI();
-		gameState = GameState.WaitingMove;
 	}
 
 	private void updateUI() {
@@ -75,11 +75,13 @@ public class MainGame {
 
 		guiFrame.updateMap(mapElems);
 		guiFrame.updateHero();
+		guiFrame.showDirectionChoices();
+		gameState = GameState.WaitingDirectionChoice;
 	}
 
 	// Call to move in a direction
 	public void directionChosen(String direction) {
-		if (gameState != GameState.WaitingMove) // Prevent spam click of button
+		if (gameState != GameState.WaitingDirectionChoice) // Prevent spam click of button
 			return;
 		gameState = GameState.Loading;
 
@@ -104,45 +106,76 @@ public class MainGame {
 			}
 			tryMovePlayer(direction);
 		}
-		else if (direction == "East") {
+		else { // East
 			if (hero.getPosX() == mapElems.length - 1) {
 				onLevelFinished();
 				return;
 			}
 			tryMovePlayer(direction);
 		}
-
-		if (!monstersUpdate()) {
-
-			return;
-		}
-		updateUI();
-		gameState = GameState.WaitingMove;
 	}
 
 	private void tryMovePlayer(String direction) {
-		int tmpX = hero.getPosX();
-		int tmpY = hero.getPosY();
+		tmpX = hero.getPosX();
+		tmpY = hero.getPosY();
 		hero.moveTowards(direction);
 
-		AMapElement elem = mapElems[hero.getPosY()][hero.getPosX()];
+		// Check if moving in given direction trigger some encounter
+		elem = mapElems[hero.getPosY()][hero.getPosX()];
 		if (elem != null) {
 			if (elem instanceof AMonster) {
-				// TODO: Ask player if fight or flee
-				if (simulateFight((AMonster)elem, true)) {
-					updateMapWithCharacterMove((ACharacter)hero, tmpY, tmpX);
-				}
+				// Ask player if fight or flee, then wait for respone
+				System.out.println("You encountered a " + elem.getName() + " lvl." + ((AMonster)elem).getLevel());
+				guiFrame.showFightChoices();
+				gameState = GameState.WaitingDirectionChoice;
 				return;
 			}
+
 			// set hero back to prev pos if he is moving towards landscape elem
 			hero.setPosition(tmpY, tmpX);
 		}
 
-		updateMapWithCharacterMove((ACharacter)hero, tmpY, tmpX);
+		updateMapWithHeroMove();
 	}
 
-	private void updateMapWithCharacterMove(ACharacter character, int oldY, int oldX) {
-		mapElems[oldY][oldX] = null;
+	public void fightDecision(boolean doFight) {
+		if (gameState != GameState.WaitingDirectionChoice)	// Prevent spam click of button
+			return;
+		gameState = GameState.Loading;
+
+		if (doFight) {
+			if (!simulateFight((AMonster)elem, true)) {
+				onHeroDeath();
+				return;
+			}
+		}
+		else {
+			if (Swingy.getInstance().rand.nextInt(2) == 0) { // 50% of chanches not menaging to flee
+				System.out.println("You couldn't escape the fight..!");
+				if (!simulateFight((AMonster)elem, false)) {
+					onHeroDeath();
+					return;
+				}
+			}
+			else {
+				System.out.println("You managed to flee..!");
+				// If hero manages to flee then he goes back to prev location
+				hero.setPosition(tmpY, tmpX);
+			}
+		}
+
+		updateMapWithHeroMove();
+	}
+
+	private void updateMapWithHeroMove() {
+		updateMapWithCharacterMove((ACharacter)hero);
+
+		// After hero moves it's time for all monster to move
+		monstersUpdate();
+	}
+
+	private void updateMapWithCharacterMove(ACharacter character) {
+		mapElems[tmpY][tmpX] = null;
 		mapElems[character.getPosY()][character.getPosX()] = character;
 	}
 
@@ -188,7 +221,6 @@ public class MainGame {
 				defender.getDamage(damage);
 				if (defender.getHp() == 0) {
 					System.out.println(defender.getName() + " is KO !");
-					// TODO: end fight
 					fightEnded = true;
 				}
 				else {
@@ -213,22 +245,25 @@ public class MainGame {
 		return true;
 	}
 
-	private boolean monstersUpdate() {
-		int tmpX;
-		int tmpY;
+	private void monstersUpdate() {
 		for (AMonster monster : monsterList) {
 			tmpX = monster.getPosX();
 			tmpY = monster.getPosY();
 			monster.doAction(hero, mapElems);
 
 			// TODO: Check if need fight simulation
-			updateMapWithCharacterMove((ACharacter)monster, tmpY, tmpX);
+			updateMapWithCharacterMove((ACharacter)monster);
 		}
 
-		return true;
+		if (hero.getHp() <= 0) {
+			onHeroDeath();
+			return;
+		}
+		updateUI();
 	}
 
 	private void onHeroDeath() {
 		// TODO: manage lose
+		System.out.println("You are dead !!");
 	}
 }

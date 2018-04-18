@@ -40,4 +40,12 @@ public class FrameGUI extends JFrame implements IFrame {
 	public void updateHero() {
 		mainPanel.heroPanel.update();
 	}
+
+	public void showDirectionChoices() {
+		mainPanel.choicePanel.showDirectionChoices();
+	}
+
+	public void showFightChoices() {
+		mainPanel.choicePanel.showFightChoices();
+	}
 }

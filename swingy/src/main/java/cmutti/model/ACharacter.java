@@ -4,22 +4,6 @@ import java.awt.image.BufferedImage;
 import lombok.Getter;
 
 public abstract class ACharacter extends AMapElement {
-	// static class vars, will be overridden by each child class
-	// Base stats (at lvl 1)
-	protected static int bXp = 0;
-	protected static int bAttack = 1;
-	protected static int bDefense = 1;
-	protected static int bHp = 1;
-	protected static int bAgility = 0;
-
-	// Stat growth when level up
-	protected static int gXp = 0;
-	protected static int gAttack = 1;
-	protected static int gDefense = 1;
-	protected static int gHp = 1;
-	protected static int gAgility = 0;
-
-
 	// Instance values
 	@Getter protected int level = 0;
 
@@ -41,6 +25,18 @@ public abstract class ACharacter extends AMapElement {
 		levelUp(level);
 	}
 
+	// Getters to define base and growth stats
+	public abstract int getBaseXp();
+	public abstract int getBaseHp();
+	public abstract int getBaseAttack();
+	public abstract int getBaseDefense();
+	public abstract int getBaseAgility();
+	public abstract int getGrowthXp();
+	public abstract int getGrowthHp();
+	public abstract int getGrowthAttack();
+	public abstract int getGrowthDefense();
+	public abstract int getGrowthAgility();
+
 	// Controllers will call this func to levelUp
 	public void levelUp() {
 		levelUp(level + 1);
@@ -50,14 +46,13 @@ public abstract class ACharacter extends AMapElement {
 	protected void levelUp(int newLvl) {
 		if (newLvl <= 0)
 			return;
-		System.out.println("New lvl. " + newLvl);
 
-		xp = bXp + gXp * newLvl;
-		attack = bAttack + gAttack * newLvl;
-		defense = bDefense + gDefense * newLvl;
-		maxHp = bHp + gHp * newLvl;
+		xp = getBaseXp() + getGrowthXp() * newLvl;
+		attack = getBaseAttack() + getGrowthAttack() * newLvl;
+		defense = getBaseDefense() + getGrowthDefense() * newLvl;
+		maxHp = getBaseHp() + getGrowthHp() * newLvl;
 		hp = maxHp;
-		agility = bAgility + gAgility * newLvl;
+		agility = getBaseAgility() + getGrowthAgility() * newLvl;
 
 		level = newLvl;
 	}
