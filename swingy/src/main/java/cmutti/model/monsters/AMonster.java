@@ -33,8 +33,8 @@ public abstract class AMonster extends ACharacter {
 	// Artifacts that can be droppped
 	protected AArtifact weapon = null;
 
-	protected AMonster(String name, int level) {
-		super(name, level, 0, 0); // Do not mind x-y pos since thay will be changed when level starts
+	protected AMonster(String name, int level, int posY, int posX) {
+		super(name, level, posY, posX);
 	}
 
 	// Define "standard" monster stats

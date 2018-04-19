@@ -8,8 +8,8 @@ public class Mew extends AMonster {
 		legendary = true;
 	}
 
-	public Mew(int level) {
-		super("Mew", level);
+	public Mew(int level, int posY, int posX) {
+		super("Mew", level, posY, posX);
 
 		if (level == 1)
 			mood = MonsterMood.Flee;

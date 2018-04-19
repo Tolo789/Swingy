@@ -4,24 +4,37 @@ import cmutti.controller.Swingy;
 import cmutti.model.monsters.legendary.Mew;
 import java.util.ArrayList;
 
-import cmutti.controller.Swingy;
-
 public class MonsterFactory {
-	public static ArrayList<AMonster> generateMonsterList(int heroLvl, int mapSize) {
-		ArrayList<AMonster> monsterList = new ArrayList<AMonster>();
-		if (heroLvl == 1) { // only display Mew if hero is lvl 1
-			monsterList.add(setLegendaryPosition(new Mew(1), mapSize));
+	// Variable used each time we generate a monster list
+	static ArrayList<AMonster> monsterList;
+	static int monstersNbr;
+	static int maxMonsters;
+	static int minMonsters;
+	static int percentHard;
+	static int percentSuperHard;
+	static int mapSize;
+	static int posX;
+	static int posY;
+	static boolean hasMewTwo;
+	static boolean hasMew;
+
+	public static ArrayList<AMonster> generateMonsterList(int heroLvl, int size) {
+		mapSize = size;
+		monsterList = new ArrayList<AMonster>();
+
+		// only display fleeing Mew if hero is lvl 1
+		if (heroLvl == 1) {
+			setLegendaryPosition();
+			monsterList.add(new Mew(1, posY, posX));
 
 			return monsterList;
 		}
 
-		int monstersNbr = (mapSize * mapSize);
-		int maxMonsters;
-		int minMonsters;
-		int percentHard = 10;
-		int percentSuperHard = 0;
-		boolean hasMewTwo = false;
-		boolean hasMew = false;
+		monstersNbr = (mapSize * mapSize);
+		percentHard = 10;
+		percentSuperHard = 0;
+		hasMewTwo = false;
+		hasMew = false;
 		if (heroLvl < 5) {
 			monstersNbr = (int)(0.1 * monstersNbr);
 			minMonsters = (int)(0.7 * monstersNbr);
@@ -49,15 +62,20 @@ public class MonsterFactory {
 			}
 		}
 		monstersNbr = Swingy.getInstance().rand.nextInt((maxMonsters - minMonsters) + 1) + minMonsters;
+		percentHard = monstersNbr * 100 / percentHard;
+		percentSuperHard = monstersNbr * 100 / percentSuperHard;
 		System.out.println(minMonsters + "-" + maxMonsters + " => " + monstersNbr);
+
 		// TODO: populate
+		boolean[][] hasMonster = new boolean[mapSize][mapSize];
+		// while (monsterList.size() < monstersNbr) {
+		// 	monsterList.Add(new Bulbasaur(1));
+		// }
 		return monsterList;
 	}
 
-	private static AMonster setLegendaryPosition(AMonster monster, int mapSize) {
+	private static void setLegendaryPosition() {
 		int pos = Swingy.getInstance().rand.nextInt(4);
-		int posX;
-		int posY;
 
 		if (pos == 0) { // North
 			posX = mapSize / 2;
@@ -75,9 +93,5 @@ public class MonsterFactory {
 			posY = mapSize / 2;
 			posX = mapSize - 2;
 		}
-
-
-		monster.setPosition(posY, posX);
-		return monster;
 	}
 }
