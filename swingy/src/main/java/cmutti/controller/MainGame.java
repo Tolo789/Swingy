@@ -246,19 +246,35 @@ public class MainGame {
 	}
 
 	private void monstersUpdate() {
+		ArrayList<AMonster> toRemove = new ArrayList<AMonster>();
 		for (AMonster monster : monsterList) {
 			tmpX = monster.getPosX();
 			tmpY = monster.getPosY();
 			monster.doAction(hero, mapElems);
 
-			// TODO: Check if need fight simulation
-			updateMapWithCharacterMove((ACharacter)monster);
+			if (monster.getPosX() < 0 || monster.getPosY() < 0 || monster.getPosX() >= mapElems.length || monster.getPosY() >= mapElems.length) { // Fleeing monster
+				mapElems[tmpY][tmpX] = null;
+				toRemove.add(monster);
+			}
+			else if (monster.getPosX() == hero.getPosX() && monster.getPosY() == hero.getPosY()) {
+				System.out.println("A " + monster.getName() + " lvl." + monster.getLevel() + " suddenly attacks you..!");
+				if (simulateFight(monster, false)) {
+					mapElems[tmpY][tmpX] = null;
+					toRemove.add(monster);
+				}
+				else {
+					onHeroDeath();
+					return;
+				}
+			}
+			else
+				updateMapWithCharacterMove((ACharacter)monster);
 		}
 
-		if (hero.getHp() <= 0) {
-			onHeroDeath();
-			return;
-		}
+		// Remove death monsters
+		if (toRemove.size() > 0)
+			monsterList.remove(toRemove);
+
 		updateUI();
 	}
 

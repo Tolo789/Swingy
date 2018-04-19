@@ -53,15 +53,15 @@ public class ChoicePanelGUI extends JPanel implements IChoicePanel {
 	public void showDirectionChoices() {
 		label.setText("Choose direction");
 		this.removeAll();
-		add(label);
+		// add(label);
 		add(dirCombo);
 		add(confirmButton);
 	}
 
 	public void showFightChoices() {
-		label.setText("Fight or try flee ?");
+		label.setText("Fight or flee ?");
 		this.removeAll();
-		add(label);
+		// add(label);
 		add(fightButton);
 		add(fleeButton);
 	}
