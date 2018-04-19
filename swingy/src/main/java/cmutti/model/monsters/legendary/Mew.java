@@ -10,6 +10,11 @@ public class Mew extends AMonster {
 
 	public Mew(int level) {
 		super("Mew", level);
+
+		if (level == 1)
+			mood = MonsterMood.Flee;
+		else
+			mood = MonsterMood.Still;
 	}
 
 	// Mew stats

@@ -13,7 +13,7 @@ public class FrameGUI extends JFrame implements IFrame {
 		setTitle(title);
 		setSize(1100, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // stop program from running when closing window
-		setResizable(false);
+		// setResizable(false);
 		setLocationRelativeTo(null);
 
 		//add(new MyPanel());

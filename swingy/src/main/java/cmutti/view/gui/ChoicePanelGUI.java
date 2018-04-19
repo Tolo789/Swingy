@@ -56,6 +56,9 @@ public class ChoicePanelGUI extends JPanel implements IChoicePanel {
 		// add(label);
 		add(dirCombo);
 		add(confirmButton);
+
+		revalidate();
+		repaint();
 	}
 
 	public void showFightChoices() {
@@ -64,5 +67,8 @@ public class ChoicePanelGUI extends JPanel implements IChoicePanel {
 		// add(label);
 		add(fightButton);
 		add(fleeButton);
+
+		revalidate();
+		repaint();
 	}
 }

@@ -148,7 +148,19 @@ public abstract class AMonster extends ACharacter {
 	}
 
 	private void doFlee(AHero hero, AMapElement[][] mapElems) {
-		// TODO
+		// Get nearest escape, since only mew lv.1 has this behaviour no need to implement pathFinding nor check collisions
+		if (posX == mapElems.length / 2) {
+			if (posY < mapElems.length - posY)
+				moveTowards("North");
+			else
+				moveTowards("South");
+		}
+		else {
+			if (posX < mapElems.length - posX)
+				moveTowards("West");
+			else
+				moveTowards("East");
+		}
 	}
 
 	protected void configImgWidth() {

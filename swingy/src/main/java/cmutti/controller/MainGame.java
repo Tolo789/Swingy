@@ -272,8 +272,9 @@ public class MainGame {
 		}
 
 		// Remove death monsters
-		if (toRemove.size() > 0)
-			monsterList.remove(toRemove);
+		if (toRemove.size() > 0) {
+			monsterList.removeAll(toRemove);
+		}
 
 		updateUI();
 	}
