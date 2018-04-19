@@ -18,7 +18,6 @@ public abstract class AMonster extends ACharacter {
 		Search,
 		Flee
 	}
-	@Getter protected static boolean legendary = false;
 	private static ArrayList<String> directions = new ArrayList<String>();
 	static {
 		directions.add(Swingy.getInstance().getMainGame().directions[0]);
@@ -28,6 +27,7 @@ public abstract class AMonster extends ACharacter {
 	}
 
 	protected MonsterMood mood = MonsterMood.Roam;
+	private int roamPause = getRoamPause(); // how many turn wait at maximum before movinfg
 	private AMapElement elem;
 
 	// Artifacts that can be droppped
@@ -83,6 +83,10 @@ public abstract class AMonster extends ACharacter {
 		return 2;
 	}
 
+	public int getRoamPause() {
+		return Swingy.getInstance().rand.nextInt(3);
+	}
+
 	public void setPosition(int posY, int posX) {
 		this.posY = posY;
 		this.posX = posX;
@@ -113,7 +117,14 @@ public abstract class AMonster extends ACharacter {
 			}
 		}
 
-		ArrayList<String> tmpDirections = directions;
+		// Do nothing if in pause
+		if (roamPause > 0) {
+			roamPause--;
+			return;
+		}
+		roamPause = getRoamPause();
+
+		ArrayList<String> tmpDirections = new ArrayList<String>(directions);
 
 		String tryDir;
 		int tmpX;
@@ -136,9 +147,10 @@ public abstract class AMonster extends ACharacter {
 					tmpDirections.remove(tryDir);
 					posX = tmpX;
 					posY = tmpY;
-					return;
 				}
-				moved = true;
+				else {
+					moved = true;
+				}
 			}
 		}
 	}
@@ -171,5 +183,14 @@ public abstract class AMonster extends ACharacter {
 	protected int getSpriteStep() {
 		// Toggle between left and right foot
 		return steps % 2;
+	}
+
+	public String getStatResume() {
+		String str = "";
+		str = "MaxHp: " + maxHp;
+		str += ", Atk: " + attack;
+		str += ", Def: " + defense;
+		str += ", Agi: " + agility;
+		return str;
 	}
 }

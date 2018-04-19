@@ -27,11 +27,15 @@ public abstract class AHero extends ACharacter {
 		super(name, level, 0, 0); // Do not mind x-y pos since thay will be changed when level starts
 
 		try {
-			this.mainSprite = ImageIO.read(new File(mainImg));
+			this.mainSprite = ImageIO.read(new File(getMainImg()));
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	protected String getMainImg() {
+		return "";
 	}
 
 	// Define "standard" hero stats

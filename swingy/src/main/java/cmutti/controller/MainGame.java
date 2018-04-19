@@ -189,7 +189,7 @@ public class MainGame {
 	}
 
 	private boolean simulateFight(AMonster monster, boolean heroStarts) {
-		System.out.println("Fight against " + monster.getName() + " lvl. " + monster.getLevel() + " started !");
+		System.out.println("Fight against " + monster.getName() + " lvl. " + monster.getLevel() + " started ! (" + monster.getStatResume() + ")");
 		boolean fightEnded = false;
 
 		ACharacter attacker = (heroStarts) ? hero : monster;

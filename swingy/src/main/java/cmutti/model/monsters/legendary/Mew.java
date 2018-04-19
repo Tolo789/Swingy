@@ -3,10 +3,6 @@ package cmutti.model.monsters.legendary;
 import cmutti.model.monsters.AMonster;
 
 public class Mew extends AMonster {
-	static {
-		spritePath = "sprites/monsters/mew.png";
-		legendary = true;
-	}
 
 	public Mew(int level, int posY, int posX) {
 		super("Mew", level, posY, posX);
@@ -15,6 +11,10 @@ public class Mew extends AMonster {
 			mood = MonsterMood.Flee;
 		else
 			mood = MonsterMood.Still;
+	}
+
+	protected String getSpritePath() {
+		return "sprites/monsters/mew.png";
 	}
 
 	// Mew stats
