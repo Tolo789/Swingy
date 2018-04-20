@@ -80,7 +80,10 @@ public abstract class AMonster extends ACharacter {
 
 	// When roaming a monster can detect hero if he's near enough
 	public int getDetectionRadius() {
-		return 2;
+		// By default all monsters are pacific
+		// this means that they will not start searching for you to start a fight
+		// however thay can still bump into you
+		return 0;
 	}
 
 	public int getRoamPause() {

@@ -1,22 +1,31 @@
 package cmutti.model.monsters;
 
 import cmutti.controller.Swingy;
-import cmutti.model.monsters.bulbasaur.Bulbasaur;
+import cmutti.model.monsters.bulbasaur.*;
 import cmutti.model.monsters.legendary.Mew;
 import java.util.ArrayList;
 
 public class MonsterFactory {
-	private static ArrayList<Class<? extends AMonster>> commonMonsters;
-
+	public enum Tier {
+		Common,
+		Rare,
+		Epic
+	}
+	// Used to separate tiers
+	public final static int newbieLvl = 5;
+	public final static int rookieLvl = 10;
 
 	// Variable used each time we generate a monster list
 	static ArrayList<AMonster> monsterList;
+	static ArrayList<Class<? extends AMonster>> commonMonsters;
+	static ArrayList<Class<? extends AMonster>> rareMonsters;
+	static ArrayList<Class<? extends AMonster>> epicMonsters;
 	static int heroLvl;
 	static int monstersNbr;
 	static int maxMonsters;
 	static int minMonsters;
-	static int percentMedium;
-	static int percentHard;
+	static int percentRare;
+	static int percentEpic;
 	static int mapSize;
 	static int posX;
 	static int posY;
@@ -40,27 +49,27 @@ public class MonsterFactory {
 		}
 
 		monstersNbr = (mapSize * mapSize);
-		percentMedium = 10;
-		percentHard = 0;
+		percentRare = 10;
+		percentEpic = 0;
 		hasMewTwo = false;
 		hasMew = false;
-		if (heroLvl < 5) {
+		if (heroLvl < newbieLvl) {
 			minMonsters = (int)(0.05 * monstersNbr);
 			maxMonsters = (int)(0.07 * monstersNbr);
-			percentMedium = 10;
-			percentHard = 0;
+			percentRare = 10;
+			percentEpic = 0;
 		}
-		else if (heroLvl < 10) {
+		else if (heroLvl < rookieLvl) {
 			minMonsters = (int)(0.07 * monstersNbr);
 			maxMonsters = (int)(0.09 * monstersNbr);
-			percentMedium = 30;
-			percentHard = 10;
+			percentRare = 30;
+			percentEpic = 10;
 		}
 		else {
 			minMonsters = (int)(0.09 * monstersNbr);
 			maxMonsters = (int)(0.11 * monstersNbr);
-			percentMedium = 50;
-			percentHard = 20;
+			percentRare = 50;
+			percentEpic = 20;
 			hasMewTwo = true;
 			if (heroLvl >= 15 && Swingy.getInstance().rand.nextInt(3) == 0) {
 				hasMew = true;
@@ -69,11 +78,10 @@ public class MonsterFactory {
 		}
 		generateMonstersTypes();
 		monstersNbr = Swingy.getInstance().rand.nextInt((maxMonsters - minMonsters) + 1) + minMonsters;
-		percentMedium = percentMedium * monstersNbr / 100 ;
-		percentHard = percentHard * monstersNbr / 100;
+		percentRare = percentRare * monstersNbr / 100 ;
+		percentEpic = percentEpic * monstersNbr / 100;
 		System.out.println(minMonsters + "-" + maxMonsters + " => " + monstersNbr);
 
-		// TODO: populate
 		hasMonster = new boolean[mapSize][mapSize];
 		hasMonster[mapSize / 2][mapSize / 2] = true; // Hero start pos
 
@@ -88,26 +96,29 @@ public class MonsterFactory {
 			monsterList.add(new Mew(heroLvl + 3, posY, posX));
 		}
 
-		// Hard
+		// Epic
 		smallerBound = (mapSize / 2) - 8;
 		biggerBound = (mapSize / 2) + 8;
-		// for (int i = percentHard; i > 0; i--) {
-		//
-		// }
+		for (int i = percentEpic; i > 0; i--) {
+			AMonster newMonster = buildMonster(epicMonsters, 4, Tier.Epic);
+			monsterList.add(newMonster);
+			hasMonster[posY][posX] = true;
+		}
 
-		// Medium
+		// Rare
 		smallerBound = (mapSize / 2) - 5;
 		biggerBound = (mapSize / 2) + 5;
-		// for (int i = percentMedium; i > 0; i--) {
-		//
-		// }
+		for (int i = percentRare; i > 0; i--) {
+			AMonster newMonster = buildMonster(rareMonsters, 2, Tier.Rare);
+			monsterList.add(newMonster);
+			hasMonster[posY][posX] = true;
+		}
 
 		// Common
 		smallerBound = (mapSize / 2) - 2;
 		biggerBound = (mapSize / 2) + 2;
 		while (monsterList.size() < monstersNbr) {
-			setMonsterPosition();
-			AMonster newMonster = buildCommonMonster();
+			AMonster newMonster = buildMonster(commonMonsters, 0, Tier.Common);
 			monsterList.add(newMonster);
 			hasMonster[posY][posX] = true;
 		}
@@ -115,12 +126,14 @@ public class MonsterFactory {
 		return monsterList;
 	}
 
-	private static AMonster buildCommonMonster() {
-		int idx = Swingy.getInstance().rand.nextInt(commonMonsters.size());
+	private static AMonster buildMonster(ArrayList<Class<? extends AMonster>> monsterTypes, int bonusLvl, Tier tier) {
+		int idx = Swingy.getInstance().rand.nextInt(monsterTypes.size());
 		AMonster newMonster = null;
         try
         {
-			newMonster = commonMonsters.get(idx).getConstructor(int.class, int.class, int.class).newInstance(heroLvl, posY, posX);
+			// TODO: drop artefact
+			setMonsterPosition();
+			newMonster = monsterTypes.get(idx).getConstructor(int.class, int.class, int.class).newInstance(heroLvl + bonusLvl, posY, posX);
 		}
 		catch (Exception e)
 		{
@@ -132,11 +145,41 @@ public class MonsterFactory {
 
 	private static void generateMonstersTypes() {
 		commonMonsters = new ArrayList<Class<? extends AMonster>>();
-		if (heroLvl < 5) {
+		rareMonsters = new ArrayList<Class<? extends AMonster>>();
+		epicMonsters = new ArrayList<Class<? extends AMonster>>();
+
+		// TODO: config classes
+		if (heroLvl < newbieLvl) {
+			// Common
 			commonMonsters.add(Bulbasaur.class);
+
+			// Rare
+			rareMonsters.add(Ivysaur.class);
+
+			// Epic
+			epicMonsters.add(Venusaur.class);
+		}
+		else if (heroLvl < rookieLvl) {
+			// Common
+			commonMonsters.add(Bulbasaur.class);
+			commonMonsters.add(Ivysaur.class);
+
+			// Rare
+			rareMonsters.add(Ivysaur.class);
+
+			// Epic
+			epicMonsters.add(Venusaur.class);
 		}
 		else {
-			commonMonsters.add(Mew.class);
+			// Common
+			commonMonsters.add(Ivysaur.class);
+
+			// Rare
+			rareMonsters.add(Ivysaur.class);
+			rareMonsters.add(Venusaur.class);
+
+			// Epic
+			epicMonsters.add(Venusaur.class);
 		}
 	}
 

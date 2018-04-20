@@ -148,6 +148,9 @@ public class MainGame {
 				onHeroDeath();
 				return;
 			}
+			else {
+				monsterList.remove((AMonster)elem);
+			}
 		}
 		else {
 			if (Swingy.getInstance().rand.nextInt(2) == 0) { // 50% of chanches not menaging to flee
@@ -155,6 +158,9 @@ public class MainGame {
 				if (!simulateFight((AMonster)elem, false)) {
 					onHeroDeath();
 					return;
+				}
+				else {
+					monsterList.remove((AMonster)elem);
 				}
 			}
 			else {
@@ -209,7 +215,7 @@ public class MainGame {
 			}
 			else {
 				// Formula inspired by original pokemon damage formula
-				damage = ((2 * attacker.getLevel()) + 2) * (attacker.getAttack() / defender.getDefense()) + 2;
+				damage = (2 * attacker.getLevel() / 5 + 2) * attacker.getAttack() / defender.getDefense() + 2;
 				if (agiTrigger) {
 					damage *= 2;
 					System.out.print(attacker.getName() + " critically strikes..! ");
@@ -237,11 +243,12 @@ public class MainGame {
 			onHeroDeath();
 			return false;
 		}
-		System.out.println("You gained " + monster.getXp());
+
+		// TODO: monster drop artefact
+		System.out.println("You gained " + monster.getXp() + " xp");
 		if (hero.gainXp(monster.getXp())) {
 			System.out.println("Level-Up ! " + hero.getGrowthString());
 		}
-		monsterList.remove(monster);
 		return true;
 	}
 
@@ -271,11 +278,10 @@ public class MainGame {
 				updateMapWithCharacterMove((ACharacter)monster);
 		}
 
-		// Remove death monsters
+		// Remove dead monsters
 		if (toRemove.size() > 0) {
 			monsterList.removeAll(toRemove);
 		}
-
 		updateUI();
 	}
 

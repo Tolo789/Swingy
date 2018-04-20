@@ -14,7 +14,7 @@ public class Mew extends AMonster {
 	}
 
 	protected String getSpritePath() {
-		return "sprites/monsters/mew.png";
+		return "sprites/monsters/legendary/Mew.png";
 	}
 
 	// Mew stats
@@ -23,15 +23,15 @@ public class Mew extends AMonster {
 	}
 
 	public int getBaseHp() {
-		return 25;
+		return 20;
 	}
 
 	public int getBaseAttack() {
-		return 15;
+		return 10;
 	}
 
 	public int getBaseDefense() {
-		return 15;
+		return 10;
 	}
 
 	public int getBaseAgility() {

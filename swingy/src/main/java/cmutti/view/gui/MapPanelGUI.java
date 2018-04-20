@@ -2,6 +2,7 @@ package cmutti.view.gui;
 
 import cmutti.model.AMapElement;
 import cmutti.model.heroes.AHero;
+import cmutti.model.monsters.AMonster;
 import cmutti.view.IMapPanel;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -55,9 +56,9 @@ public class MapPanelGUI extends JPanel implements IMapPanel {
 
 	public void update(AMapElement[][] mapElems) {
 		// If any, delete prev elem
-    if (dirty) {
-			container.removeAll();
-		}
+	    if (dirty) {
+				container.removeAll();
+			}
 
 		container.setLayout(new GridLayout(mapElems.length, mapElems.length, 0, 0));
 		container.setPreferredSize(new Dimension(squareSize * mapElems.length, squareSize * mapElems.length));
@@ -68,32 +69,32 @@ public class MapPanelGUI extends JPanel implements IMapPanel {
 		SpritePanel spritePanel = null;
 		int heroX = 0;
 		int heroY = 0;
-    for (int y = 0; y < mapElems.length; y++) {
-      for (int x = 0; x < mapElems.length; x++) {
-				elem = mapElems[y][x];
-				if (elem == null) {
-					frontSprite = null;
-					backSprite = bckSprite;
-				}
-				else {
-					if (elem.needGrass)
+	    for (int y = 0; y < mapElems.length; y++) {
+	      for (int x = 0; x < mapElems.length; x++) {
+					elem = mapElems[y][x];
+					if (elem == null) {
+						frontSprite = null;
 						backSprite = bckSprite;
-					else
-						backSprite = null;
+					}
+					else {
+						if (elem.needGrass)
+							backSprite = bckSprite;
+						else
+							backSprite = null;
 
-					if (elem instanceof AHero) {
-						heroX = elem.getPosX();
-						heroY = elem.getPosY();
+						if (elem instanceof AHero) {
+							heroX = elem.getPosX();
+							heroY = elem.getPosY();
+						}
+
+						frontSprite = elem.getSprite();
 					}
 
-					frontSprite = elem.getSprite();
-				}
-
-				spritePanel = new SpritePanel(frontSprite, backSprite);
-				spritePanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
-				container.add(spritePanel);
-      }
-    }
+					spritePanel = new SpritePanel(frontSprite, backSprite);
+					spritePanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
+					container.add(spritePanel);
+	      }
+	    }
 
 		// int actualsSquareSize = scrollPane.getViewport().getViewSize().width / mapElems.length;
 		// actualsSquareSize /= 2;
