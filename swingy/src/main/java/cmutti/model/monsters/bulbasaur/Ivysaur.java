@@ -9,11 +9,18 @@ public class Ivysaur extends AMonster {
 	}
 
 	protected String getSpritePath() {
-		return "sprites/monsters/legendary/Mewtwo.png";
-		// return "sprites/monsters/bulbasaur/Ivysaur.png";
+		return "sprites/monsters/bulbasaur/Ivysaur.png";
 	}
 
 	// Monster modif stats
+	public int getBaseXp() {
+		return 200;
+	}
+
+	public int getGrowthXp() {
+		return 60;
+	}
+
 	public int getGrowthHp() {
 		return super.getGrowthHp() + 1;
 	}

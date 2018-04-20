@@ -9,11 +9,18 @@ public class Venusaur extends AMonster {
 	}
 
 	protected String getSpritePath() {
-		return "sprites/monsters/legendary/Mewtwo.png";
-		// return "sprites/monsters/bulbasaur/Venusaur.png";
+		return "sprites/monsters/bulbasaur/Venusaur.png";
 	}
 
 	// Monster modif stats
+	public int getBaseXp() {
+		return 300;
+	}
+
+	public int getGrowthXp() {
+		return 90;
+	}
+
 	public int getGrowthHp() {
 		return super.getGrowthHp() + 2;
 	}

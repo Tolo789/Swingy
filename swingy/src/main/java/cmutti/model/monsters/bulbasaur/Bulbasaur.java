@@ -9,8 +9,7 @@ public class Bulbasaur extends AMonster {
 	}
 
 	protected String getSpritePath() {
-		return "sprites/monsters/legendary/Mewtwo.png";
-		// return "sprites/monsters/bulbasaur/Bulbsaur.png";
+		return "sprites/monsters/bulbasaur/Bulbasaur.png";
 	}
 
 	// Monster modif stats
