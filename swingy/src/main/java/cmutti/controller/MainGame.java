@@ -215,7 +215,7 @@ public class MainGame {
 			}
 			else {
 				// Formula inspired by original pokemon damage formula
-				damage = (2 * attacker.getLevel() / 5 + 2) * attacker.getAttack() / defender.getDefense() + 2;
+				damage = (int) ((2f * attacker.getLevel() / 5 + 2) * attacker.getAttack() / defender.getDefense() + 2);
 				if (agiTrigger) {
 					damage *= 2;
 					System.out.print(attacker.getName() + " critically strikes..! ");

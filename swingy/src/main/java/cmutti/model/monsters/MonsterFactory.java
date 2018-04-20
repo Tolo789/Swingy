@@ -2,7 +2,13 @@ package cmutti.model.monsters;
 
 import cmutti.controller.Swingy;
 import cmutti.model.monsters.bulbasaur.*;
-import cmutti.model.monsters.legendary.Mew;
+import cmutti.model.monsters.squirtle.*;
+import cmutti.model.monsters.charmander.*;
+import cmutti.model.monsters.ratata.*;
+import cmutti.model.monsters.ponyta.*;
+import cmutti.model.monsters.tauros.*;
+import cmutti.model.monsters.dratini.*;
+import cmutti.model.monsters.legendary.*;
 import java.util.ArrayList;
 
 public class MonsterFactory {
@@ -49,27 +55,11 @@ public class MonsterFactory {
 		}
 
 		monstersNbr = (mapSize * mapSize);
-		percentRare = 10;
-		percentEpic = 0;
+		minMonsters = (int)(0.05 * monstersNbr);
+		maxMonsters = (int)(0.07 * monstersNbr);
 		hasMewTwo = false;
 		hasMew = false;
-		if (heroLvl < newbieLvl) {
-			minMonsters = (int)(0.05 * monstersNbr);
-			maxMonsters = (int)(0.07 * monstersNbr);
-			percentRare = 10;
-			percentEpic = 0;
-		}
-		else if (heroLvl < rookieLvl) {
-			minMonsters = (int)(0.07 * monstersNbr);
-			maxMonsters = (int)(0.09 * monstersNbr);
-			percentRare = 30;
-			percentEpic = 10;
-		}
-		else {
-			minMonsters = (int)(0.09 * monstersNbr);
-			maxMonsters = (int)(0.11 * monstersNbr);
-			percentRare = 50;
-			percentEpic = 20;
+		if (heroLvl > rookieLvl) {
 			hasMewTwo = true;
 			if (heroLvl >= 15 && Swingy.getInstance().rand.nextInt(3) == 0) {
 				hasMew = true;
@@ -78,9 +68,8 @@ public class MonsterFactory {
 		}
 		generateMonstersTypes();
 		monstersNbr = Swingy.getInstance().rand.nextInt((maxMonsters - minMonsters) + 1) + minMonsters;
-		percentRare = percentRare * monstersNbr / 100 ;
-		percentEpic = percentEpic * monstersNbr / 100;
-		System.out.println(minMonsters + "-" + maxMonsters + " => " + monstersNbr);
+		percentRare = (int)(0.25 * monstersNbr);
+		percentEpic = (int)(0.05 * monstersNbr);
 
 		hasMonster = new boolean[mapSize][mapSize];
 		hasMonster[mapSize / 2][mapSize / 2] = true; // Hero start pos
@@ -92,8 +81,7 @@ public class MonsterFactory {
 		}
 		else if (hasMewTwo) {
 			setLegendaryPosition();
-			// TODO
-			monsterList.add(new Mew(heroLvl + 3, posY, posX));
+			monsterList.add(new Mewtwo(heroLvl + 3, posY, posX));
 		}
 
 		// Epic
@@ -152,34 +140,53 @@ public class MonsterFactory {
 		if (heroLvl < newbieLvl) {
 			// Common
 			commonMonsters.add(Bulbasaur.class);
+			commonMonsters.add(Squirtle.class);
+			commonMonsters.add(Charmander.class);
+			commonMonsters.add(Ratata.class);
 
 			// Rare
 			rareMonsters.add(Ivysaur.class);
+			rareMonsters.add(Wartortle.class);
+			rareMonsters.add(Charmeleon.class);
+			rareMonsters.add(Raticate.class);
 
 			// Epic
-			epicMonsters.add(Venusaur.class);
+			epicMonsters.add(Ponyta.class);
 		}
 		else if (heroLvl < rookieLvl) {
 			// Common
-			commonMonsters.add(Bulbasaur.class);
 			commonMonsters.add(Ivysaur.class);
+			commonMonsters.add(Wartortle.class);
+			commonMonsters.add(Charmeleon.class);
+			commonMonsters.add(Raticate.class);
+			commonMonsters.add(Ponyta.class);
 
 			// Rare
-			rareMonsters.add(Ivysaur.class);
+			rareMonsters.add(Rapidash.class);
+			rareMonsters.add(Tauros.class);
 
 			// Epic
 			epicMonsters.add(Venusaur.class);
+			epicMonsters.add(Blastoise.class);
+			epicMonsters.add(Charizard.class);
+			epicMonsters.add(Dratini.class);
 		}
 		else {
 			// Common
 			commonMonsters.add(Ivysaur.class);
+			commonMonsters.add(Wartortle.class);
+			commonMonsters.add(Charmeleon.class);
+			commonMonsters.add(Rapidash.class);
+			commonMonsters.add(Tauros.class);
 
 			// Rare
-			rareMonsters.add(Ivysaur.class);
 			rareMonsters.add(Venusaur.class);
+			rareMonsters.add(Blastoise.class);
+			rareMonsters.add(Charizard.class);
+			rareMonsters.add(Dragonair.class);
 
 			// Epic
-			epicMonsters.add(Venusaur.class);
+			epicMonsters.add(Dragonite.class);
 		}
 	}
 
