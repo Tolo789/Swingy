@@ -1,11 +1,11 @@
 package cmutti.model.monsters.dratini;
 
-import cmutti.model.monsters.AMonster;
+import cmutti.model.monsters.AHardMonster;
 
-public class Dragonite extends AMonster {
+public class Dragonite extends AHardMonster {
 
-	public Dragonite(int level, int posY, int posX) {
-		super("Dragonite", level, posY, posX);
+	public Dragonite(int level, int posY, int posX, int artifactDropChance) {
+		super("Dragonite", level, posY, posX, artifactDropChance);
 	}
 
 	protected String getSpritePath() {
@@ -13,30 +13,6 @@ public class Dragonite extends AMonster {
 	}
 
 	// Monster modif stats
-	public int getBaseXp() {
-		return 420;
-	}
-
-	public int getBaseHp() {
-		return 15;
-	}
-
-	public int getBaseAttack() {
-		return 7;
-	}
-
-	public int getBaseDefense() {
-		return 7;
-	}
-
-	public int getBaseAgility() {
-		return 3;
-	}
-
-	public int getGrowthXp() {
-		return 110;
-	}
-
 	public int getGrowthHp() {
 		return super.getGrowthHp() + 1;
 	}

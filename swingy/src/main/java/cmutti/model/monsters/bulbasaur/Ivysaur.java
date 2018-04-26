@@ -1,11 +1,11 @@
 package cmutti.model.monsters.bulbasaur;
 
-import cmutti.model.monsters.AMonster;
+import cmutti.model.monsters.AMediumMonster;
 
-public class Ivysaur extends AMonster {
+public class Ivysaur extends AMediumMonster {
 
-	public Ivysaur(int level, int posY, int posX) {
-		super("Ivysaur", level, posY, posX);
+	public Ivysaur(int level, int posY, int posX, int artifactDropChance) {
+		super("Ivysaur", level, posY, posX, artifactDropChance);
 	}
 
 	protected String getSpritePath() {
@@ -13,14 +13,6 @@ public class Ivysaur extends AMonster {
 	}
 
 	// Monster modif stats
-	public int getBaseXp() {
-		return 200;
-	}
-
-	public int getGrowthXp() {
-		return 60;
-	}
-
 	public int getGrowthHp() {
 		return super.getGrowthHp() + 1;
 	}

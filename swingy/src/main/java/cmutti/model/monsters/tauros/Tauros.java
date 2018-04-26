@@ -1,11 +1,11 @@
 package cmutti.model.monsters.tauros;
 
-import cmutti.model.monsters.AMonster;
+import cmutti.model.monsters.AStrongMonster;
 
-public class Tauros extends AMonster {
+public class Tauros extends AStrongMonster {
 
-	public Tauros(int level, int posY, int posX) {
-		super("Tauros", level, posY, posX);
+	public Tauros(int level, int posY, int posX, int artifactDropChance) {
+		super("Tauros", level, posY, posX, artifactDropChance);
 	}
 
 	protected String getSpritePath() {
@@ -13,14 +13,6 @@ public class Tauros extends AMonster {
 	}
 
 	// Monster modif stats
-	public int getBaseXp() {
-		return 250;
-	}
-
-	public int getGrowthXp() {
-		return 60;
-	}
-
 	public int getGrowthDefense() {
 		return super.getGrowthDefense() + 1;
 	}

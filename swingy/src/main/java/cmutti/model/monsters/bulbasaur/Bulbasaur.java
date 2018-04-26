@@ -4,8 +4,8 @@ import cmutti.model.monsters.AMonster;
 
 public class Bulbasaur extends AMonster {
 
-	public Bulbasaur(int level, int posY, int posX) {
-		super("Bulbasaur", level, posY, posX);
+	public Bulbasaur(int level, int posY, int posX, int artifactDropChance) {
+		super("Bulbasaur", level, posY, posX, artifactDropChance);
 	}
 
 	protected String getSpritePath() {

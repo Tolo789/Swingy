@@ -37,6 +37,8 @@ public class MonsterFactory {
 	static int posY;
 	static int smallerBound;
 	static int biggerBound;
+	static int bonusLvl;
+	static int artifactDropChance;
 	static boolean[][] hasMonster;	// fast way to check if monster at given pos has already been added
 	static boolean hasMewTwo;
 	static boolean hasMew;
@@ -49,7 +51,7 @@ public class MonsterFactory {
 		// only display fleeing Mew if hero is lvl 1
 		if (heroLvl == 1) {
 			setLegendaryPosition();
-			monsterList.add(new Mew(1, posY, posX));
+			monsterList.add(new Mew(1, posY, posX, 0));
 
 			return monsterList;
 		}
@@ -75,20 +77,24 @@ public class MonsterFactory {
 		hasMonster[mapSize / 2][mapSize / 2] = true; // Hero start pos
 
 		// Legendary
+		bonusLvl = heroLvl + 3;
+		artifactDropChance = 100;
 		if (hasMew) {
 			setLegendaryPosition();
-			monsterList.add(new Mew(heroLvl + 3, posY, posX));
+			monsterList.add(new Mew(bonusLvl, posY, posX, artifactDropChance));
 		}
 		else if (hasMewTwo) {
 			setLegendaryPosition();
-			monsterList.add(new Mewtwo(heroLvl + 3, posY, posX));
+			monsterList.add(new Mewtwo(bonusLvl, posY, posX, artifactDropChance));
 		}
 
 		// Epic
 		smallerBound = (mapSize / 2) - 8;
 		biggerBound = (mapSize / 2) + 8;
+		bonusLvl = heroLvl + 4;
+		artifactDropChance = 99;
 		for (int i = percentEpic; i > 0; i--) {
-			AMonster newMonster = buildMonster(epicMonsters, 4, Tier.Epic);
+			AMonster newMonster = buildMonster(epicMonsters);
 			monsterList.add(newMonster);
 			hasMonster[posY][posX] = true;
 		}
@@ -96,8 +102,10 @@ public class MonsterFactory {
 		// Rare
 		smallerBound = (mapSize / 2) - 5;
 		biggerBound = (mapSize / 2) + 5;
+		bonusLvl = heroLvl + 2;
+		artifactDropChance = 50;
 		for (int i = percentRare; i > 0; i--) {
-			AMonster newMonster = buildMonster(rareMonsters, 2, Tier.Rare);
+			AMonster newMonster = buildMonster(rareMonsters);
 			monsterList.add(newMonster);
 			hasMonster[posY][posX] = true;
 		}
@@ -105,8 +113,10 @@ public class MonsterFactory {
 		// Common
 		smallerBound = (mapSize / 2) - 2;
 		biggerBound = (mapSize / 2) + 2;
+		bonusLvl = heroLvl;
+		artifactDropChance = 10;
 		while (monsterList.size() < monstersNbr) {
-			AMonster newMonster = buildMonster(commonMonsters, 0, Tier.Common);
+			AMonster newMonster = buildMonster(commonMonsters);
 			monsterList.add(newMonster);
 			hasMonster[posY][posX] = true;
 		}
@@ -114,14 +124,13 @@ public class MonsterFactory {
 		return monsterList;
 	}
 
-	private static AMonster buildMonster(ArrayList<Class<? extends AMonster>> monsterTypes, int bonusLvl, Tier tier) {
+	private static AMonster buildMonster(ArrayList<Class<? extends AMonster>> monsterTypes) {
 		int idx = Swingy.getInstance().rand.nextInt(monsterTypes.size());
 		AMonster newMonster = null;
         try
         {
-			// TODO: drop artefact
 			setMonsterPosition();
-			newMonster = monsterTypes.get(idx).getConstructor(int.class, int.class, int.class).newInstance(heroLvl + bonusLvl, posY, posX);
+			newMonster = monsterTypes.get(idx).getConstructor(int.class, int.class, int.class, int.class).newInstance(bonusLvl, posY, posX, artifactDropChance);
 		}
 		catch (Exception e)
 		{
@@ -136,7 +145,6 @@ public class MonsterFactory {
 		rareMonsters = new ArrayList<Class<? extends AMonster>>();
 		epicMonsters = new ArrayList<Class<? extends AMonster>>();
 
-		// TODO: config classes
 		if (heroLvl < newbieLvl) {
 			// Common
 			commonMonsters.add(Bulbasaur.class);

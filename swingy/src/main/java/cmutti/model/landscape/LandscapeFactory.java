@@ -29,7 +29,6 @@ public class LandscapeFactory {
 
 			mapElems[posY][posX] = generateObstacle(mapElems);
 		}
-		System.out.println("obstaclesNbr " + obstaclesNbr);
 
 		return mapElems;
 	}

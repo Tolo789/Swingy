@@ -1,11 +1,11 @@
 package cmutti.model.monsters.ponyta;
 
-import cmutti.model.monsters.AMonster;
+import cmutti.model.monsters.AStrongMonster;
 
-public class Rapidash extends AMonster {
+public class Rapidash extends AStrongMonster {
 
-	public Rapidash(int level, int posY, int posX) {
-		super("Rapidash", level, posY, posX);
+	public Rapidash(int level, int posY, int posX, int artifactDropChance) {
+		super("Rapidash", level, posY, posX, artifactDropChance);
 	}
 
 	protected String getSpritePath() {
@@ -13,14 +13,6 @@ public class Rapidash extends AMonster {
 	}
 
 	// Monster modif stats
-	public int getBaseXp() {
-		return 250;
-	}
-
-	public int getGrowthXp() {
-		return 60;
-	}
-
 	public int getGrowthAttack() {
 		return super.getGrowthAttack() + 1;
 	}

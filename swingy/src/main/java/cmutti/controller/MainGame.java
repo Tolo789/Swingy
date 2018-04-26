@@ -2,6 +2,8 @@ package cmutti.controller;
 
 import cmutti.model.ACharacter;
 import cmutti.model.AMapElement;
+import cmutti.model.artifacts.AArtifact;
+import cmutti.model.artifacts.ArtifactBuilder;
 import cmutti.model.heroes.AHero;
 import cmutti.model.heroes.AHero;
 import cmutti.model.landscape.LandscapeFactory;
@@ -35,6 +37,7 @@ public class MainGame {
 	int mapXp;	// calculated on creation of map
 	GameState gameState = GameState.Loading; // used to know if accepting user input
 	boolean didFight = false;	// tells if a fight happened this turn
+	AArtifact artifact = null;
 
 	MainGame(AHero hero) {
 		this.hero = hero;
@@ -163,7 +166,14 @@ public class MainGame {
 				return;
 			}
 			else {
+				// Artiafact drop logic
+				artifact = ArtifactBuilder.getDroppedArtifact((AMonster)elem);
 				monsterList.remove((AMonster)elem);
+
+				if (artifact != null) {
+					swingy.displayMessage("Found a " + artifact.getName() + " lv." + artifact.getLevel() + " !");
+					// return;
+				}
 			}
 		}
 		else {
@@ -263,7 +273,6 @@ public class MainGame {
 			return false;
 		}
 
-		// TODO: monster drop artefact
 		swingy.displayMessage("You gained " + monster.getXp() + " xp");
 		if (hero.gainXp(monster.getXp())) {
 			swingy.displayMessage("Level-Up ! " + hero.getGrowthString());

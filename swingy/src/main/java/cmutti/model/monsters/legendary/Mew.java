@@ -1,11 +1,11 @@
 package cmutti.model.monsters.legendary;
 
-import cmutti.model.monsters.AMonster;
+import cmutti.model.monsters.ALegendaryMonster;
 
-public class Mew extends AMonster {
+public class Mew extends ALegendaryMonster {
 
-	public Mew(int level, int posY, int posX) {
-		super("Mew", level, posY, posX);
+	public Mew(int level, int posY, int posX, int artifactDropChance) {
+		super("Mew", level, posY, posX, artifactDropChance);
 
 		if (level == 1)
 			mood = MonsterMood.Flee;
@@ -18,30 +18,6 @@ public class Mew extends AMonster {
 	}
 
 	// Mew stats
-	public int getBaseXp() {
-		return 1000;
-	}
-
-	public int getBaseHp() {
-		return 20;
-	}
-
-	public int getBaseAttack() {
-		return 10;
-	}
-
-	public int getBaseDefense() {
-		return 10;
-	}
-
-	public int getBaseAgility() {
-		return 3;
-	}
-
-	public int getGrowthXp() {
-		return 500;
-	}
-
 	public int getGrowthHp() {
 		return super.getGrowthHp() + 1;
 	}

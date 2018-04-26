@@ -4,8 +4,8 @@ import cmutti.model.monsters.AMonster;
 
 public class Charmander extends AMonster {
 
-	public Charmander(int level, int posY, int posX) {
-		super("Charmander", level, posY, posX);
+	public Charmander(int level, int posY, int posX, int artifactDropChance) {
+		super("Charmander", level, posY, posX, artifactDropChance);
 	}
 
 	protected String getSpritePath() {

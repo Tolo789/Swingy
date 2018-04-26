@@ -1,7 +1,13 @@
 package cmutti.model.artifacts.weapons;
 
-import cmutti.model.AArtifact;
+import cmutti.model.artifacts.AArtifact;
 
 public abstract class AWeapon extends AArtifact {
-	public abstract int getBonusAttack();
+	protected AWeapon(String name, int level) {
+		super(name, level);
+	}
+
+	public int getGrowthAttack() {
+		return 1;
+	}
 }

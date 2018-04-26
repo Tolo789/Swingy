@@ -1,11 +1,11 @@
 package cmutti.model.monsters.squirtle;
 
-import cmutti.model.monsters.AMonster;
+import cmutti.model.monsters.AStrongMonster;
 
-public class Blastoise extends AMonster {
+public class Blastoise extends AStrongMonster {
 
-	public Blastoise(int level, int posY, int posX) {
-		super("Blastoise", level, posY, posX);
+	public Blastoise(int level, int posY, int posX, int artifactDropChance) {
+		super("Blastoise", level, posY, posX, artifactDropChance);
 	}
 
 	protected String getSpritePath() {
@@ -13,14 +13,6 @@ public class Blastoise extends AMonster {
 	}
 
 	// Monster modif stats
-	public int getBaseXp() {
-		return 300;
-	}
-
-	public int getGrowthXp() {
-		return 90;
-	}
-
 	public int getGrowthHp() {
 		return super.getGrowthHp() + 1;
 	}

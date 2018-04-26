@@ -1,11 +1,11 @@
 package cmutti.model.monsters.ratata;
 
-import cmutti.model.monsters.AMonster;
+import cmutti.model.monsters.AMediumMonster;
 
-public class Raticate extends AMonster {
+public class Raticate extends AMediumMonster {
 
-	public Raticate(int level, int posY, int posX) {
-		super("Raticate", level, posY, posX);
+	public Raticate(int level, int posY, int posX, int artifactDropChance) {
+		super("Raticate", level, posY, posX, artifactDropChance);
 	}
 
 	protected String getSpritePath() {
@@ -13,14 +13,6 @@ public class Raticate extends AMonster {
 	}
 
 	// Monster modif stats
-	public int getBaseXp() {
-		return 200;
-	}
-
-	public int getGrowthXp() {
-		return 60;
-	}
-
 	public int getGrowthHp() {
 		return super.getGrowthHp() + 1;
 	}

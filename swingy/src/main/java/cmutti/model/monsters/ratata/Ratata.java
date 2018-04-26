@@ -4,8 +4,8 @@ import cmutti.model.monsters.AMonster;
 
 public class Ratata extends AMonster {
 
-	public Ratata(int level, int posY, int posX) {
-		super("Ratata", level, posY, posX);
+	public Ratata(int level, int posY, int posX, int artifactDropChance) {
+		super("Ratata", level, posY, posX, artifactDropChance);
 	}
 
 	protected String getSpritePath() {

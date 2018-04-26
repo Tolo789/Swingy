@@ -1,16 +1,13 @@
 package cmutti.model.monsters.legendary;
 
-import cmutti.model.monsters.AMonster;
+import cmutti.model.monsters.ALegendaryMonster;
 
-public class Mewtwo extends AMonster {
+public class Mewtwo extends ALegendaryMonster {
 
-	public Mewtwo(int level, int posY, int posX) {
-		super("Mewtwo", level, posY, posX);
+	public Mewtwo(int level, int posY, int posX, int artifactDropChance) {
+		super("Mewtwo", level, posY, posX, artifactDropChance);
 
-		if (level == 1)
-			mood = MonsterMood.Flee;
-		else
-			mood = MonsterMood.Still;
+		mood = MonsterMood.Still;
 	}
 
 	protected String getSpritePath() {
@@ -18,30 +15,6 @@ public class Mewtwo extends AMonster {
 	}
 
 	// Mewtwo stats
-	public int getBaseXp() {
-		return 1000;
-	}
-
-	public int getBaseHp() {
-		return 20;
-	}
-
-	public int getBaseAttack() {
-		return 10;
-	}
-
-	public int getBaseDefense() {
-		return 10;
-	}
-
-	public int getBaseAgility() {
-		return 3;
-	}
-
-	public int getGrowthXp() {
-		return 500;
-	}
-
 	public int getGrowthHp() {
 		return super.getGrowthHp() + 1;
 	}

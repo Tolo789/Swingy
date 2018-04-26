@@ -1,7 +1,6 @@
 package cmutti.model.monsters;
 
 import cmutti.controller.Swingy;
-import cmutti.model.AArtifact;
 import cmutti.model.ACharacter;
 import cmutti.model.AMapElement;
 import cmutti.model.artifacts.weapons.AWeapon;
@@ -15,9 +14,9 @@ public abstract class AMonster extends ACharacter {
 	protected enum MonsterMood {
 		Still,
 		Roam,
-		Search,
 		Flee
 	}
+
 	private static ArrayList<String> directions = new ArrayList<String>();
 	static {
 		directions.add(Swingy.getInstance().getMainGame().directions[0]);
@@ -29,13 +28,13 @@ public abstract class AMonster extends ACharacter {
 	protected MonsterMood mood = MonsterMood.Roam;
 	private int roamPause = getRoamPause(); // how many turn wait at maximum before movinfg
 	private AMapElement elem;
+	private int artifactDropChance = 0;
 
-	// Artifacts that can be droppped
-	protected AArtifact weapon = null;
-
-	protected AMonster(String name, int level, int posY, int posX) {
+	protected AMonster(String name, int level, int posY, int posX, int artifactDropChance) {
 		super(name, level, posY, posX);
+		this.artifactDropChance = artifactDropChance;
 	}
+
 
 	// Define "standard" monster stats
 	public int getBaseXp() {
@@ -78,6 +77,15 @@ public abstract class AMonster extends ACharacter {
 		return 1;
 	}
 
+	// Artifacts drop chance by rarity
+	public int getRareArtifactChance() {
+		return 20;
+	}
+
+	public int getEpicArtifactChance() {
+		return 5;
+	}
+
 	// When roaming a monster can detect hero if he's near enough
 	public int getDetectionRadius() {
 		// By default all monsters are pacific
@@ -103,23 +111,12 @@ public abstract class AMonster extends ACharacter {
 		// I'd like to use pointer over functions but in Java7 the code would be far uglier than an if-forest
 		if (mood == MonsterMood.Roam)
 			doRoam(hero, mapElems);
-		else if (mood == MonsterMood.Search)
-			doSearch(hero, mapElems);
 		else if (mood == MonsterMood.Flee)
 			doFlee(hero, mapElems);
 		// Do nothing if mood == Still
 	}
 
 	private void doRoam(AHero hero, AMapElement[][] mapElems) {
-		// Change behaviour if hero is in detection zone
-		if (hero.getPosX() <= posX + getDetectionRadius() && hero.getPosX() >= posX - getDetectionRadius()) {
-			if (hero.getPosY() <= posY + getDetectionRadius() && hero.getPosY() >= posY - getDetectionRadius()) {
-				mood = MonsterMood.Search;
-				doSearch(hero, mapElems);
-				return;
-			}
-		}
-
 		// Do nothing if in pause
 		if (roamPause > 0) {
 			roamPause--;
@@ -156,10 +153,6 @@ public abstract class AMonster extends ACharacter {
 				}
 			}
 		}
-	}
-
-	private void doSearch(AHero hero, AMapElement[][] mapElems) {
-		// TODO
 	}
 
 	private void doFlee(AHero hero, AMapElement[][] mapElems) {

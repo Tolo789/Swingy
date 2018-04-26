@@ -1,11 +1,11 @@
 package cmutti.model.monsters.squirtle;
 
-import cmutti.model.monsters.AMonster;
+import cmutti.model.monsters.AMediumMonster;
 
-public class Wartortle extends AMonster {
+public class Wartortle extends AMediumMonster {
 
-	public Wartortle(int level, int posY, int posX) {
-		super("Wartortle", level, posY, posX);
+	public Wartortle(int level, int posY, int posX, int artifactDropChance) {
+		super("Wartortle", level, posY, posX, artifactDropChance);
 	}
 
 	protected String getSpritePath() {
@@ -13,14 +13,6 @@ public class Wartortle extends AMonster {
 	}
 
 	// Monster modif stats
-	public int getBaseXp() {
-		return 200;
-	}
-
-	public int getGrowthXp() {
-		return 60;
-	}
-
 	public int getGrowthHp() {
 		return super.getGrowthHp() + 1;
 	}

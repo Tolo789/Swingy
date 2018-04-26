@@ -1,11 +1,11 @@
 package cmutti.model.monsters.charmander;
 
-import cmutti.model.monsters.AMonster;
+import cmutti.model.monsters.AMediumMonster;
 
-public class Charmeleon extends AMonster {
+public class Charmeleon extends AMediumMonster {
 
-	public Charmeleon(int level, int posY, int posX) {
-		super("Charmeleon", level, posY, posX);
+	public Charmeleon(int level, int posY, int posX, int artifactDropChance) {
+		super("Charmeleon", level, posY, posX, artifactDropChance);
 	}
 
 	protected String getSpritePath() {
@@ -13,14 +13,6 @@ public class Charmeleon extends AMonster {
 	}
 
 	// Monster modif stats
-	public int getBaseXp() {
-		return 200;
-	}
-
-	public int getGrowthXp() {
-		return 60;
-	}
-
 	public int getGrowthHp() {
 		return super.getGrowthHp() + 1;
 	}

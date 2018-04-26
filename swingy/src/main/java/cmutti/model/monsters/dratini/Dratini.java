@@ -4,8 +4,8 @@ import cmutti.model.monsters.AMonster;
 
 public class Dratini extends AMonster {
 
-	public Dratini(int level, int posY, int posX) {
-		super("Dratini", level, posY, posX);
+	public Dratini(int level, int posY, int posX, int artifactDropChance) {
+		super("Dratini", level, posY, posX, artifactDropChance);
 	}
 
 	protected String getSpritePath() {
