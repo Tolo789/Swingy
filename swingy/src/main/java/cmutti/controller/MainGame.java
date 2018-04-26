@@ -4,7 +4,7 @@ import cmutti.model.ACharacter;
 import cmutti.model.AMapElement;
 import cmutti.model.artifacts.AArtifact;
 import cmutti.model.artifacts.ArtifactBuilder;
-import cmutti.model.heroes.AHero;
+import cmutti.model.artifacts.weapons.AWeapon;
 import cmutti.model.heroes.AHero;
 import cmutti.model.landscape.LandscapeFactory;
 import cmutti.model.landscape.Stone;
@@ -18,7 +18,8 @@ public class MainGame {
 	private enum GameState {
 		Loading,
 		WaitingDirectionChoice,
-		WaitingFightChoice
+		WaitingFightChoice,
+		WaitingArtifactChoice
 	}
 
 	public static String[] directions = new String[]{"North", "South", "West", "East"};
@@ -171,7 +172,19 @@ public class MainGame {
 				monsterList.remove((AMonster)elem);
 
 				if (artifact != null) {
-					swingy.displayMessage("Found a " + artifact.getName() + " lv." + artifact.getLevel() + " !");
+					swingy.displayMessage("Found a " + artifact.getPresentation());
+					if (artifact instanceof AWeapon) {
+						if (hero.getWeapon() == null) {
+							// Easy case, just equip weapon
+							hero.equipWeapon((AWeapon)artifact);
+							swingy.displayMessage(artifact.getName() + " equipped !\n");
+						}
+						else {
+							swingy.showArtifactChoices("weapon");
+							gameState = GameState.WaitingArtifactChoice;
+							return;
+						}
+					}
 					// return;
 				}
 			}
@@ -204,6 +217,22 @@ public class MainGame {
 
 		// After hero moves it's time for all monster to move
 		monstersUpdate();
+	}
+
+	public void artifactDecision(boolean doChange) {
+		if (gameState != GameState.WaitingArtifactChoice)	// Prevent spam click of button
+			return;
+		gameState = GameState.Loading;
+
+		if (doChange) {
+			if (artifact instanceof AWeapon)
+				hero.equipWeapon((AWeapon)artifact);
+
+			swingy.displayMessage(artifact.getName() + " equipped !");
+		}
+		swingy.displayMessage("");
+
+		updateMapWithHeroMove();
 	}
 
 	private void updateMapWithCharacterMove(ACharacter character) {

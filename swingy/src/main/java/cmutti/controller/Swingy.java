@@ -1,6 +1,7 @@
 package cmutti.controller;
 
 import cmutti.model.AMapElement;
+import cmutti.model.artifacts.AArtifact;
 import cmutti.model.heroes.AHero;
 import cmutti.model.heroes.Backpacker;
 import cmutti.model.heroes.Healer;
@@ -79,13 +80,21 @@ public class Swingy
 	}
 
 	public void showDirectionChoices() {
+		// displayMessage("Choose which direction to go to");
 		if (guiFrame != null)
 			guiFrame.mainPanel.choicePanel.showDirectionChoices();
 	}
 
 	public void showFightChoices() {
+		displayMessage("Fight or Flee ?");
 		if (guiFrame != null)
 			guiFrame.mainPanel.choicePanel.showFightChoices();
+	}
+
+	public void showArtifactChoices(String artifactType) {
+		displayMessage("Equip found " + artifactType + " or keep already equipped one ?");
+		if (guiFrame != null)
+			guiFrame.mainPanel.choicePanel.showArtifactChoices();
 	}
 
 	// Entry point of application

@@ -24,6 +24,10 @@ public class ChoicePanelGUI extends JPanel implements IChoicePanel {
 	JButton fightButton = new JButton("Fight");
 	JButton fleeButton = new JButton("Flee");
 
+	// Artifact utils
+	JButton equipButton = new JButton("Equip");
+	JButton cancelButton = new JButton("Cancel");
+
 	ChoicePanelGUI() {
 
 		confirmButton.addActionListener(new ActionListener() {
@@ -31,7 +35,6 @@ public class ChoicePanelGUI extends JPanel implements IChoicePanel {
 				swingy.getMainGame().directionChosen(dirCombo.getSelectedItem().toString());
 			}
 		});
-
 
 		fightButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -43,6 +46,19 @@ public class ChoicePanelGUI extends JPanel implements IChoicePanel {
 		fleeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				swingy.getMainGame().fightDecision(false);
+			}
+		});
+
+		equipButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				swingy.getMainGame().artifactDecision(true);
+			}
+		});
+
+
+		cancelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				swingy.getMainGame().artifactDecision(false);
 			}
 		});
 
@@ -67,6 +83,17 @@ public class ChoicePanelGUI extends JPanel implements IChoicePanel {
 		// add(label);
 		add(fightButton);
 		add(fleeButton);
+
+		revalidate();
+		repaint();
+	}
+
+	public void showArtifactChoices() {
+		label.setText("Equip or cancel ?");
+		this.removeAll();
+		// add(label);
+		add(equipButton);
+		add(cancelButton);
 
 		revalidate();
 		repaint();

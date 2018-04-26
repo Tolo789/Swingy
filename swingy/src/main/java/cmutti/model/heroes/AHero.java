@@ -125,4 +125,8 @@ public abstract class AHero extends ACharacter {
 
 		return true;
 	}
+
+	public void equipWeapon(AWeapon newWeapon) {
+		weapon = newWeapon;
+	}
 }

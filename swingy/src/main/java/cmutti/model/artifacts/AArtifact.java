@@ -31,6 +31,8 @@ public abstract class AArtifact {
 		hp = getBaseHp() + getGrowthHp() * level;
 	}
 
+	public abstract String getPresentation();
+
 	protected String getSpritePath() {
 		return "sprites/test.png";
 	}
