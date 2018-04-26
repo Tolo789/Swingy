@@ -19,6 +19,10 @@ public class MainGame {
 	}
 
 	public static String[] directions = new String[]{"North", "South", "West", "East"};
+
+	// Call main controller with shorter code
+	private Swingy swingy = Swingy.getInstance();
+
 	// Game vars
 	AHero hero;
 	AMapElement elem;	// tmp MapElem, can be monster or landscape
@@ -30,14 +34,8 @@ public class MainGame {
 	int mapXp;	// calculated on creation of map
 	GameState gameState = GameState.Loading; // used to know if accepting user input
 
-	// UIs
-	FrameGUI guiFrame;
-
-	MainGame(AHero hero, FrameGUI guiFrame) {
+	MainGame(AHero hero) {
 		this.hero = hero;
-		this.guiFrame = guiFrame;
-
-		guiFrame.StartMainPanel(hero);
 
 		newLevel();
 	}
@@ -46,7 +44,8 @@ public class MainGame {
 		// Create map
 		mapSize = (hero.getLevel() - 1) * 5 + 10 - (hero.getLevel() % 2);
 		mapXp = hero.getLevel() * 1000;
-		System.out.println("MapSize: " + mapSize);
+		swingy.displayMessage("You entered in a new zone! (Size: " + mapSize + ")");
+		swingy.displayMessage(""); // add empty line to better see start of level
 
 		// Add hero to center
 		hero.setPosition(mapSize / 2, mapSize / 2);
@@ -73,9 +72,9 @@ public class MainGame {
 
 		// TODO: Landscape
 
-		guiFrame.updateMap(mapElems);
-		guiFrame.updateHero();
-		guiFrame.showDirectionChoices();
+		swingy.updateMap(mapElems);
+		swingy.updateHero();
+		swingy.showDirectionChoices();
 		gameState = GameState.WaitingDirectionChoice;
 	}
 
@@ -125,8 +124,8 @@ public class MainGame {
 		if (elem != null) {
 			if (elem instanceof AMonster) {
 				// Ask player if fight or flee, then wait for respone
-				System.out.println("You encountered a " + elem.getName() + " lvl." + ((AMonster)elem).getLevel());
-				guiFrame.showFightChoices();
+				swingy.displayMessage("You encountered a " + elem.getName() + " lvl." + ((AMonster)elem).getLevel());
+				swingy.showFightChoices();
 				gameState = GameState.WaitingDirectionChoice;
 				return;
 			}
@@ -153,8 +152,8 @@ public class MainGame {
 			}
 		}
 		else {
-			if (Swingy.getInstance().rand.nextInt(2) == 0) { // 50% of chanches not menaging to flee
-				System.out.println("You couldn't escape the fight..!");
+			if (swingy.rand.nextInt(2) == 0) { // 50% of chanches not menaging to flee
+				swingy.displayMessage("You couldn't escape the fight..!");
 				if (!simulateFight((AMonster)elem, false)) {
 					onHeroDeath();
 					return;
@@ -164,7 +163,7 @@ public class MainGame {
 				}
 			}
 			else {
-				System.out.println("You managed to flee..!");
+				swingy.displayMessage("You managed to flee..!\n");
 				// If hero manages to flee then he goes back to prev location
 				hero.setPosition(tmpY, tmpX);
 			}
@@ -186,16 +185,17 @@ public class MainGame {
 	}
 
 	private void onLevelFinished() {
-		System.out.println("Level Finished !   You gained " + mapXp + " xp");
+		swingy.displayMessage("Level Finished !   You gained " + mapXp + " xp");
 		if (hero.gainXp(mapXp)) {
-			System.out.println("Level-Up ! " + hero.getGrowthString());
+			swingy.displayMessage("Level-Up ! " + hero.getGrowthString());
 		}
+		swingy.displayMessage(""); // add empty line to better see end of level
 
 		newLevel();
 	}
 
 	private boolean simulateFight(AMonster monster, boolean heroStarts) {
-		System.out.println("Fight against " + monster.getName() + " lvl. " + monster.getLevel() + " started ! (" + monster.getStatResume() + ")");
+		swingy.displayMessage("Fight against " + monster.getName() + " lvl. " + monster.getLevel() + " started ! (" + monster.getStatResume() + ")");
 		boolean fightEnded = false;
 
 		ACharacter attacker = (heroStarts) ? hero : monster;
@@ -205,13 +205,13 @@ public class MainGame {
 		int agiDelta = Math.abs(hero.getAgility() - monster.getAgility());
 		boolean agiTrigger;
 		while (!fightEnded) {
-			if (agiDelta != 0 && Swingy.getInstance().rand.nextInt(100) < agiDelta)
+			if (agiDelta != 0 && swingy.rand.nextInt(100) < agiDelta)
 				agiTrigger = true;
 			else
 				agiTrigger = false;
 
 			if (agiTrigger && attacker.getAgility() < defender.getAgility()) {
-				System.out.println(defender.getName() + " evaded " + attacker.getName() + "'s attack..!");
+				swingy.displayMessage(defender.getName() + " evaded " + attacker.getName() + "'s attack..!");
 			}
 			else {
 				// Formula inspired by original pokemon damage formula
@@ -226,11 +226,11 @@ public class MainGame {
 
 				defender.getDamage(damage);
 				if (defender.getHp() == 0) {
-					System.out.println(defender.getName() + " is KO !");
+					swingy.displayMessage(defender.getName() + " is KO !");
 					fightEnded = true;
 				}
 				else {
-					System.out.println(defender.getName() + "'s hp down to " + defender.getHp());
+					swingy.displayMessage(defender.getName() + "'s hp down to " + defender.getHp());
 				}
 			}
 
@@ -245,10 +245,11 @@ public class MainGame {
 		}
 
 		// TODO: monster drop artefact
-		System.out.println("You gained " + monster.getXp() + " xp");
+		swingy.displayMessage("You gained " + monster.getXp() + " xp");
 		if (hero.gainXp(monster.getXp())) {
-			System.out.println("Level-Up ! " + hero.getGrowthString());
+			swingy.displayMessage("Level-Up ! " + hero.getGrowthString());
 		}
+		swingy.displayMessage(""); // add empty line to better see end of fight
 		return true;
 	}
 
@@ -264,7 +265,7 @@ public class MainGame {
 				toRemove.add(monster);
 			}
 			else if (monster.getPosX() == hero.getPosX() && monster.getPosY() == hero.getPosY()) {
-				System.out.println("A " + monster.getName() + " lvl." + monster.getLevel() + " suddenly attacks you..!");
+				swingy.displayMessage("A " + monster.getName() + " lvl." + monster.getLevel() + " suddenly attacks you..!");
 				if (simulateFight(monster, false)) {
 					mapElems[tmpY][tmpX] = null;
 					toRemove.add(monster);
@@ -287,6 +288,7 @@ public class MainGame {
 
 	private void onHeroDeath() {
 		// TODO: manage lose
-		System.out.println("You are dead !!");
+		swingy.displayMessage(""); // add empty line to better see death
+		swingy.displayMessage("You are dead !!");
 	}
 }

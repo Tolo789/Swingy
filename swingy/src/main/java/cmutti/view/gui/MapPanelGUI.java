@@ -57,8 +57,8 @@ public class MapPanelGUI extends JPanel implements IMapPanel {
 	public void update(AMapElement[][] mapElems) {
 		// If any, delete prev elem
 	    if (dirty) {
-				container.removeAll();
-			}
+			container.removeAll();
+		}
 
 		container.setLayout(new GridLayout(mapElems.length, mapElems.length, 0, 0));
 		container.setPreferredSize(new Dimension(squareSize * mapElems.length, squareSize * mapElems.length));
@@ -70,30 +70,30 @@ public class MapPanelGUI extends JPanel implements IMapPanel {
 		int heroX = 0;
 		int heroY = 0;
 	    for (int y = 0; y < mapElems.length; y++) {
-	      for (int x = 0; x < mapElems.length; x++) {
-					elem = mapElems[y][x];
-					if (elem == null) {
-						frontSprite = null;
+			for (int x = 0; x < mapElems.length; x++) {
+				elem = mapElems[y][x];
+				if (elem == null) {
+					frontSprite = null;
+					backSprite = bckSprite;
+				}
+				else {
+					if (elem.needGrass)
 						backSprite = bckSprite;
-					}
-					else {
-						if (elem.needGrass)
-							backSprite = bckSprite;
-						else
-							backSprite = null;
+					else
+						backSprite = null;
 
-						if (elem instanceof AHero) {
-							heroX = elem.getPosX();
-							heroY = elem.getPosY();
-						}
-
-						frontSprite = elem.getSprite();
+					if (elem instanceof AHero) {
+						heroX = elem.getPosX();
+						heroY = elem.getPosY();
 					}
 
-					spritePanel = new SpritePanel(frontSprite, backSprite);
-					spritePanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
-					container.add(spritePanel);
-	      }
+					frontSprite = elem.getSprite();
+				}
+
+				spritePanel = new SpritePanel(frontSprite, backSprite);
+				spritePanel.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.black));
+				container.add(spritePanel);
+			}
 	    }
 
 		// int actualsSquareSize = scrollPane.getViewport().getViewSize().width / mapElems.length;

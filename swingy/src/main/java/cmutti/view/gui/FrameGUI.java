@@ -6,7 +6,7 @@ import cmutti.view.IFrame;
 import javax.swing.JFrame;
 
 public class FrameGUI extends JFrame implements IFrame {
-	MainPanelGUI mainPanel = null;
+	public MainPanelGUI mainPanel = null;
 	LoadingGUI loadingPanel = null;
 
 	public FrameGUI(String title) {
@@ -30,22 +30,5 @@ public class FrameGUI extends JFrame implements IFrame {
 		add(mainPanel);
 
 		remove(loadingPanel);
-	}
-
-	// Create a GUI controller
-	public void updateMap(AMapElement[][] mapElems) {
-		mainPanel.mapPanel.update(mapElems);
-	}
-
-	public void updateHero() {
-		mainPanel.heroPanel.update();
-	}
-
-	public void showDirectionChoices() {
-		mainPanel.choicePanel.showDirectionChoices();
-	}
-
-	public void showFightChoices() {
-		mainPanel.choicePanel.showFightChoices();
 	}
 }

@@ -1,14 +1,13 @@
 package cmutti.controller;
 
+import cmutti.model.AMapElement;
 import cmutti.model.heroes.AHero;
+import cmutti.model.heroes.KarateMan;
 import cmutti.model.heroes.KarateMan;
 import cmutti.view.gui.FrameGUI;
 import java.util.Random;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
-
-import cmutti.model.heroes.KarateMan;
-import javax.swing.SwingUtilities;
 
 public class Swingy
 {
@@ -47,13 +46,46 @@ public class Swingy
 		});
 	}
 
+// --- Calls from CharSelect controller ------------------------------------------
 	private void StartMainGame() {
-		mainGame = new MainGame(hero, guiFrame);
+		if (guiFrame != null)
+			guiFrame.StartMainPanel(hero);
+		mainGame = new MainGame(hero);
+	}
+
+// --- Calls from all controllers ----------------------------------------------
+	public void displayMessage(String message) {
+		message += "\n";
+		if (guiFrame != null) {
+			guiFrame.mainPanel.storyPanel.textArea.append(message);
+		}
+		System.out.print(message);
+	}
+
+// --- Calls from MainGame controller ------------------------------------------
+	public void updateMap(AMapElement[][] mapElems) {
+		if (guiFrame != null)
+			guiFrame.mainPanel.mapPanel.update(mapElems);
+	}
+
+	public void updateHero() {
+		if (guiFrame != null)
+			guiFrame.mainPanel.heroPanel.update();
+	}
+
+	public void showDirectionChoices() {
+		if (guiFrame != null)
+			guiFrame.mainPanel.choicePanel.showDirectionChoices();
+	}
+
+	public void showFightChoices() {
+		if (guiFrame != null)
+			guiFrame.mainPanel.choicePanel.showFightChoices();
 	}
 
 	// Entry point of application
-  public static void main(String[] args)
-  {
+	public static void main(String[] args)
+	{
 		Swingy.getInstance().startGame(args);
-  }
+	}
 }

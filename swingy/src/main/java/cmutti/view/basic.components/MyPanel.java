@@ -79,7 +79,6 @@ public class MyPanel extends JPanel {
 		constraints.gridheight = 2;
 		constraints.gridwidth = 1;
 		constraints.weightx = 1;
-		panel3.add(new JScrollPane(textArea, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS));
 		add(panel3, constraints);
 		constraints.gridx = 4;
 		constraints.gridy = 2;

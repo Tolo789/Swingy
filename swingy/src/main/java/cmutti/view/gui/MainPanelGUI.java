@@ -10,10 +10,10 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 public class MainPanelGUI extends JPanel implements IMainPanel {
-	HeroPanelGUI heroPanel = null;
-	MapPanelGUI mapPanel = null;
-	StoryPanelGUI storyPanel = null;
-	ChoicePanelGUI choicePanel = null;
+	public HeroPanelGUI heroPanel = null;
+	public MapPanelGUI mapPanel = null;
+	public StoryPanelGUI storyPanel = null;
+	public ChoicePanelGUI choicePanel = null;
 
 	MainPanelGUI(AHero hero) {
 		setLayout(new GridBagLayout());
