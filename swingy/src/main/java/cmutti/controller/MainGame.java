@@ -4,12 +4,13 @@ import cmutti.model.ACharacter;
 import cmutti.model.AMapElement;
 import cmutti.model.heroes.AHero;
 import cmutti.model.heroes.AHero;
+import cmutti.model.landscape.LandscapeFactory;
+import cmutti.model.landscape.Stone;
 import cmutti.model.monsters.AMonster;
 import cmutti.model.monsters.MonsterFactory;
 import cmutti.view.gui.FrameGUI;
 import java.util.ArrayList;
 import java.util.Iterator;
-
 
 public class MainGame {
 	private enum GameState {
@@ -33,6 +34,7 @@ public class MainGame {
 	int mapSize;
 	int mapXp;	// calculated on creation of map
 	GameState gameState = GameState.Loading; // used to know if accepting user input
+	boolean didFight = false;	// tells if a fight happened this turn
 
 	MainGame(AHero hero) {
 		this.hero = hero;
@@ -43,34 +45,41 @@ public class MainGame {
 	private void newLevel() {
 		// Create map
 		mapSize = (hero.getLevel() - 1) * 5 + 10 - (hero.getLevel() % 2);
+		mapElems = new AMapElement[mapSize][mapSize];
 		mapXp = hero.getLevel() * 1000;
+		if (hero.getPassive() == AHero.HeroPassive.EfficientTraveller)
+			mapXp = (int)(1.5 * mapXp);
 		swingy.displayMessage("You entered in a new zone! (Size: " + mapSize + ")");
 		swingy.displayMessage(""); // add empty line to better see start of level
 
 		// Add hero to center
 		hero.setPosition(mapSize / 2, mapSize / 2);
-		// Get monster list
-		monsterList = MonsterFactory.generateMonsterList(hero.getLevel(), mapSize);
-
-		// TODO: Add landscape
-		// TODO: be sure that landscape doesnt blocks path to exit
-
-		updateUI();
-	}
-
-	private void updateUI() {
-		// Recreate each time since old elem position must be overridden
-		mapElems = new AMapElement[mapSize][mapSize];
-
-		// Hero
 		mapElems[hero.getPosY()][hero.getPosX()] = hero;
 
-		// Monsters
+		// Get monster list
+		monsterList = MonsterFactory.generateMonsterList(hero.getLevel(), mapSize);
 		for (AMonster monster : monsterList) {
 			mapElems[monster.getPosY()][monster.getPosX()] = monster;
 		}
 
-		// TODO: Landscape
+		// Add landscape after first level
+		if (hero.getLevel() > 1)
+			mapElems = LandscapeFactory.addLandscape(mapElems);
+
+		// TODO: be sure that landscape doesnt blocks path to exit
+
+		endTurn();
+	}
+
+	private void endTurn() {
+		if (hero.getPassive() == AHero.HeroPassive.AutoHealing && didFight) {
+			int heal = hero.getMaxHp() / 8;
+			if (hero.heal(heal)) {
+				swingy.displayMessage("Healing yourself for " + heal + " hp");
+				swingy.displayMessage(""); // add empty line to better see end of turn
+			}
+		}
+		didFight = false;
 
 		swingy.updateMap(mapElems);
 		swingy.updateHero();
@@ -131,7 +140,13 @@ public class MainGame {
 			}
 
 			// set hero back to prev pos if he is moving towards landscape elem
-			hero.setPosition(tmpY, tmpX);
+			if (hero.getPassive() == AHero.HeroPassive.StonesBreaker && elem instanceof Stone) {
+				swingy.displayMessage("There is a " + elem.getName() + " in front of you.. You broke it with your powerful punch !");
+			}
+			else {
+				swingy.displayMessage("There is a " + elem.getName() + " in front of you, cannot go " + direction + "..");
+				hero.setPosition(tmpY, tmpX);
+			}
 		}
 
 		updateMapWithHeroMove();
@@ -152,7 +167,9 @@ public class MainGame {
 			}
 		}
 		else {
-			if (swingy.rand.nextInt(2) == 0) { // 50% of chanches not menaging to flee
+			int escapeChance = (hero.getPassive() == AHero.HeroPassive.ArtfulDodger) ? 4 : 2;
+
+			if (swingy.rand.nextInt(escapeChance) == 0) { // 25%/50% of chanches not menaging to flee (depending on escapeChance)
 				swingy.displayMessage("You couldn't escape the fight..!");
 				if (!simulateFight((AMonster)elem, false)) {
 					onHeroDeath();
@@ -195,6 +212,7 @@ public class MainGame {
 	}
 
 	private boolean simulateFight(AMonster monster, boolean heroStarts) {
+		didFight = true;
 		swingy.displayMessage("Fight against " + monster.getName() + " lvl. " + monster.getLevel() + " started ! (" + monster.getStatResume() + ")");
 		boolean fightEnded = false;
 
@@ -204,6 +222,7 @@ public class MainGame {
 		int damage;
 		int agiDelta = Math.abs(hero.getAgility() - monster.getAgility());
 		boolean agiTrigger;
+		String str;
 		while (!fightEnded) {
 			if (agiDelta != 0 && swingy.rand.nextInt(100) < agiDelta)
 				agiTrigger = true;
@@ -214,23 +233,24 @@ public class MainGame {
 				swingy.displayMessage(defender.getName() + " evaded " + attacker.getName() + "'s attack..!");
 			}
 			else {
+				str = "";
 				// Formula inspired by original pokemon damage formula
 				damage = (int) ((2f * attacker.getLevel() / 5 + 2) * attacker.getAttack() / defender.getDefense() + 2);
 				if (agiTrigger) {
 					damage *= 2;
-					System.out.print(attacker.getName() + " critically strikes..! ");
+					str = attacker.getName() + " critically strikes..! ";
 				}
 				else {
-					System.out.print(attacker.getName() + " attacks.. ");
+					str = attacker.getName() + " attacks.. ";
 				}
 
 				defender.getDamage(damage);
 				if (defender.getHp() == 0) {
-					swingy.displayMessage(defender.getName() + " is KO !");
+					swingy.displayMessage(str + defender.getName() + " is KO !");
 					fightEnded = true;
 				}
 				else {
-					swingy.displayMessage(defender.getName() + "'s hp down to " + defender.getHp());
+					swingy.displayMessage(str + defender.getName() + "'s hp down to " + defender.getHp());
 				}
 			}
 
@@ -240,7 +260,6 @@ public class MainGame {
 		}
 
 		if (hero.getHp() == 0) {
-			onHeroDeath();
 			return false;
 		}
 
@@ -265,14 +284,24 @@ public class MainGame {
 				toRemove.add(monster);
 			}
 			else if (monster.getPosX() == hero.getPosX() && monster.getPosY() == hero.getPosY()) {
-				swingy.displayMessage("A " + monster.getName() + " lvl." + monster.getLevel() + " suddenly attacks you..!");
-				if (simulateFight(monster, false)) {
-					mapElems[tmpY][tmpX] = null;
-					toRemove.add(monster);
+				boolean dodged = false;
+				if (hero.getPassive() == AHero.HeroPassive.ArtfulDodger && swingy.rand.nextInt(2) == 0)
+					dodged = true;
+
+				if (!dodged) {
+					swingy.displayMessage("A " + monster.getName() + " lvl." + monster.getLevel() + " suddenly attacks you..!");
+					if (simulateFight(monster, false)) {
+						mapElems[tmpY][tmpX] = null;
+						toRemove.add(monster);
+					}
+					else {
+						onHeroDeath();
+						return;
+					}
 				}
 				else {
-					onHeroDeath();
-					return;
+					swingy.displayMessage("You dodged an attack from a " + monster.getName() + " lvl." + monster.getLevel() + "..!\n");
+					monster.setPosition(tmpY, tmpX);
 				}
 			}
 			else
@@ -283,7 +312,7 @@ public class MainGame {
 		if (toRemove.size() > 0) {
 			monsterList.removeAll(toRemove);
 		}
-		updateUI();
+		endTurn();
 	}
 
 	private void onHeroDeath() {

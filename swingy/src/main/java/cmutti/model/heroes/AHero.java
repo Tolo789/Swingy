@@ -10,7 +10,13 @@ import lombok.Getter;
 
 @Getter
 public abstract class AHero extends ACharacter {
-	protected static String mainImg = "";
+	public enum HeroPassive {
+		None,
+		StonesBreaker,
+		AutoHealing,
+		EfficientTraveller,
+		ArtfulDodger
+	}
 
 	private BufferedImage mainSprite = null;
 
@@ -34,9 +40,9 @@ public abstract class AHero extends ACharacter {
 		}
 	}
 
-	protected String getMainImg() {
-		return "";
-	}
+	// Config of heroes
+	protected abstract String getMainImg();
+	public abstract HeroPassive getPassive();
 
 	// Define "standard" hero stats
 	public int getBaseXp() {
@@ -99,14 +105,6 @@ public abstract class AHero extends ACharacter {
 		return false;
 	}
 
-	public void setPosition(int posY, int posX) {
-		this.posY = posY;
-		this.posX = posX;
-
-		direction = "South";
-		steps = 0;
-	}
-
 	public String getGrowthString() {
 		String str = "";
 		str = "MaxHp: " + maxHp + " (+" + getGrowthHp() + ")";
@@ -114,5 +112,17 @@ public abstract class AHero extends ACharacter {
 		str += ", Def: " + defense + " (+" + getGrowthDefense() + ")";
 		str += ", Agi: " + agility + " (+" + getGrowthAgility() + ")";
 		return str;
+	}
+
+	public boolean heal(int amount) {
+		if (hp == 0 || hp == maxHp)
+			return false;
+
+		hp += amount;
+		if (hp > maxHp) {
+			hp = maxHp;
+		}
+
+		return true;
 	}
 }

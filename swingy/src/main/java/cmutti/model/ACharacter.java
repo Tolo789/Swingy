@@ -66,6 +66,11 @@ public abstract class ACharacter extends AMapElement {
 			this.hp = 0;
 	}
 
+	public void setPosition(int posY, int posX) {
+		this.posY = posY;
+		this.posX = posX;
+	}
+
 	public void moveTowards(String dir) {
 		if (dir != direction)
 			direction = dir;

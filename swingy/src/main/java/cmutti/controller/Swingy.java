@@ -2,7 +2,9 @@ package cmutti.controller;
 
 import cmutti.model.AMapElement;
 import cmutti.model.heroes.AHero;
-import cmutti.model.heroes.KarateMan;
+import cmutti.model.heroes.Backpacker;
+import cmutti.model.heroes.Healer;
+import cmutti.model.heroes.KarateGirl;
 import cmutti.model.heroes.KarateMan;
 import cmutti.view.gui.FrameGUI;
 import java.util.Random;
@@ -40,7 +42,10 @@ public class Swingy
 				guiFrame = new FrameGUI("Swingy");
 
 				// TODO: create/load hero
-				hero = new KarateMan("yo2", 1);
+				hero = new KarateMan("yo2", 15);
+				// hero = new Backpacker("yo2", 1);
+				hero = new KarateGirl("yo2", 15);
+				// hero = new Healer("yo2", 15);
 				StartMainGame();
 			}
 		});

@@ -14,6 +14,10 @@ public class KarateMan extends AHero {
 		return "sprites/heroes/karateMan/mainImg.png";
 	}
 
+	public HeroPassive getPassive() {
+		return HeroPassive.StonesBreaker;
+	}
+
 	// Only change growth stats which are differnt for this class
 	public int getGrowthAttack() {
 		return super.getGrowthAttack() + 2;
