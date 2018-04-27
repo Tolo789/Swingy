@@ -14,30 +14,27 @@ public class ArtifactBuilder {
 	static {
 		commonArtifacts = new ArrayList<Class<? extends AArtifact>>();
 		commonArtifacts.add(FishingRope.class);
-		commonArtifacts.add(Guitar.class);
-		commonArtifacts.add(Pan.class);
-		// commonArtifacts.add(ChefHat.class);
-		// commonArtifacts.add(SantaHat.class);
-		// commonArtifacts.add(Belt.class);
+		commonArtifacts.add(ChefHat.class);
+		commonArtifacts.add(SantaHat.class);
+		commonArtifacts.add(Belt.class);
 
 		rareArtifacts = new ArrayList<Class<? extends AArtifact>>();
 		rareArtifacts.add(Guitar.class);
-		// rareArtifacts.add(Crown.class);
-		// rareArtifacts.add(CowboyHat.class);
-		// rareArtifacts.add(BlackCap.class);
+		rareArtifacts.add(Crown.class);
+		rareArtifacts.add(CowboyHat.class);
+		rareArtifacts.add(BlackCap.class);
 
 		epicArtifacts = new ArrayList<Class<? extends AArtifact>>();
 		epicArtifacts.add(Pan.class);
-	// 	epicArtifacts.add(StrawHat.class);
-	// 	epicArtifacts.add(VikingHelm.class);
-	// 	epicArtifacts.add(HawaianSkirt.class);
+		epicArtifacts.add(StrawHat.class);
+		epicArtifacts.add(VikingHelm.class);
+		epicArtifacts.add(HawaianSkirt.class);
 	}
 
 	public static AArtifact getDroppedArtifact(AMonster monster) {
 		AArtifact artifact = null;
 
-		// TODO: put percent back to 100
-		if (Swingy.getInstance().rand.nextInt(1) < monster.getArtifactDropChance()) {
+		if (Swingy.getInstance().rand.nextInt(100) < monster.getArtifactDropChance()) {
 			int randomNbr = Swingy.getInstance().rand.nextInt(100);
 			if (randomNbr < monster.getEpicArtifactChance()) {
 				artifact = buildArtifact(epicArtifacts, monster.getLevel());

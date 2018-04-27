@@ -22,8 +22,8 @@ public class SpritePanel extends JPanel {
 
 		if (mainSprite != null) {
 			// Keep scale of main sprite
-			float panelScale = getWidth() / getHeight();
-			float spriteScale = mainSprite.getWidth() / mainSprite.getHeight();
+			float panelScale = 1f * getWidth() / getHeight();
+			float spriteScale = 1f * mainSprite.getWidth() / mainSprite.getHeight();
 
 			int imgStartX;
 			int imgStartY;
@@ -32,10 +32,10 @@ public class SpritePanel extends JPanel {
 
 			// if (spriteScale == panelScale) {
 			// 	// Easy case
-			// 	imgStartX = 0;
-			// 	imgStartY = 0;
-			// 	imgWidth = getWidth();
-			// 	imgHeight = getHeight();
+				// imgStartX = 0;
+				// imgStartY = 0;
+				// imgWidth = getWidth();
+				// imgHeight = getHeight();
 			// }
 			// else if (spriteScale > panelScale) {
 			if (spriteScale > panelScale) {
@@ -56,6 +56,11 @@ public class SpritePanel extends JPanel {
 				imgWidth = (int)(imgHeight * spriteScale);
 				imgStartX = (getWidth() - imgWidth) / 2;
 			}
+
+				// imgStartX = 0;
+				// imgStartY = 0;
+				// imgWidth = getWidth();
+				// imgHeight = getHeight();
 
 			g.drawImage(mainSprite, imgStartX, imgStartY, imgWidth, imgHeight, this);
 		}
