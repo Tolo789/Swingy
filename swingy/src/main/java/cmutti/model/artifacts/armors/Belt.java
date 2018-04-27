@@ -6,6 +6,6 @@ public class Belt extends AArmor {
 	}
 
 	protected String getSpritePath() {
-		return "sprites/test.png";
+		return "sprites/artifacts/armors/Belt.png";
 	}
 }

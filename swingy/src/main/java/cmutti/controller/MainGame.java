@@ -150,7 +150,7 @@ public class MainGame {
 				swingy.displayMessage("There is a " + elem.getName() + " in front of you.. You broke it with your powerful punch !");
 			}
 			else {
-				swingy.displayMessage("There is a " + elem.getName() + " in front of you, cannot go " + direction + "..");
+				swingy.displayMessage("There is a " + elem.getName() + " in front of you, cannot go " + direction + "..\n");
 				hero.setPosition(tmpY, tmpX);
 			}
 		}

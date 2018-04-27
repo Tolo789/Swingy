@@ -6,6 +6,6 @@ public class FishingRope extends AWeapon {
 	}
 
 	protected String getSpritePath() {
-		return "sprites/test.png";
+		return "sprites/artifacts/weapons/FishingRope.png";
 	}
 }

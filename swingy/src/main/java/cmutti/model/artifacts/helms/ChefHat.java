@@ -6,6 +6,6 @@ public class ChefHat extends AHelm {
 	}
 
 	protected String getSpritePath() {
-		return "sprites/test.png";
+		return "sprites/artifacts/helms/ChefHat.png";
 	}
 }

@@ -33,6 +33,9 @@ public class ItemPanelGUI extends JPanel {
 		if (itemDescription != name.getText()) {
 			sprite.setMainSprite(itemSprite);
 			name.setText(itemDescription);
+
+			revalidate();
+			repaint();
 		}
 	}
 }

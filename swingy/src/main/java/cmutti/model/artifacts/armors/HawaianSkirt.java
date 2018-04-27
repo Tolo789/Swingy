@@ -6,7 +6,7 @@ public class HawaianSkirt extends AArmor {
 	}
 
 	protected String getSpritePath() {
-		return "sprites/test.png";
+		return "sprites/artifacts/armors/HawaianSkirt.png";
 	}
 
 	public int getBaseDefense() {

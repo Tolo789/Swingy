@@ -6,7 +6,7 @@ public class StrawHat extends AHelm {
 	}
 
 	protected String getSpritePath() {
-		return "sprites/test.png";
+		return "sprites/artifacts/helms/StrawHat.png";
 	}
 
 	public int getBaseHp() {

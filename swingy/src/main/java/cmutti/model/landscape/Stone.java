@@ -9,6 +9,6 @@ public class Stone extends AMapElement {
 	}
 
 	protected String getSpritePath() {
-		return "sprites/hisoka.png";
+		return "sprites/landscape/Stone.png";
 	}
 }

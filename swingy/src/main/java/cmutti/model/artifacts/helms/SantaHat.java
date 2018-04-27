@@ -6,6 +6,6 @@ public class SantaHat extends AHelm {
 	}
 
 	protected String getSpritePath() {
-		return "sprites/test.png";
+		return "sprites/artifacts/helms/SantaHat.png";
 	}
 }

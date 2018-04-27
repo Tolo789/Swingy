@@ -9,6 +9,6 @@ public class Tree extends AMapElement {
 	}
 
 	protected String getSpritePath() {
-		return "sprites/hisoka.png";
+		return "sprites/landscape/Tree.png";
 	}
 }

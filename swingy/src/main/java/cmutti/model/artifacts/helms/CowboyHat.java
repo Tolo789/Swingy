@@ -6,7 +6,7 @@ public class CowboyHat extends AHelm {
 	}
 
 	protected String getSpritePath() {
-		return "sprites/test.png";
+		return "sprites/artifacts/helms/CowboyHat.png";
 	}
 
 	public int getBaseHp() {

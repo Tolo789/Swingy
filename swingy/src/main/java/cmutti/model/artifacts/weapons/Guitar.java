@@ -6,7 +6,7 @@ public class Guitar extends AWeapon {
 	}
 
 	protected String getSpritePath() {
-		return "sprites/test.png";
+		return "sprites/artifacts/weapons/Guitar.png";
 	}
 
 	public int getBaseAttack() {

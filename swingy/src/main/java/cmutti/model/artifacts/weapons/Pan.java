@@ -6,7 +6,7 @@ public class Pan extends AWeapon {
 	}
 
 	protected String getSpritePath() {
-		return "sprites/test.png";
+		return "sprites/artifacts/weapons/Pan.png";
 	}
 
 	public int getBaseAttack() {

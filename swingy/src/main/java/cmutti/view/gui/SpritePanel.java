@@ -1,15 +1,7 @@
 package cmutti.view.gui;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import lombok.Setter;
 
@@ -29,7 +21,43 @@ public class SpritePanel extends JPanel {
 		}
 
 		if (mainSprite != null) {
-			g.drawImage(mainSprite, 0, 0, getWidth(), getHeight(), this);
+			// Keep scale of main sprite
+			float panelScale = getWidth() / getHeight();
+			float spriteScale = mainSprite.getWidth() / mainSprite.getHeight();
+
+			int imgStartX;
+			int imgStartY;
+			int imgWidth;
+			int imgHeight;
+
+			// if (spriteScale == panelScale) {
+			// 	// Easy case
+			// 	imgStartX = 0;
+			// 	imgStartY = 0;
+			// 	imgWidth = getWidth();
+			// 	imgHeight = getHeight();
+			// }
+			// else if (spriteScale > panelScale) {
+			if (spriteScale > panelScale) {
+				// Case where sprite is wider than panel (in scale)
+				// Clip to left-right borders and center vertically
+				imgStartX = 0;
+				imgWidth = getWidth();
+
+				imgHeight = (int)(imgWidth / spriteScale);
+				imgStartY = (getHeight() - imgHeight) / 2;
+			}
+			else {
+				// Case where sprite is higher than panel (in scale)
+				// Clip to top-bot borders and center horizontally
+				imgStartY = 0;
+				imgHeight = getHeight();
+
+				imgWidth = (int)(imgHeight * spriteScale);
+				imgStartX = (getWidth() - imgWidth) / 2;
+			}
+
+			g.drawImage(mainSprite, imgStartX, imgStartY, imgWidth, imgHeight, this);
 		}
 	}
 }

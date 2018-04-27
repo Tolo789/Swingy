@@ -6,7 +6,7 @@ public class BlackCap extends AArmor {
 	}
 
 	protected String getSpritePath() {
-		return "sprites/test.png";
+		return "sprites/artifacts/armors/BlackCap.png";
 	}
 
 	public int getBaseDefense() {

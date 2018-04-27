@@ -44,9 +44,9 @@ public class Swingy
 
 				// TODO: create/load hero
 				hero = new KarateMan("yo2", 1);
-				// hero = new Backpacker("yo2", 1);
-				hero = new KarateGirl("yo2", 1);
-				// hero = new Healer("yo2", 15);
+				hero = new Backpacker("yo2", 1);
+				// hero = new KarateGirl("yo2", 1);
+				// hero = new Healer("yo2", 1);
 				StartMainGame();
 			}
 		});
