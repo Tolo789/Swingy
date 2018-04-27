@@ -8,4 +8,8 @@ public class Pan extends AWeapon {
 	protected String getSpritePath() {
 		return "sprites/test.png";
 	}
+
+	public int getBaseAttack() {
+		return 5;
+	}
 }

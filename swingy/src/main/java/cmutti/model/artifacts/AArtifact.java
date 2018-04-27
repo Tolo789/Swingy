@@ -32,6 +32,7 @@ public abstract class AArtifact {
 	}
 
 	public abstract String getPresentation();
+	public abstract String getBonusPresentation();
 
 	protected String getSpritePath() {
 		return "sprites/test.png";

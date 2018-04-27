@@ -8,4 +8,8 @@ public class Guitar extends AWeapon {
 	protected String getSpritePath() {
 		return "sprites/test.png";
 	}
+
+	public int getBaseAttack() {
+		return 2;
+	}
 }

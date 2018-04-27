@@ -11,6 +11,10 @@ public abstract class AWeapon extends AArtifact {
 		return name + " lv." + level + " (Bonus Attack: " + attack + ")";
 	}
 
+	public String getBonusPresentation() {
+		return "Attack +" + attack;
+	}
+
 	public int getGrowthAttack() {
 		return 1;
 	}

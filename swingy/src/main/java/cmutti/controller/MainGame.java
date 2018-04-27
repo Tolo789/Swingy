@@ -4,6 +4,8 @@ import cmutti.model.ACharacter;
 import cmutti.model.AMapElement;
 import cmutti.model.artifacts.AArtifact;
 import cmutti.model.artifacts.ArtifactBuilder;
+import cmutti.model.artifacts.armors.AArmor;
+import cmutti.model.artifacts.helms.AHelm;
 import cmutti.model.artifacts.weapons.AWeapon;
 import cmutti.model.heroes.AHero;
 import cmutti.model.landscape.LandscapeFactory;
@@ -167,17 +169,38 @@ public class MainGame {
 				return;
 			}
 			else {
-				// Artiafact drop logic
+				// Artiafact drop, can only happen if hero has willingly started a fight
 				artifact = ArtifactBuilder.getDroppedArtifact((AMonster)elem);
 				monsterList.remove((AMonster)elem);
 
 				if (artifact != null) {
+					// Same line for equipping any artifact
 					swingy.displayMessage("Found a " + artifact.getPresentation());
-					if (artifact instanceof AWeapon) {
+
+					// Equip logic
+					if (artifact instanceof AArmor) {
+						if (hero.getArmor() == null) {
+							hero.equipArmor((AArmor)artifact);
+						}
+						else {
+							swingy.showArtifactChoices("armor");
+							gameState = GameState.WaitingArtifactChoice;
+							return;
+						}
+					}
+					else if (artifact instanceof AHelm) {
+						if (hero.getHelm() == null) {
+							hero.equipHelm((AHelm)artifact);
+						}
+						else {
+							swingy.showArtifactChoices("helm");
+							gameState = GameState.WaitingArtifactChoice;
+							return;
+						}
+					}
+					else if (artifact instanceof AWeapon) {
 						if (hero.getWeapon() == null) {
-							// Easy case, just equip weapon
 							hero.equipWeapon((AWeapon)artifact);
-							swingy.displayMessage(artifact.getName() + " equipped !\n");
 						}
 						else {
 							swingy.showArtifactChoices("weapon");
@@ -185,7 +208,9 @@ public class MainGame {
 							return;
 						}
 					}
-					// return;
+
+					// Same line for equipping any artifact
+					swingy.displayMessage(artifact.getName() + " equipped !\n");
 				}
 			}
 		}
@@ -225,7 +250,11 @@ public class MainGame {
 		gameState = GameState.Loading;
 
 		if (doChange) {
-			if (artifact instanceof AWeapon)
+			if (artifact instanceof AArmor)
+				hero.equipArmor((AArmor)artifact);
+			else if (artifact instanceof AHelm)
+				hero.equipHelm((AHelm)artifact);
+			else if (artifact instanceof AWeapon)
 				hero.equipWeapon((AWeapon)artifact);
 
 			swingy.displayMessage(artifact.getName() + " equipped !");

@@ -11,13 +11,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import lombok.Setter;
 
-import java.awt.Font;
-import java.awt.Image;
-import java.io.File;
-import javax.imageio.ImageIO;
-import javax.swing.JPanel;
-
+@Setter
 public class SpritePanel extends JPanel {
 	protected BufferedImage mainSprite = null;
 	protected BufferedImage bckSprite = null;
