@@ -24,7 +24,11 @@ public class MainGame {
 		WaitingArtifactChoice
 	}
 
-	public static String[] directions = new String[]{"North", "South", "West", "East"};
+	public final static String NORTH = "North";
+	public final static String SOUTH = "South";
+	public final static String WEST = "West";
+	public final static String EAST = "East";
+	public static String[] directions = new String[]{NORTH, SOUTH, WEST, EAST};
 
 	// Call main controller with shorter code
 	private Swingy swingy = Swingy.getInstance();
@@ -95,25 +99,28 @@ public class MainGame {
 
 	// Call to move in a direction
 	public void directionChosen(String direction) {
+		System.out.println("Received direction " + direction);
 		if (gameState != GameState.WaitingDirectionChoice) // Prevent spam click of button
 			return;
+		System.out.println("Executing..");
+		swingy.stopDirectionChoices();
 		gameState = GameState.Loading;
 
-		if (direction == "North") {
+		if (direction.equals(NORTH)) {
 			if (hero.getPosY() == 0) {
 				onLevelFinished();
 				return;
 			}
 			tryMovePlayer(direction);
 		}
-		else if (direction == "South") {
+		else if (direction.equals(SOUTH)) {
 			if (hero.getPosY() == mapElems.length - 1) {
 				onLevelFinished();
 				return;
 			}
 			tryMovePlayer(direction);
 		}
-		else if (direction == "West") {
+		else if (direction.equals(WEST)) {
 			if (hero.getPosX() == 0) {
 				onLevelFinished();
 				return;

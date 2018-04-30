@@ -1,5 +1,6 @@
 package cmutti.model;
 
+import cmutti.controller.MainGame;
 import java.awt.image.BufferedImage;
 import lombok.Getter;
 
@@ -17,7 +18,7 @@ public abstract class ACharacter extends AMapElement {
 
 	// Vars to simulate walking in GUI map
 	protected int steps = 0;			// how many steps have been done in the same direction
-	protected String direction = "South";
+	protected String direction = MainGame.SOUTH;
 
 	protected ACharacter(String name, int level, int posY, int posX) {
 		super(name, posY, posX);
@@ -76,13 +77,13 @@ public abstract class ACharacter extends AMapElement {
 			direction = dir;
 		steps++;
 
-		if (dir == "North")
+		if (dir.equals(MainGame.NORTH))
 			posY--;
-		else if (dir == "South")
+		else if (dir.equals(MainGame.SOUTH))
 			posY++;
-		else if (dir == "West")
+		else if (dir.equals(MainGame.WEST))
 			posX--;
-		else if (dir == "East")
+		else if (dir.equals(MainGame.EAST))
 			posX++;
 	}
 
@@ -107,11 +108,11 @@ public abstract class ACharacter extends AMapElement {
 
 	// Characters all have sprites for different directions
 	protected int getSpriteLine() {
-		if (direction == "North")
+		if (direction.equals(MainGame.NORTH))
 			return 0;
-		if (direction == "South")
+		if (direction.equals(MainGame.SOUTH))
 			return 1;
-		if (direction == "West")
+		if (direction.equals(MainGame.WEST))
 			return 2;
 		return 3;
 	}

@@ -64,8 +64,4 @@ public class MainPanelGUI extends JPanel implements IMainPanel {
 		add(choicePanel, constraints);
 
 	}
-
-	private void AssignAllPanels() {
-	}
-
 }

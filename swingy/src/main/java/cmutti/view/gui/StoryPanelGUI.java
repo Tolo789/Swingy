@@ -10,7 +10,7 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
 public class StoryPanelGUI extends JPanel implements IStoryPanel {
-	public JTextArea textArea = null;
+	private JTextArea textArea = null;
 
 	StoryPanelGUI() {
 		textArea = new JTextArea(15, 12);
@@ -30,5 +30,9 @@ public class StoryPanelGUI extends JPanel implements IStoryPanel {
 
 		JScrollPane scrollPane = new JScrollPane(textArea);
 		add(scrollPane, constraints);
+	}
+
+	public void addText(String newText) {
+		textArea.append(newText);
 	}
 }

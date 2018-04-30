@@ -8,6 +8,7 @@ import cmutti.model.heroes.Healer;
 import cmutti.model.heroes.KarateGirl;
 import cmutti.model.heroes.KarateMan;
 import cmutti.view.gui.FrameGUI;
+import cmutti.view.cli.FrameCLI;
 import java.util.Random;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
@@ -26,6 +27,7 @@ public class Swingy
 
 	// UIs
 	FrameGUI guiFrame = null;
+	FrameCLI cliFrame = null;
 
 	private Swingy() {}
 
@@ -41,6 +43,7 @@ public class Swingy
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				guiFrame = new FrameGUI("Swingy");
+				cliFrame = new FrameCLI();
 
 				// TODO: create/load hero
 				hero = new KarateMan("yo2", 1);
@@ -56,6 +59,8 @@ public class Swingy
 	private void StartMainGame() {
 		if (guiFrame != null)
 			guiFrame.StartMainPanel(hero);
+		if (cliFrame != null)
+			cliFrame.StartMainPanel(hero);
 		mainGame = new MainGame(hero);
 	}
 
@@ -63,9 +68,11 @@ public class Swingy
 	public void displayMessage(String message) {
 		message += "\n";
 		if (guiFrame != null) {
-			guiFrame.mainPanel.storyPanel.textArea.append(message);
+			guiFrame.mainPanel.storyPanel.addText(message);
 		}
-		System.out.print(message);
+		if (cliFrame != null) {
+			cliFrame.mainPanel.storyPanel.addText(message);
+		}
 	}
 
 // --- Calls from MainGame controller ------------------------------------------
@@ -83,6 +90,14 @@ public class Swingy
 		// displayMessage("Choose which direction to go to");
 		if (guiFrame != null)
 			guiFrame.mainPanel.choicePanel.showDirectionChoices();
+		if (cliFrame != null)
+			cliFrame.mainPanel.choicePanel.showDirectionChoices();
+	}
+
+	public void stopDirectionChoices() {
+		// displayMessage("Choose which direction to go to");
+		if (cliFrame != null)
+			cliFrame.mainPanel.choicePanel.stopDirectionChoices();
 	}
 
 	public void showFightChoices() {

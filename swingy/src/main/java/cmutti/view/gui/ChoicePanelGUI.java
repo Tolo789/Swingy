@@ -63,7 +63,6 @@ public class ChoicePanelGUI extends JPanel implements IChoicePanel {
 		});
 
 		this.setBorder(BorderFactory.createMatteBorder(3, 0, 0, 0, Color.BLUE));
-		showDirectionChoices();
 	}
 
 	public void showDirectionChoices() {

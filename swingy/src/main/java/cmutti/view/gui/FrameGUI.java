@@ -1,6 +1,5 @@
 package cmutti.view.gui;
 
-import cmutti.model.AMapElement;
 import cmutti.model.heroes.AHero;
 import cmutti.view.IFrame;
 import javax.swing.JFrame;
