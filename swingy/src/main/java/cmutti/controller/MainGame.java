@@ -15,9 +15,11 @@ import cmutti.model.monsters.MonsterFactory;
 import cmutti.view.gui.FrameGUI;
 import java.util.ArrayList;
 import java.util.Iterator;
+import lombok.Getter;
 
 public class MainGame {
-	private enum GameState {
+	public enum GameState {
+		None,
 		Loading,
 		WaitingDirectionChoice,
 		WaitingFightChoice,
@@ -42,8 +44,9 @@ public class MainGame {
 	AMapElement[][] mapElems; // easy way to find elem instead of iterating over list
 	int mapSize;
 	int mapXp;	// calculated on creation of map
-	GameState gameState = GameState.Loading; // used to know if accepting user input
+	@Getter GameState gameState = GameState.Loading; // used to know if accepting user input
 	boolean didFight = false;	// tells if a fight happened this turn
+	boolean didEquip = false;	// tells if a new artifact has been equipped this turn
 	AArtifact artifact = null;
 
 	MainGame(AHero hero) {
@@ -89,21 +92,22 @@ public class MainGame {
 				swingy.displayMessage(""); // add empty line to better see end of turn
 			}
 		}
+		if (didFight || didEquip) {
+			swingy.updateHero();
+		}
 		didFight = false;
+		didEquip = false;
 
 		swingy.updateMap(mapElems);
-		swingy.updateHero();
-		swingy.showDirectionChoices();
 		gameState = GameState.WaitingDirectionChoice;
+		swingy.showDirectionChoices();
 	}
 
 	// Call to move in a direction
 	public void directionChosen(String direction) {
-		System.out.println("Received direction " + direction);
 		if (gameState != GameState.WaitingDirectionChoice) // Prevent spam click of button
 			return;
-		System.out.println("Executing..");
-		swingy.stopDirectionChoices();
+		swingy.stopDirectionChoices(direction);
 		gameState = GameState.Loading;
 
 		if (direction.equals(NORTH)) {
@@ -218,6 +222,7 @@ public class MainGame {
 
 					// Same line for equipping any artifact
 					swingy.displayMessage(artifact.getName() + " equipped !\n");
+					didEquip = true;
 				}
 			}
 		}
@@ -265,6 +270,7 @@ public class MainGame {
 				hero.equipWeapon((AWeapon)artifact);
 
 			swingy.displayMessage(artifact.getName() + " equipped !");
+			didEquip = true;
 		}
 		swingy.displayMessage("");
 
@@ -283,6 +289,7 @@ public class MainGame {
 		}
 		swingy.displayMessage(""); // add empty line to better see end of level
 
+		didFight = true; // since there is an xp gain force update of heroPanels
 		newLevel();
 	}
 

@@ -47,7 +47,7 @@ public class Swingy
 
 				// TODO: create/load hero
 				hero = new KarateMan("yo2", 1);
-				hero = new Backpacker("yo2", 1);
+				// hero = new Backpacker("yo2", 1);
 				// hero = new KarateGirl("yo2", 1);
 				// hero = new Healer("yo2", 1);
 				StartMainGame();
@@ -88,16 +88,19 @@ public class Swingy
 
 	public void showDirectionChoices() {
 		// displayMessage("Choose which direction to go to");
-		if (guiFrame != null)
+		if (guiFrame != null) {
 			guiFrame.mainPanel.choicePanel.showDirectionChoices();
-		if (cliFrame != null)
+		}
+
+		if (cliFrame != null) {
 			cliFrame.mainPanel.choicePanel.showDirectionChoices();
+		}
 	}
 
-	public void stopDirectionChoices() {
+	public void stopDirectionChoices(String direction) {
 		// displayMessage("Choose which direction to go to");
 		if (cliFrame != null)
-			cliFrame.mainPanel.choicePanel.stopDirectionChoices();
+			cliFrame.mainPanel.choicePanel.stopDirectionChoices(direction);
 	}
 
 	public void showFightChoices() {
