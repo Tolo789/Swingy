@@ -10,16 +10,21 @@ public class ChoiceRunnable implements Runnable {
 
 	Scanner scanner = new Scanner(System.in);
 	String answer = null;
+	boolean firstRun = true;
 
 	public void run() {
 		do {
 			try {
+				firstRun = true;
 				do {
 					while (!ChoicePanelCLI.waitingChoice) {
 						Thread.sleep(100);
 					}
 
-					ChoicePanelCLI.printLegend();
+					if (firstRun)
+						firstRun = false;
+					else
+						ChoicePanelCLI.printLegend();
 					answer = scanner.nextLine();
 				} while (!isValidAnswer());
 
@@ -37,9 +42,17 @@ public class ChoiceRunnable implements Runnable {
 		switch (swingy.getMainGame().getGameState()) {
 			case WaitingDirectionChoice:
 				for (int i = 0; i < MainGame.directions.length; i++) {
-					if (answer.equals(MainGame.directions[i]))
+					if (answer.equals(i + ""))
 						return true;
 				}
+				return false;
+			case WaitingFightChoice:
+				if (answer.equals("1") || answer.equals("2"))
+					return true;
+				return false;
+			case WaitingArtifactChoice:
+				if (answer.equals("1") || answer.equals("2"))
+					return true;
 				return false;
 			default:
 				return true;
@@ -52,7 +65,13 @@ public class ChoiceRunnable implements Runnable {
 
 		switch (swingy.getMainGame().getGameState()) {
 			case WaitingDirectionChoice:
-				swingy.getMainGame().directionChosen(answer);
+				swingy.getMainGame().directionChosen(Integer.parseInt(answer));
+				break;
+			case WaitingFightChoice:
+				swingy.getMainGame().fightDecision(answer.equals("1"));
+				break;
+			case WaitingArtifactChoice:
+				swingy.getMainGame().artifactDecision(answer.equals("1"));
 				break;
 			default:
 				break;

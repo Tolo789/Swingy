@@ -7,7 +7,7 @@ import cmutti.view.cli.runnables.ChoiceRunnable;
 
 public class ChoicePanelCLI implements IChoicePanel {
 	public static boolean waitingChoice = false;
-	public static boolean inputByCLI = true;
+	public static boolean inputByCLI = false;
 	private static Swingy swingy = Swingy.getInstance();
 
 	Thread choiceThread = null;
@@ -19,21 +19,28 @@ public class ChoicePanelCLI implements IChoicePanel {
 
 	public static void printLegend() {
 		if (swingy.getMainGame() == null) {
+			System.out.println("Main game not ready yet");
 			return;
 		}
 
 		String legend = "";
 		switch (swingy.getMainGame().getGameState()) {
 			case WaitingDirectionChoice:
-				legend = "Choose direction: (";
+				legend = "Choose direction: ";
 				for (int i = 0; i < MainGame.directions.length; i++) {
 					if (i != 0)
 						legend += ", ";
-					legend += MainGame.directions[i];
+					legend += i + " for " + MainGame.directions[i];
 				}
-				legend += ")";
+				break;
+			case WaitingFightChoice:
+				legend = "1 for Fight, 2 for Flee";
+				break;
+			case WaitingArtifactChoice:
+				legend = "1 to Equip new, 2 to Keep old";
 				break;
 			default:
+				legend = "You missed smth..";
 				break;
 		}
 
@@ -44,27 +51,45 @@ public class ChoicePanelCLI implements IChoicePanel {
 	public void showDirectionChoices() {
 		waitingChoice = true;
 
-		if (!inputByCLI) {
-			printLegend();
-		}
+		printLegend();
 		inputByCLI = false;
 	}
 
-	public void stopDirectionChoices(String direction) {
+	public void stopDirectionChoice(int choice) {
 		waitingChoice = false;
 		if (!inputByCLI) {
-			System.out.println(direction);
+			System.out.println(choice);
 		}
 		System.out.println("");
 	}
 
 	public void showFightChoices() {
-		System.out.println("Fight or flee ?");
-		// 		swingy.getMainGame().fightDecision(false);
+		waitingChoice = true;
+
+		printLegend();
+		inputByCLI = false;
+	}
+
+	public void stopFightChoice(String choice) {
+		waitingChoice = false;
+		if (!inputByCLI) {
+			System.out.println(choice);
+		}
+		System.out.println("");
 	}
 
 	public void showArtifactChoices() {
-		System.out.println("Equip or cancel ?");
-		// 		swingy.getMainGame().artifactDecision(false);
+		waitingChoice = true;
+
+		printLegend();
+		inputByCLI = false;
+	}
+
+	public void stopArtifactChoice(String choice) {
+		waitingChoice = false;
+		if (!inputByCLI) {
+			System.out.println(choice);
+		}
+		System.out.println("");
 	}
 }

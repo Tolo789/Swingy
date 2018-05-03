@@ -32,7 +32,7 @@ public class ChoicePanelGUI extends JPanel implements IChoicePanel {
 
 		confirmButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				swingy.getMainGame().directionChosen(dirCombo.getSelectedItem().toString());
+				swingy.getMainGame().directionChosen(dirCombo.getSelectedIndex());
 			}
 		});
 

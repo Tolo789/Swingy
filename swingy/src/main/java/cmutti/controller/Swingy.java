@@ -62,6 +62,7 @@ public class Swingy
 		if (cliFrame != null)
 			cliFrame.StartMainPanel(hero);
 		mainGame = new MainGame(hero);
+		mainGame.start();
 	}
 
 // --- Calls from all controllers ----------------------------------------------
@@ -84,6 +85,8 @@ public class Swingy
 	public void updateHero() {
 		if (guiFrame != null)
 			guiFrame.mainPanel.heroPanel.update();
+		if (cliFrame != null)
+			cliFrame.mainPanel.heroPanel.update();
 	}
 
 	public void showDirectionChoices() {
@@ -97,22 +100,35 @@ public class Swingy
 		}
 	}
 
-	public void stopDirectionChoices(String direction) {
-		// displayMessage("Choose which direction to go to");
+	public void stopDirectionChoices(int dirIdx) {
 		if (cliFrame != null)
-			cliFrame.mainPanel.choicePanel.stopDirectionChoices(direction);
+			cliFrame.mainPanel.choicePanel.stopDirectionChoice(dirIdx);
 	}
 
 	public void showFightChoices() {
 		displayMessage("Fight or Flee ?");
 		if (guiFrame != null)
 			guiFrame.mainPanel.choicePanel.showFightChoices();
+		if (cliFrame != null)
+			cliFrame.mainPanel.choicePanel.showFightChoices();
+	}
+
+	public void stopFightChoices(String choice) {
+		if (cliFrame != null)
+			cliFrame.mainPanel.choicePanel.stopFightChoice(choice);
 	}
 
 	public void showArtifactChoices(String artifactType) {
-		displayMessage("Equip found " + artifactType + " or keep already equipped one ?");
+		displayMessage("Equip found " + artifactType + " ?");
 		if (guiFrame != null)
 			guiFrame.mainPanel.choicePanel.showArtifactChoices();
+		if (cliFrame != null)
+			cliFrame.mainPanel.choicePanel.showArtifactChoices();
+	}
+
+	public void stopArtifactChoices(String choice) {
+		if (cliFrame != null)
+			cliFrame.mainPanel.choicePanel.stopArtifactChoice(choice);
 	}
 
 	// Entry point of application

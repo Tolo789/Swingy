@@ -51,7 +51,9 @@ public class MainGame {
 
 	MainGame(AHero hero) {
 		this.hero = hero;
+	}
 
+	public void start() {
 		newLevel();
 	}
 
@@ -104,11 +106,12 @@ public class MainGame {
 	}
 
 	// Call to move in a direction
-	public void directionChosen(String direction) {
+	public void directionChosen(int dirIdx) {
 		if (gameState != GameState.WaitingDirectionChoice) // Prevent spam click of button
 			return;
-		swingy.stopDirectionChoices(direction);
 		gameState = GameState.Loading;
+		swingy.stopDirectionChoices(dirIdx);
+		String direction = directions[dirIdx];
 
 		if (direction.equals(NORTH)) {
 			if (hero.getPosY() == 0) {
@@ -151,8 +154,8 @@ public class MainGame {
 			if (elem instanceof AMonster) {
 				// Ask player if fight or flee, then wait for respone
 				swingy.displayMessage("You encountered a " + elem.getName() + " lvl." + ((AMonster)elem).getLevel());
+				gameState = GameState.WaitingFightChoice;
 				swingy.showFightChoices();
-				gameState = GameState.WaitingDirectionChoice;
 				return;
 			}
 
@@ -170,8 +173,9 @@ public class MainGame {
 	}
 
 	public void fightDecision(boolean doFight) {
-		if (gameState != GameState.WaitingDirectionChoice)	// Prevent spam click of button
+		if (gameState != GameState.WaitingFightChoice)	// Prevent spam click of button
 			return;
+		swingy.stopFightChoices(doFight ? "1" : "2");
 		gameState = GameState.Loading;
 
 		if (doFight) {
@@ -194,8 +198,8 @@ public class MainGame {
 							hero.equipArmor((AArmor)artifact);
 						}
 						else {
-							swingy.showArtifactChoices("armor");
 							gameState = GameState.WaitingArtifactChoice;
+							swingy.showArtifactChoices("armor");
 							return;
 						}
 					}
@@ -204,8 +208,8 @@ public class MainGame {
 							hero.equipHelm((AHelm)artifact);
 						}
 						else {
-							swingy.showArtifactChoices("helm");
 							gameState = GameState.WaitingArtifactChoice;
+							swingy.showArtifactChoices("helm");
 							return;
 						}
 					}
@@ -214,8 +218,8 @@ public class MainGame {
 							hero.equipWeapon((AWeapon)artifact);
 						}
 						else {
-							swingy.showArtifactChoices("weapon");
 							gameState = GameState.WaitingArtifactChoice;
+							swingy.showArtifactChoices("weapon");
 							return;
 						}
 					}
@@ -259,6 +263,7 @@ public class MainGame {
 	public void artifactDecision(boolean doChange) {
 		if (gameState != GameState.WaitingArtifactChoice)	// Prevent spam click of button
 			return;
+		swingy.stopArtifactChoices(doChange ? "1" : "2");
 		gameState = GameState.Loading;
 
 		if (doChange) {
