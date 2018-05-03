@@ -45,6 +45,7 @@ public abstract class AHero extends ACharacter {
 	// Config of heroes
 	protected abstract String getMainImg();
 	public abstract HeroPassive getPassive();
+	public abstract String getClassDescription();
 
 	// Define "standard" hero stats
 	public int getBaseXp() {

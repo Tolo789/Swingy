@@ -20,20 +20,16 @@ public class Swingy
 
 	// Game vars
 	public Random rand = new Random(); // every part of the game should use this rand
-	AHero hero = null;
 
 	// Child controllers
+	@Getter private HeroSelector heroSelector = null;
 	@Getter private MainGame mainGame = null;
 
-	// UIs
+	// UIs entry points
 	FrameGUI guiFrame = null;
 	FrameCLI cliFrame = null;
 
 	private Swingy() {}
-
-	public static Swingy getInstance() {
-		return Swingy.instance;
-	}
 
 	// First function to be called, load interfaces and start playing
 	public void startGame(String[] args) {
@@ -46,22 +42,19 @@ public class Swingy
 				cliFrame = new FrameCLI();
 
 				// TODO: create/load hero
-				hero = new KarateMan("yo2", 1);
-				// hero = new Backpacker("yo2", 1);
-				// hero = new KarateGirl("yo2", 1);
-				// hero = new Healer("yo2", 1);
-				StartMainGame();
+				heroSelector = new HeroSelector(guiFrame, cliFrame);
+				heroSelector.start();
 			}
 		});
 	}
 
-// --- Calls from CharSelect controller ------------------------------------------
-	private void StartMainGame() {
-		if (guiFrame != null)
-			guiFrame.StartMainPanel(hero);
-		if (cliFrame != null)
-			cliFrame.StartMainPanel(hero);
+// --- End of HeroSelector controller ----------------------------------------
+	public void startMainGame(AHero hero) {
 		mainGame = new MainGame(hero);
+		if (guiFrame != null)
+			guiFrame.startMainPanel(hero);
+		if (cliFrame != null)
+			cliFrame.startMainPanel(hero);
 		mainGame.start();
 	}
 
@@ -131,7 +124,7 @@ public class Swingy
 			cliFrame.mainPanel.choicePanel.stopArtifactChoice(choice);
 	}
 
-	// Entry point of application
+// --- Entry point of application ----------------------------------------------
 	public static void main(String[] args)
 	{
 		Swingy.getInstance().startGame(args);

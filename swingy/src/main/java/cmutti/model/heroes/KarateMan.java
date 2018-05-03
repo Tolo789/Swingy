@@ -18,6 +18,12 @@ public class KarateMan extends AHero {
 		return HeroPassive.StonesBreaker;
 	}
 
+	public String getClassDescription() {
+		String description = "KarateMen are very confident on their unmatched Attack and strong Defense.";
+		description += " Moreover, they are so strong and determined that they can break rocks that are on their way.";
+		return description;
+	}
+
 	// Only change growth stats which are differnt for this class
 	public int getGrowthAttack() {
 		return super.getGrowthAttack() + 2;

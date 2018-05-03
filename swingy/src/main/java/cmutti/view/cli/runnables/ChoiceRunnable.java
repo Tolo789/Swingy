@@ -41,7 +41,7 @@ public class ChoiceRunnable implements Runnable {
 
 		switch (swingy.getMainGame().getGameState()) {
 			case WaitingDirectionChoice:
-				for (int i = 0; i < MainGame.directions.length; i++) {
+				for (int i = MainGame.directions.length; i > 0; i--) {
 					if (answer.equals(i + ""))
 						return true;
 				}
@@ -65,7 +65,7 @@ public class ChoiceRunnable implements Runnable {
 
 		switch (swingy.getMainGame().getGameState()) {
 			case WaitingDirectionChoice:
-				swingy.getMainGame().directionChosen(Integer.parseInt(answer));
+				swingy.getMainGame().directionChosen(Integer.parseInt(answer) - 1);
 				break;
 			case WaitingFightChoice:
 				swingy.getMainGame().fightDecision(answer.equals("1"));

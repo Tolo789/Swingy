@@ -9,7 +9,7 @@ public class FrameCLI implements IFrame {
 	public FrameCLI() {
 	}
 
-	public void StartMainPanel(AHero hero) {
+	public void startMainPanel(AHero hero) {
 		mainPanel = new MainPanelCLI(hero);
 	}
 }

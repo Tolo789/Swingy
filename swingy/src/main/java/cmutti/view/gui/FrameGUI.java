@@ -2,9 +2,11 @@ package cmutti.view.gui;
 
 import cmutti.model.heroes.AHero;
 import cmutti.view.IFrame;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 
 public class FrameGUI extends JFrame implements IFrame {
+	public SelectionPanelGUI selectionPanel = null;
 	public MainPanelGUI mainPanel = null;
 	LoadingGUI loadingPanel = null;
 
@@ -22,7 +24,17 @@ public class FrameGUI extends JFrame implements IFrame {
 		loadingPanel = new LoadingGUI();
 	}
 
-	public void StartMainPanel(AHero hero) {
+	public void startSelectionPanel() {
+		add(loadingPanel);
+
+		selectionPanel = new SelectionPanelGUI();
+		add(selectionPanel);
+
+		remove(loadingPanel);
+	}
+
+	public void startMainPanel(AHero hero) {
+		remove(selectionPanel);
 		add(loadingPanel);
 
 		mainPanel = new MainPanelGUI(hero);

@@ -30,7 +30,7 @@ public class ChoicePanelCLI implements IChoicePanel {
 				for (int i = 0; i < MainGame.directions.length; i++) {
 					if (i != 0)
 						legend += ", ";
-					legend += i + " for " + MainGame.directions[i];
+					legend += (i + 1) + " for " + MainGame.directions[i];
 				}
 				break;
 			case WaitingFightChoice:
@@ -58,7 +58,7 @@ public class ChoicePanelCLI implements IChoicePanel {
 	public void stopDirectionChoice(int choice) {
 		waitingChoice = false;
 		if (!inputByCLI) {
-			System.out.println(choice);
+			System.out.println(choice + 1);
 		}
 		System.out.println("");
 	}

@@ -18,6 +18,12 @@ public class KarateGirl extends AHero {
 		return HeroPassive.ArtfulDodger;
 	}
 
+	public String getClassDescription() {
+		String description = "KarateGirls have an incredible Agility and a good Attack too.";
+		description += " Their super-human reflexes enables them to flee more easily from enemies and even to dodge some of their sudden attacks.";
+		return description;
+	}
+
 	// Only change growth stats which are differnt for this class
 	public int getGrowthAttack() {
 		return super.getGrowthAttack() + 1;

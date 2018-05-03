@@ -18,6 +18,12 @@ public class Backpacker extends AHero {
 		return HeroPassive.EfficientTraveller;
 	}
 
+	public String getClassDescription() {
+		String description = "Backpackers get more Xp than average when they finish a level.";
+		description += " Moreover their great Defense and enhanced Hp enable them to survive longer.";
+		return description;
+	}
+
 	// Only change growth stats which are differnt for this class
 	public int getGrowthDefense() {
 		return super.getGrowthDefense() + 2;

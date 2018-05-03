@@ -31,6 +31,8 @@ public class HeroPanelGUI extends JPanel implements IHeroPanel {
 
 	HeroPanelGUI(AHero hero) {
 		this.hero = hero;
+		if (hero == null)
+			return;
 
 		setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -80,7 +82,10 @@ public class HeroPanelGUI extends JPanel implements IHeroPanel {
 	}
 
 	public void update() {
-		level.setText("Lvl.: " + hero.getLevel());
+		if (hero == null)
+			return;
+
+		name.setText(hero.getName() + " Lv." + hero.getLevel());
 		experience.setText("Xp: " + hero.getXp() + "/" + hero.getNeededXp());
 		life.setText("Hp: " + hero.getHp() + "/" + hero.getMaxHp());
 		attack.setText("Attack: " + hero.getAttack());
