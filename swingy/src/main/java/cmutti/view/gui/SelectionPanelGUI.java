@@ -5,6 +5,7 @@ import cmutti.controller.Swingy;
 import cmutti.model.heroes.AHero;
 import cmutti.view.ISelectionPanel;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -46,6 +47,8 @@ public class SelectionPanelGUI extends JPanel implements ISelectionPanel {
 
 		confirmButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (heroName.getText().equals(""))
+					return;
 				Swingy.getInstance().getHeroSelector().confirmSelection(heroName.getText());
 			}
 		});
@@ -70,6 +73,8 @@ public class SelectionPanelGUI extends JPanel implements ISelectionPanel {
 		titleContainer.setPreferredSize(new Dimension(1100, 100));
 		titleContainer.setMinimumSize(new Dimension(1100, 100));
 		titleContainer.add(title);
+		Font font = title.getFont();
+		title.setFont(font.deriveFont(font.getStyle() | Font.BOLD));
 		add(titleContainer, constraints);
 
 		comboContainer = new JPanel();

@@ -17,9 +17,8 @@ public class ChoiceRunnable implements Runnable {
 	}
 
 	public void run() {
-		do {
-			try {
-				firstRun = true;
+		try {
+			do {
 				do {
 					while (!choicePanel.isWaitingChoice()) {
 						Thread.sleep(100);
@@ -27,14 +26,15 @@ public class ChoiceRunnable implements Runnable {
 
 					if (firstRun)
 						firstRun = false;
-					else
+					else {
 						choicePanel.printLegend();
+					}
 					answer = scanner.nextLine();
 				} while (!choicePanel.isValidAnswer(answer));
 
-				choicePanel.redirectAnswer(answer);
-			}
-			catch (Exception e) {}
-		} while (!Thread.currentThread().isInterrupted());
+				firstRun = choicePanel.redirectAnswer(answer);
+			} while (!Thread.currentThread().isInterrupted());
+		}
+		catch (Exception e) {}
 	}
 }

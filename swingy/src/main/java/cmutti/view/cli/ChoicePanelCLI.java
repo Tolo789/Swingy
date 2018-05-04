@@ -34,7 +34,9 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 
 		if (selectingHero) {
 			if (needConfirm) {
-				legend = "1 to set Name and Confirm, 2 to see Other Choices";
+				legend = "Type any";
+				legend += (creatingNew) ? " name" : "thing";
+				legend += " to Confirm, empty line to Change";
 			}
 			else {
 				for (int i = 0; i < selectionLabels.length; i++) {
@@ -42,14 +44,14 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 						legend += ", ";
 					legend += (i + 1) + " for " + selectionLabels[i];
 				}
-			}
 
-			legend += ", 0 to ";
-			if (!creatingNew) {
-				legend += "Create New Hero";
-			}
-			else {
-				legend += "Load Saved Heroes";
+				legend += ", 0 to ";
+				if (!creatingNew) {
+					legend += "Create New Hero";
+				}
+				else {
+					legend += "Load Saved Heroes";
+				}
 			}
 		}
 		else if (swingy.getMainGame() != null) {
@@ -80,13 +82,12 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 
 // --- Validation logic --------------------------------------------------------
 	public boolean isValidAnswer(String answer) {
-		if (!waitingChoice)
+		if (!waitingChoice || answer == null)
 			return false;
 
 		if (selectingHero) {
 			if (needConfirm) {
-				if (answer.equals("0") || answer.equals("1") || answer.equals("2"))
-					return true;
+				return true;
 			}
 			else {
 				for (int i = 0; i <= selectionLabels.length; i++) {
@@ -119,23 +120,24 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 	}
 
 // --- Redirect logic ----------------------------------------------------------
-	public void redirectAnswer(String answer) {
-		if (!waitingChoice)
-			return;
+	public boolean redirectAnswer(String answer) {
+		if (!waitingChoice || answer == null)
+			return false;
 
 		inputByCLI = true;
 		if (selectingHero) {
-			if (answer.equals("0"))
-				swingy.getHeroSelector().toggleMode();
-			else {
-				if (needConfirm) {
-					// TODO: handle name
-					if (answer.equals("1"))
-						swingy.getHeroSelector().confirmSelection("Noob");
-					else{
-						// TODO
-					}
+			if (needConfirm) {
+				if (answer.equals("")) {
+					needConfirm = false;
+					inputByCLI = false;
+					return false;
 				}
+				else
+					swingy.getHeroSelector().confirmSelection(answer);
+			}
+			else {
+				if (answer.equals("0"))
+					swingy.getHeroSelector().toggleMode();
 				else {
 					swingy.getHeroSelector().changedSelectedItem(Integer.parseInt(answer) - 1);
 				}
@@ -154,9 +156,11 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 					break;
 				default:
 					inputByCLI = false;
-					break;
+					return false;
 			}
 		}
+
+		return true;
 	}
 
 // --- Hero selector funcs -----------------------------------------------------
@@ -178,6 +182,11 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 	}
 
 	public void updateHeroSelected(int heroIdx, AHero hero) {
+		if (needConfirm) {
+			System.out.println("");
+			needConfirm = false;
+			printLegend();
+		}
 		if (!inputByCLI)
 			System.out.println(heroIdx + 1);
 

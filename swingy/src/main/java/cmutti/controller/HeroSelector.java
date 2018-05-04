@@ -150,7 +150,7 @@ public class HeroSelector {
 		// hero = new KarateGirl("yo2", 10);
 		// hero = new Healer("yo2", 1);
 		if (cliFrame != null)
-			System.out.println("Hero created !");
+			System.out.println("\nStarting game with following Hero:");
 		swingy.startMainGame(hero);
 	}
 }
