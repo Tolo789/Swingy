@@ -63,6 +63,7 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 							legend += ", ";
 						legend += (i + 1) + " for " + MainGame.directions[i];
 					}
+					legend += ", 0 to Exit Game";
 					break;
 				case WaitingFightChoice:
 					legend = "1 for Fight, 2 for Flee";
@@ -95,23 +96,23 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 						return true;
 				}
 			}
+			System.out.println("ERROR: Must give a number between '0' and " + selectionLabels.length + "'");
 			return false;
 		}
 		else {
 			switch (swingy.getMainGame().getGameState()) {
 				case WaitingDirectionChoice:
-					for (int i = MainGame.directions.length; i > 0; i--) {
+					for (int i = 0; i >= MainGame.directions.length; i++) {
 						if (answer.equals(i + ""))
 							return true;
 					}
+					System.out.println("ERROR: Must give a number between '0' and " + MainGame.directions.length + "'");
 					return false;
 				case WaitingFightChoice:
-					if (answer.equals("1") || answer.equals("2"))
-						return true;
-					return false;
 				case WaitingArtifactChoice:
 					if (answer.equals("1") || answer.equals("2"))
 						return true;
+					System.out.println("ERROR: Must give '1' or '2'");
 					return false;
 				default:
 					return false;
@@ -147,7 +148,10 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 		else {
 			switch (swingy.getMainGame().getGameState()) {
 				case WaitingDirectionChoice:
-					swingy.getMainGame().directionChosen(Integer.parseInt(answer) - 1);
+					if (answer.equals("0"))
+						swingy.endGame();
+					else
+						swingy.getMainGame().directionChosen(Integer.parseInt(answer) - 1);
 					break;
 				case WaitingFightChoice:
 					swingy.getMainGame().fightDecision(answer.equals("1"));

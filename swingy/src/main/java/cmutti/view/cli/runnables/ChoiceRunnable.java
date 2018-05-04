@@ -30,10 +30,12 @@ public class ChoiceRunnable implements Runnable {
 						choicePanel.printLegend();
 					}
 					answer = scanner.nextLine();
+					if (Swingy.getInstance().isGameEnded())
+						return;
 				} while (!choicePanel.isValidAnswer(answer));
 
 				firstRun = choicePanel.redirectAnswer(answer);
-			} while (!Thread.currentThread().isInterrupted());
+			} while (!Thread.currentThread().isInterrupted() && !Swingy.getInstance().isGameEnded());
 		}
 		catch (Exception e) {}
 	}

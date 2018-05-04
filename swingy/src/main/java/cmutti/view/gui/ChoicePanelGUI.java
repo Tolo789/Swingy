@@ -28,6 +28,8 @@ public class ChoicePanelGUI extends JPanel implements IChoicePanel {
 	JButton equipButton = new JButton("Equip");
 	JButton cancelButton = new JButton("Cancel");
 
+	JButton exitButton = new JButton("Exit Game");
+
 	ChoicePanelGUI() {
 
 		confirmButton.addActionListener(new ActionListener() {
@@ -55,10 +57,15 @@ public class ChoicePanelGUI extends JPanel implements IChoicePanel {
 			}
 		});
 
-
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				swingy.getMainGame().artifactDecision(false);
+			}
+		});
+
+		exitButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				swingy.endGame();
 			}
 		});
 
@@ -71,6 +78,7 @@ public class ChoicePanelGUI extends JPanel implements IChoicePanel {
 		// add(label);
 		add(dirCombo);
 		add(confirmButton);
+		add(exitButton);
 
 		revalidate();
 		repaint();

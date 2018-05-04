@@ -20,6 +20,7 @@ public class Swingy
 	@Getter private static Swingy instance = new Swingy(); // Singleton for easier function calling from views
 
 	// Game vars
+	@Getter boolean gameEnded = false;
 	int uiToLoad = 0;
 	public Random rand = new Random(); // every part of the game should use this rand
 
@@ -99,6 +100,7 @@ public class Swingy
 	public void startMainGame(AHero hero) {
 		mainGame = new MainGame(hero);
 		final AHero gameHero = hero;
+
 		if (guiFrame != null) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
@@ -194,6 +196,11 @@ public class Swingy
 	public void stopArtifactChoices(String choice) {
 		if (cliFrame != null)
 			cliFrame.choicePanel.stopArtifactChoice(choice);
+	}
+
+	public void endGame() {
+		gameEnded = true;
+		System.out.println("Saving data");
 	}
 
 // --- Entry point of application ----------------------------------------------
