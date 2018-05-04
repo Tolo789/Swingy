@@ -156,16 +156,18 @@ public class SelectionPanelGUI extends JPanel implements ISelectionPanel {
 		typesCombo.addItemListener(comboChangeAction);
 		comboContainer.add(typesCombo);
 
-		updateHeroSelected(hero);
+		updateHeroSelected(0, hero);
 
 		revalidate();
 		repaint();
 	}
 
-	public void updateHeroSelected(AHero hero) {
+	public void updateHeroSelected(int heroIdx, AHero hero) {
 		if (heroPanel != null) {
 			remove(heroPanel);
 		}
+
+		typesCombo.setSelectedIndex(heroIdx);
 
 		String html = "<html><body style='width: 100%'>";
 		heroDescription.setText(html + hero.getClassDescription());

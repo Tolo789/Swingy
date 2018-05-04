@@ -61,7 +61,6 @@ public class Swingy
 			});
 		}
 		if (cliFrame != null) {
-			ChoicePanelCLI.selectingHero = false;
 			cliFrame.startMainPanel(hero);
 		}
 		mainGame.start();

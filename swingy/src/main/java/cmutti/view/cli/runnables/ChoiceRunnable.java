@@ -6,28 +6,33 @@ import cmutti.view.cli.ChoicePanelCLI;
 import java.util.Scanner;
 
 public class ChoiceRunnable implements Runnable {
+	ChoicePanelCLI choicePanel = null;
 	Scanner scanner = new Scanner(System.in);
 	String answer = null;
 	boolean firstRun = true;
+
+	public ChoiceRunnable (ChoicePanelCLI choicePanel) {
+		super();
+		this.choicePanel = choicePanel;
+	}
 
 	public void run() {
 		do {
 			try {
 				firstRun = true;
 				do {
-					while (!ChoicePanelCLI.waitingChoice) {
+					while (!choicePanel.isWaitingChoice()) {
 						Thread.sleep(100);
 					}
 
 					if (firstRun)
 						firstRun = false;
 					else
-						ChoicePanelCLI.printLegend();
+						choicePanel.printLegend();
 					answer = scanner.nextLine();
-				} while (!ChoicePanelCLI.isValidAnswer(answer));
+				} while (!choicePanel.isValidAnswer(answer));
 
-				ChoicePanelCLI.inputByCLI = true;
-				ChoicePanelCLI.redirectAnswer(answer);
+				choicePanel.redirectAnswer(answer);
 			}
 			catch (Exception e) {}
 		} while (!Thread.currentThread().isInterrupted());

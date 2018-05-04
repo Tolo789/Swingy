@@ -2,10 +2,10 @@ package cmutti.controller;
 
 import cmutti.model.heroes.*;
 import cmutti.model.heroes.AHero;
-import cmutti.model.heroes.AHero;
 import cmutti.view.cli.FrameCLI;
 import cmutti.view.gui.FrameGUI;
 import java.util.ArrayList;
+import javax.swing.SwingUtilities;
 
 public class HeroSelector {
 	static ArrayList<Class<? extends AHero>> heroTypes;
@@ -76,12 +76,19 @@ public class HeroSelector {
 		}
 
 		if (creatingNew) {
-			if (guiFrame != null)
-				guiFrame.selectionPanel.updateHeroSelected(hero);
+			if (guiFrame != null) {
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						guiFrame.selectionPanel.updateHeroSelected(activeIdx, hero);
+					}
+				});
+			}
+			if (cliFrame != null)
+				cliFrame.choicePanel.updateHeroSelected(activeIdx, hero);
 
 		}
 		else {
-
+			// TODO
 		}
 	}
 
@@ -103,10 +110,20 @@ public class HeroSelector {
 		}
 
 		// Specific changes
-		String[] comboLabels = (creatingNew) ? heroTypesLegend : savedHeroesLegend;
+		final String[] comboLabels = (creatingNew) ? heroTypesLegend : savedHeroesLegend;
+		final boolean isCreatingNew = creatingNew;
+		final AHero selectedHero = hero;
 
-		if (guiFrame != null)
-			guiFrame.selectionPanel.updateSelectionMode(comboLabels, creatingNew, hero);
+		if (guiFrame != null) {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					guiFrame.selectionPanel.updateSelectionMode(comboLabels, isCreatingNew, selectedHero);
+				}
+			});
+		}
+		if (cliFrame != null) {
+			cliFrame.choicePanel.updateSelectionMode(comboLabels, creatingNew, hero);
+		}
 	}
 
 	private boolean createHero(String name) {
@@ -132,6 +149,8 @@ public class HeroSelector {
 		// hero = new Backpacker("yo2", 1);
 		// hero = new KarateGirl("yo2", 10);
 		// hero = new Healer("yo2", 1);
+		if (cliFrame != null)
+			System.out.println("Hero created !");
 		swingy.startMainGame(hero);
 	}
 }

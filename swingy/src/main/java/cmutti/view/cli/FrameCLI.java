@@ -13,5 +13,6 @@ public class FrameCLI implements IFrame {
 
 	public void startMainPanel(AHero hero) {
 		mainPanel = new MainPanelCLI(hero);
+		choicePanel.mainGameStarted();
 	}
 }
