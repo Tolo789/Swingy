@@ -2,12 +2,15 @@ package cmutti.view.cli;
 
 import cmutti.controller.MainGame;
 import cmutti.controller.Swingy;
+import cmutti.model.heroes.AHero;
 import cmutti.view.IChoicePanel;
+import cmutti.view.ISelectionPanel;
 import cmutti.view.cli.runnables.ChoiceRunnable;
 
-public class ChoicePanelCLI implements IChoicePanel {
+public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 	public static boolean waitingChoice = false;
 	public static boolean inputByCLI = false;
+	public static boolean selectingHero = true;
 	private static Swingy swingy = Swingy.getInstance();
 
 	Thread choiceThread = null;
@@ -17,6 +20,7 @@ public class ChoicePanelCLI implements IChoicePanel {
 		choiceThread.start();
 	}
 
+// --- Legend llogic -----------------------------------------------------------
 	public static void printLegend() {
 		if (swingy.getMainGame() == null) {
 			System.out.println("Main game not ready yet");
@@ -48,10 +52,64 @@ public class ChoicePanelCLI implements IChoicePanel {
 			System.out.println(legend);
 	}
 
-	public void showDirectionChoices() {
-		waitingChoice = true;
+// --- Validation logic --------------------------------------------------------
+	public static boolean isValidAnswer(String answer) {
+		if (!waitingChoice)
+			return false;
 
+		switch (swingy.getMainGame().getGameState()) {
+			case WaitingDirectionChoice:
+				for (int i = MainGame.directions.length; i > 0; i--) {
+					if (answer.equals(i + ""))
+						return true;
+				}
+				return false;
+			case WaitingFightChoice:
+				if (answer.equals("1") || answer.equals("2"))
+					return true;
+				return false;
+			case WaitingArtifactChoice:
+				if (answer.equals("1") || answer.equals("2"))
+					return true;
+				return false;
+			default:
+				return true;
+		}
+	}
+
+// --- Redirect logic ----------------------------------------------------------
+	public static void redirectAnswer(String answer) {
+		if (!waitingChoice)
+			return;
+
+		switch (swingy.getMainGame().getGameState()) {
+			case WaitingDirectionChoice:
+				swingy.getMainGame().directionChosen(Integer.parseInt(answer) - 1);
+				break;
+			case WaitingFightChoice:
+				swingy.getMainGame().fightDecision(answer.equals("1"));
+				break;
+			case WaitingArtifactChoice:
+				swingy.getMainGame().artifactDecision(answer.equals("1"));
+				break;
+			default:
+				break;
+		}
+	}
+
+// --- Hero selector funcs -----------------------------------------------------
+	public void updateSelectionMode(String[] comboLabels, boolean creatingNew, AHero hero) {
+
+	}
+
+	public void updateHeroSelected(AHero hero) {
+
+	}
+
+// --- Main game funcs ---------------------------------------------------------
+	public void showDirectionChoices() {
 		printLegend();
+		waitingChoice = true;
 		inputByCLI = false;
 	}
 
@@ -64,9 +122,8 @@ public class ChoicePanelCLI implements IChoicePanel {
 	}
 
 	public void showFightChoices() {
-		waitingChoice = true;
-
 		printLegend();
+		waitingChoice = true;
 		inputByCLI = false;
 	}
 
@@ -79,10 +136,9 @@ public class ChoicePanelCLI implements IChoicePanel {
 	}
 
 	public void showArtifactChoices() {
-		waitingChoice = true;
-
 		printLegend();
 		inputByCLI = false;
+		waitingChoice = true;
 	}
 
 	public void stopArtifactChoice(String choice) {

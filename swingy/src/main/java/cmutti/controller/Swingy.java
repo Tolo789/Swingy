@@ -7,8 +7,9 @@ import cmutti.model.heroes.Backpacker;
 import cmutti.model.heroes.Healer;
 import cmutti.model.heroes.KarateGirl;
 import cmutti.model.heroes.KarateMan;
-import cmutti.view.gui.FrameGUI;
+import cmutti.view.cli.ChoicePanelCLI;
 import cmutti.view.cli.FrameCLI;
+import cmutti.view.gui.FrameGUI;
 import java.util.Random;
 import javax.swing.SwingUtilities;
 import lombok.Getter;
@@ -48,28 +49,40 @@ public class Swingy
 		});
 	}
 
-// --- End of HeroSelector controller ----------------------------------------
+// --- End of HeroSelector controller ------------------------------------------
 	public void startMainGame(AHero hero) {
 		mainGame = new MainGame(hero);
-		if (guiFrame != null)
-			guiFrame.startMainPanel(hero);
-		if (cliFrame != null)
+		final AHero gameHero = hero;
+		if (guiFrame != null) {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					guiFrame.startMainPanel(gameHero);
+				}
+			});
+		}
+		if (cliFrame != null) {
+			ChoicePanelCLI.selectingHero = false;
 			cliFrame.startMainPanel(hero);
+		}
 		mainGame.start();
 	}
 
-// --- Calls from all controllers ----------------------------------------------
+// --- Calls from MainGame controller ------------------------------------------
 	public void displayMessage(String message) {
 		message += "\n";
+		final String toDisplay = message;
 		if (guiFrame != null) {
-			guiFrame.mainPanel.storyPanel.addText(message);
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					guiFrame.mainPanel.storyPanel.addText(toDisplay);
+				}
+			});
 		}
 		if (cliFrame != null) {
 			cliFrame.mainPanel.storyPanel.addText(message);
 		}
 	}
 
-// --- Calls from MainGame controller ------------------------------------------
 	public void updateMap(AMapElement[][] mapElems) {
 		if (guiFrame != null)
 			guiFrame.mainPanel.mapPanel.update(mapElems);
@@ -85,43 +98,57 @@ public class Swingy
 	public void showDirectionChoices() {
 		// displayMessage("Choose which direction to go to");
 		if (guiFrame != null) {
-			guiFrame.mainPanel.choicePanel.showDirectionChoices();
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					guiFrame.mainPanel.choicePanel.showDirectionChoices();
+				}
+			});
 		}
 
 		if (cliFrame != null) {
-			cliFrame.mainPanel.choicePanel.showDirectionChoices();
+			cliFrame.choicePanel.showDirectionChoices();
 		}
 	}
 
 	public void stopDirectionChoices(int dirIdx) {
 		if (cliFrame != null)
-			cliFrame.mainPanel.choicePanel.stopDirectionChoice(dirIdx);
+			cliFrame.choicePanel.stopDirectionChoice(dirIdx);
 	}
 
 	public void showFightChoices() {
 		displayMessage("Fight or Flee ?");
-		if (guiFrame != null)
-			guiFrame.mainPanel.choicePanel.showFightChoices();
+		if (guiFrame != null) {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					guiFrame.mainPanel.choicePanel.showFightChoices();
+				}
+			});
+		}
 		if (cliFrame != null)
-			cliFrame.mainPanel.choicePanel.showFightChoices();
+			cliFrame.choicePanel.showFightChoices();
 	}
 
 	public void stopFightChoices(String choice) {
 		if (cliFrame != null)
-			cliFrame.mainPanel.choicePanel.stopFightChoice(choice);
+			cliFrame.choicePanel.stopFightChoice(choice);
 	}
 
 	public void showArtifactChoices(String artifactType) {
 		displayMessage("Equip found " + artifactType + " ?");
-		if (guiFrame != null)
-			guiFrame.mainPanel.choicePanel.showArtifactChoices();
+		if (guiFrame != null) {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					guiFrame.mainPanel.choicePanel.showArtifactChoices();
+				}
+			});
+		}
 		if (cliFrame != null)
-			cliFrame.mainPanel.choicePanel.showArtifactChoices();
+			cliFrame.choicePanel.showArtifactChoices();
 	}
 
 	public void stopArtifactChoices(String choice) {
 		if (cliFrame != null)
-			cliFrame.mainPanel.choicePanel.stopArtifactChoice(choice);
+			cliFrame.choicePanel.stopArtifactChoice(choice);
 	}
 
 // --- Entry point of application ----------------------------------------------

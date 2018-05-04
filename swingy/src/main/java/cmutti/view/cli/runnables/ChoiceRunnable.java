@@ -6,8 +6,6 @@ import cmutti.view.cli.ChoicePanelCLI;
 import java.util.Scanner;
 
 public class ChoiceRunnable implements Runnable {
-	protected static Swingy swingy = Swingy.getInstance();
-
 	Scanner scanner = new Scanner(System.in);
 	String answer = null;
 	boolean firstRun = true;
@@ -26,55 +24,12 @@ public class ChoiceRunnable implements Runnable {
 					else
 						ChoicePanelCLI.printLegend();
 					answer = scanner.nextLine();
-				} while (!isValidAnswer());
+				} while (!ChoicePanelCLI.isValidAnswer(answer));
 
 				ChoicePanelCLI.inputByCLI = true;
-				redirectAnswer();
+				ChoicePanelCLI.redirectAnswer(answer);
 			}
 			catch (Exception e) {}
 		} while (!Thread.currentThread().isInterrupted());
-	}
-
-	boolean isValidAnswer() {
-		if (!ChoicePanelCLI.waitingChoice)
-			return false;
-
-		switch (swingy.getMainGame().getGameState()) {
-			case WaitingDirectionChoice:
-				for (int i = MainGame.directions.length; i > 0; i--) {
-					if (answer.equals(i + ""))
-						return true;
-				}
-				return false;
-			case WaitingFightChoice:
-				if (answer.equals("1") || answer.equals("2"))
-					return true;
-				return false;
-			case WaitingArtifactChoice:
-				if (answer.equals("1") || answer.equals("2"))
-					return true;
-				return false;
-			default:
-				return true;
-		}
-	}
-
-	void redirectAnswer() {
-		if (!ChoicePanelCLI.waitingChoice)
-			return;
-
-		switch (swingy.getMainGame().getGameState()) {
-			case WaitingDirectionChoice:
-				swingy.getMainGame().directionChosen(Integer.parseInt(answer) - 1);
-				break;
-			case WaitingFightChoice:
-				swingy.getMainGame().fightDecision(answer.equals("1"));
-				break;
-			case WaitingArtifactChoice:
-				swingy.getMainGame().artifactDecision(answer.equals("1"));
-				break;
-			default:
-				break;
-		}
 	}
 }

@@ -15,6 +15,7 @@ import cmutti.model.monsters.MonsterFactory;
 import cmutti.view.gui.FrameGUI;
 import java.util.ArrayList;
 import java.util.Iterator;
+import javax.swing.SwingUtilities;
 import lombok.Getter;
 
 public class MainGame {
@@ -100,9 +101,13 @@ public class MainGame {
 		didFight = false;
 		didEquip = false;
 
-		swingy.updateMap(mapElems);
 		gameState = GameState.WaitingDirectionChoice;
-		swingy.showDirectionChoices();
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				swingy.updateMap(mapElems);
+				swingy.showDirectionChoices();
+			}
+		});
 	}
 
 	// Call to move in a direction

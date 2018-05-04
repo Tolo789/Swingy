@@ -77,7 +77,7 @@ public class HeroSelector {
 
 		if (creatingNew) {
 			if (guiFrame != null)
-				guiFrame.selectionPanel.updateHeroPanel(hero);
+				guiFrame.selectionPanel.updateHeroSelected(hero);
 
 		}
 		else {
@@ -106,7 +106,7 @@ public class HeroSelector {
 		String[] comboLabels = (creatingNew) ? heroTypesLegend : savedHeroesLegend;
 
 		if (guiFrame != null)
-			guiFrame.selectionPanel.updateMode(comboLabels, creatingNew, hero);
+			guiFrame.selectionPanel.updateSelectionMode(comboLabels, creatingNew, hero);
 	}
 
 	private boolean createHero(String name) {

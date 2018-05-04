@@ -3,7 +3,7 @@ package cmutti.view.gui;
 import cmutti.controller.HeroSelector;
 import cmutti.controller.Swingy;
 import cmutti.model.heroes.AHero;
-import cmutti.view.IMainPanel;
+import cmutti.view.ISelectionPanel;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -18,7 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class SelectionPanelGUI extends JPanel implements IMainPanel {
+public class SelectionPanelGUI extends JPanel implements ISelectionPanel {
 	GridBagConstraints constraints = null;
 	JLabel title = new JLabel("Title");
 	JPanel comboContainer = new JPanel();
@@ -133,7 +133,7 @@ public class SelectionPanelGUI extends JPanel implements IMainPanel {
 		add(confirmContainer, constraints);
 	}
 
-	public void updateMode(String[] comboLabels, boolean creatingNew, AHero hero) {
+	public void updateSelectionMode(String[] comboLabels, boolean creatingNew, AHero hero) {
 		if (creatingNew) {
 			title.setText("Create new Hero");
 			comboLabel.setText("Hero Class");
@@ -156,13 +156,13 @@ public class SelectionPanelGUI extends JPanel implements IMainPanel {
 		typesCombo.addItemListener(comboChangeAction);
 		comboContainer.add(typesCombo);
 
-		updateHeroPanel(hero);
+		updateHeroSelected(hero);
 
 		revalidate();
 		repaint();
 	}
 
-	public void updateHeroPanel(AHero hero) {
+	public void updateHeroSelected(AHero hero) {
 		if (heroPanel != null) {
 			remove(heroPanel);
 		}
