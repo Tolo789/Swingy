@@ -57,8 +57,8 @@ public class HeroSelector {
 
 		if (guiFrame != null)
 			guiFrame.startSelectionPanel();
-		// if (cliFrame != null)
-		// 	cliFrame.startSelectionPanel(savedHeroes);
+		if (cliFrame != null)
+			cliFrame.startSelectionPanel();
 
 		// Trick to be sure to enable creatingNew
 		creatingNew = false;
@@ -85,7 +85,6 @@ public class HeroSelector {
 			}
 			if (cliFrame != null)
 				cliFrame.choicePanel.updateHeroSelected(activeIdx, hero);
-
 		}
 		else {
 			// TODO

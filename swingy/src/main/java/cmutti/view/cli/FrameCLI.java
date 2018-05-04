@@ -8,6 +8,10 @@ public class FrameCLI implements IFrame {
 	public MainPanelCLI mainPanel = null;
 
 	public FrameCLI() {
+		System.out.println( "Welcome to SWINGY !!\n" );
+	}
+
+	public void startSelectionPanel() {
 		choicePanel = new ChoicePanelCLI();
 	}
 

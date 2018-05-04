@@ -128,6 +128,7 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 		if (selectingHero) {
 			if (needConfirm) {
 				if (answer.equals("")) {
+					// Trick to switch back to hero selection
 					needConfirm = false;
 					inputByCLI = false;
 					return false;
@@ -155,6 +156,7 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 					swingy.getMainGame().artifactDecision(answer.equals("1"));
 					break;
 				default:
+					// Should never end up here, but just in case
 					inputByCLI = false;
 					return false;
 			}
