@@ -20,7 +20,7 @@ public class Swingy
 	@Getter private static Swingy instance = new Swingy(); // Singleton for easier function calling from views
 
 	// Game vars
-	@Getter boolean gameEnded = false;
+	AHero hero = null;
 	int uiToLoad = 0;
 	public Random rand = new Random(); // every part of the game should use this rand
 
@@ -98,6 +98,7 @@ public class Swingy
 
 // --- End of HeroSelector controller ------------------------------------------
 	public void startMainGame(AHero hero) {
+		this.hero = hero;
 		mainGame = new MainGame(hero);
 		final AHero gameHero = hero;
 
@@ -199,8 +200,13 @@ public class Swingy
 	}
 
 	public void endGame() {
-		gameEnded = true;
-		System.out.println("Saving data");
+		boolean needForceExit = false; // May need to force close CLI's readLine Thread
+		if (guiFrame != null)
+			guiFrame.dispose();
+		if (cliFrame != null)
+			needForceExit = cliFrame.dispose();
+
+		DatabaseController.saveHero(hero);
 	}
 
 // --- Entry point of application ----------------------------------------------

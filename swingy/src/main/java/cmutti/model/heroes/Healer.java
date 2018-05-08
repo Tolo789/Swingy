@@ -1,6 +1,14 @@
 package cmutti.model.heroes;
 
+import javax.persistence.*;
+
+@Entity
+@DiscriminatorValue("healer")
 public class Healer extends AHero {
+
+	Healer() {
+		this("Healer", 1);
+	}
 
 	public Healer(String name, int level) {
 		super(name, level);

@@ -32,7 +32,7 @@ public class HeroSelector {
 		this.cliFrame = cliFrame;
 
 		// TODO retrieve saved heroes on startup
-		savedHeroes = new ArrayList<AHero>();
+		savedHeroes = DatabaseController.retrieveHeroes();
 	}
 
 	public void start() {

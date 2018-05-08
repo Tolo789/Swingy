@@ -1,7 +1,9 @@
 package cmutti.model.artifacts.weapons;
 
 import cmutti.model.artifacts.AArtifact;
+import javax.persistence.Embeddable;
 
+@Embeddable
 public abstract class AWeapon extends AArtifact {
 	protected AWeapon(String name, int level) {
 		super(name, level);

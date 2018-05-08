@@ -19,4 +19,8 @@ public class FrameCLI implements IFrame {
 		mainPanel = new MainPanelCLI(hero);
 		choicePanel.mainGameStarted();
 	}
+
+	public boolean dispose() {
+		return choicePanel.dispose();
+	}
 }

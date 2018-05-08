@@ -2,22 +2,30 @@ package cmutti.model;
 
 import cmutti.controller.MainGame;
 import java.awt.image.BufferedImage;
+import javax.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
+@Entity
+@DiscriminatorValue(value = "acharacter")
 public abstract class ACharacter extends AMapElement {
 	// Instance values
-	@Getter protected int level = 0;
+	protected int level = 0;
 
 	// In-game stats
-	@Getter protected int xp = 0;
-	@Getter protected int attack = 0;
-	@Getter protected int defense = 0;
-	@Getter protected int hp = 0;
-	@Getter protected int maxHp = 0;
-	@Getter protected int agility = 0;
+	protected int xp = 0;
+	protected int attack = 0;
+	protected int defense = 0;
+	protected int hp = 0;
+	protected int maxHp = 0;
+	protected int agility = 0;
 
 	// Vars to simulate walking in GUI map
+	@Transient
 	protected int steps = 0;			// how many steps have been done in the same direction
+	@Transient
 	protected String direction = MainGame.SOUTH;
 
 	protected ACharacter(String name, int level, int posY, int posX) {

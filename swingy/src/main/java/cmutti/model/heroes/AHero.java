@@ -8,9 +8,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
+@Entity
+@DiscriminatorValue(value = "ahero")
 public abstract class AHero extends ACharacter {
 	public enum HeroPassive {
 		None,
@@ -20,6 +25,7 @@ public abstract class AHero extends ACharacter {
 		ArtfulDodger
 	}
 
+	@Transient
 	private BufferedImage mainSprite = null;
 
 	// Xp vars
@@ -27,9 +33,16 @@ public abstract class AHero extends ACharacter {
 	protected int tmpXp = 0;
 
 	// Artifacts
+	@Embedded
 	protected AArmor armor = null;
+	@Embedded
 	protected AHelm helm = null;
+	@Embedded
 	protected AWeapon weapon = null;
+
+	AHero() {
+		this("Hero", 1);
+	}
 
 	protected AHero(String name, int level) {
 		super(name, level, 0, 0); // Do not mind x-y pos since thay will be changed when level starts

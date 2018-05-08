@@ -29,14 +29,16 @@ public class ChoiceRunnable implements Runnable {
 					else {
 						choicePanel.printLegend();
 					}
-					answer = scanner.nextLine();
-					if (Swingy.getInstance().isGameEnded())
+					answer = scanner.next();
+					if (Thread.currentThread().isInterrupted())
 						return;
 				} while (!choicePanel.isValidAnswer(answer));
 
 				firstRun = choicePanel.redirectAnswer(answer);
-			} while (!Thread.currentThread().isInterrupted() && !Swingy.getInstance().isGameEnded());
+			} while (!Thread.currentThread().isInterrupted());
 		}
-		catch (Exception e) {}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

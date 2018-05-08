@@ -1,7 +1,9 @@
 package cmutti.model.artifacts.helms;
 
 import cmutti.model.artifacts.AArtifact;
+import javax.persistence.Embeddable;
 
+@Embeddable
 public abstract class AHelm extends AArtifact {
 	protected AHelm(String name, int level) {
 		super(name, level);

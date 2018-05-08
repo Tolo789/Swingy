@@ -4,17 +4,31 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
+@Entity
+@Table(name = "heroes")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "class", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue(value = "amapelem")
 public abstract class AMapElement {
+	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	int id;
+
 	public boolean needGrass = true; // elems which fill the square completely can set this to false
 
 	protected String name = "";
+	@Transient
 	protected int posX = 0;
+	@Transient
 	protected int posY = 0;
 
 	// GUI-only vars
+	@Transient
 	protected BufferedImage img = null;
 	protected int imgWidth = 0;
 	protected int imgHeight = 0;

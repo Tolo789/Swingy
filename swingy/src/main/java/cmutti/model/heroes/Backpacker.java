@@ -1,6 +1,14 @@
 package cmutti.model.heroes;
 
+import javax.persistence.*;
+
+@Entity
+@DiscriminatorValue("backpacker")
 public class Backpacker extends AHero {
+
+	Backpacker() {
+		this("Backpacker", 1);
+	}
 
 	public Backpacker(String name, int level) {
 		super(name, level);

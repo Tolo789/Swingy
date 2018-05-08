@@ -102,7 +102,7 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 		else {
 			switch (swingy.getMainGame().getGameState()) {
 				case WaitingDirectionChoice:
-					for (int i = 0; i >= MainGame.directions.length; i++) {
+					for (int i = 0; i <= MainGame.directions.length; i++) {
 						if (answer.equals(i + ""))
 							return true;
 					}
@@ -256,5 +256,15 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 			System.out.println(choice);
 		}
 		System.out.println("");
+	}
+
+// --- Force end of choice thread -------------------------------------------
+	public boolean dispose() {
+		choiceThread.interrupt();
+		if (!inputByCLI) {
+			System.out.println("0");
+		}
+		System.out.println("");
+		return !inputByCLI;
 	}
 }

@@ -1,6 +1,14 @@
 package cmutti.model.heroes;
 
+import javax.persistence.*;
+
+@Entity
+@DiscriminatorValue("karateman")
 public class KarateMan extends AHero {
+
+	KarateMan() {
+		this("KarateMan", 1);
+	}
 
 	public KarateMan(String name, int level) {
 		super(name, level);
