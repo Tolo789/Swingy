@@ -31,14 +31,13 @@ public class Swingy
 	// UIs entry points
 	FrameGUI guiFrame = null;
 	FrameCLI cliFrame = null;
+	boolean onlyGUI = false;
+	boolean onlyCLI = false;
 
 	private Swingy() {}
 
 	// First function to be called, load interfaces and start playing
 	public void initGame(final String[] args) {
-		boolean onlyGUI = false;
-		boolean onlyCLI = false;
-
 		for (int i = 0; i < args.length; i++) {
 			if (args[i].equals("console")) {
 				if (onlyCLI) {
@@ -76,19 +75,19 @@ public class Swingy
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					guiFrame = new FrameGUI("Swingy");
-					uiReady();
+					uiReadyToSelect();
 				}
 			});
 		}
 
 		if (!onlyGUI) {
 			cliFrame = new FrameCLI();
-			uiReady();
+			uiReadyToSelect();
 		}
 	}
 
 	// Gather calls from all UIs and starts game when each one is ready
-	private void uiReady() {
+	private void uiReadyToSelect() {
 		uiToLoad--;
 		if (uiToLoad == 0) {
 			heroSelector = new HeroSelector(guiFrame, cliFrame);
@@ -96,23 +95,32 @@ public class Swingy
 		}
 	}
 
+	private void uiReadyToPlay() {
+		uiToLoad--;
+		if (uiToLoad == 0) {
+			mainGame = new MainGame(hero);
+			mainGame.start();
+		}
+	}
+
 // --- End of HeroSelector controller ------------------------------------------
 	public void startMainGame(AHero hero) {
+		uiToLoad = (onlyCLI || onlyGUI) ? 1 : 2;
 		this.hero = hero;
-		mainGame = new MainGame(hero);
 		final AHero gameHero = hero;
 
 		if (guiFrame != null) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					guiFrame.startMainPanel(gameHero);
+					uiReadyToPlay();
 				}
 			});
 		}
 		if (cliFrame != null) {
 			cliFrame.startMainPanel(hero);
+			uiReadyToPlay();
 		}
-		mainGame.start();
 	}
 
 // --- Calls from MainGame controller ------------------------------------------

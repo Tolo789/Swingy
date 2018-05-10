@@ -6,6 +6,10 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,10 +30,17 @@ public abstract class AArtifact {
 
 	@Transient
 	protected BufferedImage img = null;
+	@NotNull
+    @Size(min = 1, max = 20)
+	@Pattern(regexp = "^\\p{Alnum}+(?: \\p{Alnum}+)*$", message = "Only alphanum char with non-trailing spaces are allowed")
 	protected String name = "";
+	@Min(0)
 	protected int level = 0;
+	@Min(0)
 	protected int attack = 0;
+	@Min(0)
 	protected int defense = 0;
+	@Min(0)
 	protected int hp = 0;
 
 	protected AArtifact(String name, int level) {

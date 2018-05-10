@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,14 +30,18 @@ public abstract class AHero extends ACharacter {
 	private BufferedImage mainSprite = null;
 
 	// Xp vars
+	@Min(0)
 	protected int neededXp;
+	@Min(0)
 	protected int tmpXp = 0;
 
 	// Artifacts
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = true)
 	protected AArmor armor = null;
+
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = true)
 	protected AHelm helm = null;
+
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = true)
 	protected AWeapon weapon = null;
 

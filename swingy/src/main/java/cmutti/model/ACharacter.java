@@ -3,6 +3,7 @@ package cmutti.model;
 import cmutti.controller.MainGame;
 import java.awt.image.BufferedImage;
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,14 +13,21 @@ import lombok.Setter;
 @DiscriminatorValue(value = "acharacter")
 public abstract class ACharacter extends AMapElement {
 	// Instance values
+	@Min(1)
 	protected int level = 0;
 
 	// In-game stats
+	@Min(0)
 	protected int xp = 0;
+	@Min(0)
 	protected int attack = 0;
+	@Min(0)
 	protected int defense = 0;
+	@Min(0)
 	protected int hp = 0;
+	@Min(0)
 	protected int maxHp = 0;
+	@Min(0)
 	protected int agility = 0;
 
 	// Vars to simulate walking in GUI map

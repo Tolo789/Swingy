@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +24,9 @@ public abstract class AMapElement {
 
 	public boolean needGrass = true; // elems which fill the square completely can set this to false
 
+	@NotNull
+    @Size(min = 1, max = 20)
+	@Pattern(regexp = "^\\p{Alnum}+(?: \\p{Alnum}+)*$", message = "Only alphanum char with non-trailing spaces are allowed")
 	protected String name = "";
 	@Transient
 	protected int posX = 0;

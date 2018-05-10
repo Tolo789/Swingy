@@ -27,8 +27,8 @@ public class MainPanelGUI extends JPanel implements IMainPanel {
 		constraints.weighty = 1;
 		constraints.gridwidth = 1;
 		constraints.gridheight = 3;
-		heroPanel.setPreferredSize(new Dimension(250, 600));
-		heroPanel.setMinimumSize(new Dimension(250, 600));
+		heroPanel.setPreferredSize(new Dimension(FrameGUI.FRAME_WIDTH / 4, FrameGUI.FRAME_HEIGHT));
+		heroPanel.setMinimumSize(new Dimension(FrameGUI.FRAME_WIDTH / 4, FrameGUI.FRAME_HEIGHT));
 		add(heroPanel, constraints);
 
 		mapPanel = new MapPanelGUI();
@@ -36,9 +36,9 @@ public class MainPanelGUI extends JPanel implements IMainPanel {
 		constraints.gridy = 0;
 		constraints.weightx = 3;
 		constraints.gridwidth = 3;
-		mapPanel.setPreferredSize(new Dimension(600, 600));
-		mapPanel.setMinimumSize(new Dimension(600, 600));
-		mapPanel.setMaximumSize(new Dimension(600, 600));
+		mapPanel.setPreferredSize(new Dimension(FrameGUI.FRAME_WIDTH / 2, FrameGUI.FRAME_HEIGHT));
+		mapPanel.setMinimumSize(new Dimension(FrameGUI.FRAME_WIDTH / 2, FrameGUI.FRAME_HEIGHT));
+		mapPanel.setMaximumSize(new Dimension(FrameGUI.FRAME_WIDTH / 2, FrameGUI.FRAME_HEIGHT));
 		add(mapPanel, constraints);
 
 		storyPanel = new StoryPanelGUI();
@@ -48,9 +48,9 @@ public class MainPanelGUI extends JPanel implements IMainPanel {
 		constraints.gridwidth = 1;
 		constraints.weightx = 1;
 		constraints.weighty = 2;
-		storyPanel.setPreferredSize(new Dimension(250, 400));
-		storyPanel.setMinimumSize(new Dimension(250, 400));
-		storyPanel.setMaximumSize(new Dimension(250, 400));
+		storyPanel.setPreferredSize(new Dimension(FrameGUI.FRAME_WIDTH / 4, 2 * FrameGUI.FRAME_HEIGHT / 3));
+		storyPanel.setMinimumSize(new Dimension(FrameGUI.FRAME_WIDTH / 4, 2 * FrameGUI.FRAME_HEIGHT / 3));
+		storyPanel.setMaximumSize(new Dimension(FrameGUI.FRAME_WIDTH / 4, 2 * FrameGUI.FRAME_HEIGHT / 3));
 		add(storyPanel, constraints);
 
 		choicePanel = new ChoicePanelGUI();
@@ -58,9 +58,9 @@ public class MainPanelGUI extends JPanel implements IMainPanel {
 		constraints.gridy = 2;
 		constraints.gridheight = 1;
 		constraints.weighty = 1;
-		choicePanel.setPreferredSize(new Dimension(250, 200));
-		choicePanel.setMinimumSize(new Dimension(250, 200));
-		choicePanel.setMaximumSize(new Dimension(250, 200));
+		choicePanel.setPreferredSize(new Dimension(FrameGUI.FRAME_WIDTH / 4, FrameGUI.FRAME_HEIGHT / 3));
+		choicePanel.setMinimumSize(new Dimension(FrameGUI.FRAME_WIDTH / 4, FrameGUI.FRAME_HEIGHT / 3));
+		choicePanel.setMaximumSize(new Dimension(FrameGUI.FRAME_WIDTH / 4, FrameGUI.FRAME_HEIGHT / 3));
 		add(choicePanel, constraints);
 
 	}

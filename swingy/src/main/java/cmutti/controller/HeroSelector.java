@@ -5,6 +5,11 @@ import cmutti.model.heroes.AHero;
 import cmutti.view.cli.FrameCLI;
 import cmutti.view.gui.FrameGUI;
 import java.util.ArrayList;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import javax.swing.SwingUtilities;
 
 public class HeroSelector {
@@ -132,9 +137,6 @@ public class HeroSelector {
 
 	private boolean createHero(String name) {
 		if (creatingNew) {
-			// TODO: annotation validation
-			if (name == null || name.equals(""))
-				return false;
 			try {
 				hero = heroTypes.get(activeIdx).getConstructor(String.class, int.class).newInstance(name, 1);
 			}
@@ -146,8 +148,24 @@ public class HeroSelector {
 			hero = savedHeroes.get(activeIdx);
 		}
 
-		// TODO: annotation validation
-		// At least one char, only alphanum and spaces, no trailing spaces, max 20 chars
+		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+		Validator validator = factory.getValidator();
+		Set<ConstraintViolation<AHero>> constraintViolations = validator.validate(hero);
+
+		if (constraintViolations.size() > 0) {
+			ConstraintViolation<AHero> firstViolation = constraintViolations.iterator().next();
+			final String error = "ERROR !! Class: " + firstViolation.getRootBeanClass().getSimpleName() + " -> Param: " + firstViolation.getPropertyPath() + " -> " + firstViolation.getMessage() + " ('" + firstViolation.getInvalidValue() + "' given)";
+			if (guiFrame != null) {
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						guiFrame.selectionPanel.displayError(error);
+					}
+				});
+			}
+			if (cliFrame != null)
+				cliFrame.choicePanel.displayError(error);
+			return false;
+		}
 
 		return true;
 	}

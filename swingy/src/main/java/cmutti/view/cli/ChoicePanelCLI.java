@@ -6,7 +6,19 @@ import cmutti.model.heroes.AHero;
 import cmutti.view.IChoicePanel;
 import cmutti.view.ISelectionPanel;
 import cmutti.view.cli.runnables.ChoiceRunnable;
+import java.lang.annotation.ElementType;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import lombok.Getter;
+import org.hibernate.validator.HibernateValidator;
+import org.hibernate.validator.HibernateValidatorConfiguration;
+import org.hibernate.validator.cfg.ConstraintMapping;
+import org.hibernate.validator.cfg.defs.MaxDef;
+import org.hibernate.validator.cfg.defs.MinDef;
+import org.hibernate.validator.cfg.defs.NotNullDef;
 
 public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 	// Controller ref
@@ -15,6 +27,8 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 	@Getter boolean waitingChoice = false;
 	boolean inputByCLI = true;
 	boolean selectingHero = true;
+	String validationString = null; // used for dynamic hibernate validation
+	int validationInt = 0;
 
 	// Vars used only for Hero selection
 	boolean creatingNew = false;
@@ -35,8 +49,8 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 
 		if (selectingHero) {
 			if (needConfirm) {
-				legend = "Type any";
-				legend += (creatingNew) ? " name" : "thing";
+				legend = "Type ";
+				legend += (creatingNew) ? "hero name" : "anything";
 				legend += " to Confirm, empty line to Change";
 			}
 			else {
@@ -83,6 +97,68 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 
 // --- Validation logic --------------------------------------------------------
 	public boolean isValidAnswer(String answer) {
+		if (!waitingChoice)
+			return false;
+
+		HibernateValidatorConfiguration config = Validation.byProvider(HibernateValidator.class).configure();
+		ConstraintMapping mapping = config.createConstraintMapping();
+
+		// configure mapping instance
+		try {
+			if (selectingHero) {
+				if (needConfirm) {
+					validationString = answer;
+					mapping.type(ChoicePanelCLI.class)
+						.property("validationString", ElementType.FIELD)
+							.constraint(new NotNullDef());
+				}
+				else {
+					validationInt = Integer.parseInt(answer);
+					mapping.type(ChoicePanelCLI.class)
+						.property("validationInt", ElementType.FIELD)
+							.constraint(new MinDef().value(canToggle ? 0 : 1))
+							.constraint(new MaxDef().value(selectionLabels.length));
+				}
+			}
+			else {
+				validationInt = Integer.parseInt(answer);
+				switch (swingy.getMainGame().getGameState()) {
+					case WaitingDirectionChoice:
+						mapping.type(ChoicePanelCLI.class)
+							.property("validationInt", ElementType.FIELD)
+								.constraint(new MinDef().value(0))
+								.constraint(new MaxDef().value(MainGame.directions.length));
+					case WaitingFightChoice:
+					case WaitingArtifactChoice:
+						mapping.type(ChoicePanelCLI.class)
+							.property("validationInt", ElementType.FIELD)
+								.constraint(new MinDef().value(1))
+								.constraint(new MaxDef().value(2));
+					default:
+						return false;
+				}
+			}
+		}
+		catch (NumberFormatException e) {
+			System.out.println("ERROR !! '" + answer + "' given, but a numeric entry is required..!");
+			return false;
+		}
+
+		// Actualcheck
+		config.addMapping(mapping);
+		ValidatorFactory factory = config.buildValidatorFactory();
+		Validator validator = factory.getValidator();
+		Set<ConstraintViolation<ChoicePanelCLI>> constraintViolations = validator.validate(this);
+		if (constraintViolations.size() > 0) {
+			ConstraintViolation<ChoicePanelCLI> firstViolation = constraintViolations.iterator().next();
+			System.out.println("ERROR !! '" + firstViolation.getInvalidValue() + "' given, but it is an invalid entry..!");
+			return false;
+		}
+		return true;
+	}
+
+	// Just in case we get tired of validating answer with hibernate annotations
+	public boolean isValidAnswerNoHibernate(String answer) {
 		if (!waitingChoice || answer == null)
 			return false;
 
@@ -217,6 +293,11 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 		waitingChoice = true;
 		inputByCLI = false;
 
+	}
+
+	public void displayError(String error) {
+		if (needConfirm) // Only display error when waiting a confirm
+			System.out.println(error);
 	}
 
 // --- Main game funcs ---------------------------------------------------------
