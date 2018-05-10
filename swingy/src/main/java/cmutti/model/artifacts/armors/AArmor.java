@@ -1,9 +1,10 @@
 package cmutti.model.artifacts.armors;
 
 import cmutti.model.artifacts.AArtifact;
-import javax.persistence.Embeddable;
+import javax.persistence.*;
 
-@Embeddable
+@Entity
+@DiscriminatorValue("aarmor")
 public abstract class AArmor extends AArtifact {
 	protected AArmor(String name, int level) {
 		super(name, level);

@@ -1,6 +1,14 @@
 package cmutti.model.artifacts.weapons;
 
+import javax.persistence.*;
+
+@Entity
+@DiscriminatorValue("guitar")
 public class Guitar extends AWeapon {
+	Guitar() {
+		this(1);
+	}
+
 	public Guitar(int level) {
 		super("Guitar", level);
 	}

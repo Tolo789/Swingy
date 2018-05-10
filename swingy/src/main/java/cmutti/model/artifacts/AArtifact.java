@@ -1,14 +1,30 @@
 package cmutti.model.artifacts;
 
+import cmutti.model.heroes.AHero;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.persistence.*;
 import lombok.Getter;
-
+import lombok.Setter;
 
 @Getter
+@Setter
+@Entity
+@Table(name = "artifacts")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue(value = "aartifact")
 public abstract class AArtifact {
+	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	int id;
+
+	@OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "heroes_id")
+	AHero owner = null;
+
+	@Transient
 	protected BufferedImage img = null;
 	protected String name = "";
 	protected int level = 0;

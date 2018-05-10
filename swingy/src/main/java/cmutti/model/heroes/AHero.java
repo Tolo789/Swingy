@@ -33,11 +33,11 @@ public abstract class AHero extends ACharacter {
 	protected int tmpXp = 0;
 
 	// Artifacts
-	@Embedded
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = true)
 	protected AArmor armor = null;
-	@Embedded
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = true)
 	protected AHelm helm = null;
-	@Embedded
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = true)
 	protected AWeapon weapon = null;
 
 	AHero() {

@@ -230,6 +230,7 @@ public class MainGame {
 					}
 
 					// Same line for equipping any artifact
+					artifact.setOwner(hero);
 					swingy.displayMessage(artifact.getName() + " equipped !\n");
 					didEquip = true;
 				}
@@ -279,6 +280,7 @@ public class MainGame {
 			else if (artifact instanceof AWeapon)
 				hero.equipWeapon((AWeapon)artifact);
 
+			artifact.setOwner(hero);
 			swingy.displayMessage(artifact.getName() + " equipped !");
 			didEquip = true;
 		}

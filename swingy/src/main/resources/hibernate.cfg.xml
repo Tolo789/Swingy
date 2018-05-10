@@ -33,5 +33,26 @@
 		<mapping class="cmutti.model.heroes.Healer"/>
 		<mapping class="cmutti.model.heroes.KarateGirl"/>
 		<mapping class="cmutti.model.heroes.KarateMan"/>
+
+		<mapping class="cmutti.model.artifacts.AArtifact"/>
+
+		<mapping class="cmutti.model.artifacts.armors.AArmor"/>
+		<mapping class="cmutti.model.artifacts.armors.Belt"/>
+		<mapping class="cmutti.model.artifacts.armors.BlackCap"/>
+		<mapping class="cmutti.model.artifacts.armors.HawaianSkirt"/>
+
+		<mapping class="cmutti.model.artifacts.helms.AHelm"/>
+		<mapping class="cmutti.model.artifacts.helms.ChefHat"/>
+		<mapping class="cmutti.model.artifacts.helms.CowboyHat"/>
+		<mapping class="cmutti.model.artifacts.helms.Crown"/>
+		<mapping class="cmutti.model.artifacts.helms.SantaHat"/>
+		<mapping class="cmutti.model.artifacts.helms.StrawHat"/>
+		<mapping class="cmutti.model.artifacts.helms.VikingHelm"/>
+
+		<mapping class="cmutti.model.artifacts.weapons.AWeapon"/>
+		<mapping class="cmutti.model.artifacts.weapons.FishingRope"/>
+		<mapping class="cmutti.model.artifacts.weapons.Guitar"/>
+		<mapping class="cmutti.model.artifacts.weapons.Pan"/>
+
 	</session-factory>
 </hibernate-configuration>
