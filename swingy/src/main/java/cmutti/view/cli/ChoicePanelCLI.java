@@ -13,12 +13,13 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 	Swingy swingy = Swingy.getInstance();
 
 	@Getter boolean waitingChoice = false;
-	boolean inputByCLI = false;
+	boolean inputByCLI = true;
 	boolean selectingHero = true;
 
 	// Vars used only for Hero selection
 	boolean creatingNew = false;
 	boolean needConfirm = false;
+	boolean canToggle = false;
 	String[] selectionLabels = null;
 
 	Thread choiceThread = null;
@@ -42,15 +43,14 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 				for (int i = 0; i < selectionLabels.length; i++) {
 					if (i != 0)
 						legend += ", ";
-					legend += (i + 1) + " for " + selectionLabels[i];
+					legend += (i + 1) + " for '" + selectionLabels[i] + "'";
 				}
 
-				legend += ", 0 to ";
 				if (!creatingNew) {
-					legend += "Create New Hero";
+					legend += ", 0 to Create New Hero";
 				}
-				else {
-					legend += "Load Saved Heroes";
+				else if (canToggle) {
+					legend += ", 0 to Load Saved Heroes";
 				}
 			}
 		}
@@ -91,6 +91,10 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 				return true;
 			}
 			else {
+				if (!canToggle && answer.equals("0")) {
+					System.out.println("ERROR: Must give a number between '1' and " + selectionLabels.length + "'");
+					return false;
+				}
 				for (int i = 0; i <= selectionLabels.length; i++) {
 					if (answer.equals(i + ""))
 						return true;
@@ -170,10 +174,14 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 	}
 
 // --- Hero selector funcs -----------------------------------------------------
-	public void updateSelectionMode(String[] comboLabels, boolean creatingNew, AHero hero) {
+	public void updateSelectionMode(String[] comboLabels, boolean creatingNew, AHero hero, boolean canToggle) {
 		selectionLabels = comboLabels;
 		this.creatingNew = creatingNew;
 
+		if (!inputByCLI) {
+			System.out.println("0");
+		}
+		System.out.println("");
 		if (creatingNew) {
 			System.out.println("Create new Hero");
 		}
@@ -182,6 +190,7 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 		}
 
 		needConfirm = false;
+		this.canToggle = canToggle;
 		printLegend();
 		waitingChoice = true;
 		inputByCLI = false;
@@ -259,12 +268,11 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 	}
 
 // --- Force end of choice thread -------------------------------------------
-	public boolean dispose() {
+	public void dispose() {
 		choiceThread.interrupt();
 		if (!inputByCLI) {
 			System.out.println("0");
 		}
 		System.out.println("");
-		return !inputByCLI;
 	}
 }

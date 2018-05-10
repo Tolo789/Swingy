@@ -23,3 +23,6 @@ hs_err_pid*
 
 # builded output by maven
 /swingy/target/
+
+# H2 database files
+*.db

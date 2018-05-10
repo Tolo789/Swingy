@@ -20,7 +20,7 @@ public class FrameCLI implements IFrame {
 		choicePanel.mainGameStarted();
 	}
 
-	public boolean dispose() {
-		return choicePanel.dispose();
+	public void dispose() {
+		choicePanel.dispose();
 	}
 }

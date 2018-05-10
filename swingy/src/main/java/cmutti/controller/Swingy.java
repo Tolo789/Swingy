@@ -119,7 +119,7 @@ public class Swingy
 	public void displayMessage(String message) {
 		message += "\n";
 		final String toDisplay = message;
-		if (guiFrame != null) {
+		if (guiFrame != null && guiFrame.mainPanel != null) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					guiFrame.mainPanel.storyPanel.addText(toDisplay);
@@ -200,13 +200,15 @@ public class Swingy
 	}
 
 	public void endGame() {
-		boolean needForceExit = false; // May need to force close CLI's readLine Thread
-		if (guiFrame != null)
+		if (guiFrame != null) {
 			guiFrame.dispose();
-		if (cliFrame != null)
-			needForceExit = cliFrame.dispose();
+			guiFrame = null;
+		}
+		if (cliFrame != null) {
+			cliFrame.dispose();
+		}
 
-		DatabaseController.saveHero(hero);
+		DatabaseController.saveHero(hero, cliFrame != null);
 	}
 
 // --- Entry point of application ----------------------------------------------

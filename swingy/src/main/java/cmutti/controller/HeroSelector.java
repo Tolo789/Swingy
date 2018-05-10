@@ -31,8 +31,7 @@ public class HeroSelector {
 		this.guiFrame = guiFrame;
 		this.cliFrame = cliFrame;
 
-		// TODO retrieve saved heroes on startup
-		savedHeroes = DatabaseController.retrieveHeroes();
+		savedHeroes = DatabaseController.retrieveHeroes(cliFrame != null);
 	}
 
 	public void start() {
@@ -52,7 +51,17 @@ public class HeroSelector {
 
 		savedHeroesLegend = new String[savedHeroes.size()];
 		for (int i = 0; i < savedHeroesLegend.length; i++) {
-			savedHeroesLegend[i] = savedHeroes.get(i).getClass().getSimpleName();
+			savedHeroesLegend[i] = savedHeroes.get(i).getName();
+		}
+		// Avoid duplicate name errors
+		int sameNameCount;
+		for (int i = 0; i < savedHeroesLegend.length; i++) {
+			sameNameCount = 1;
+			for (int j = 0; j < i; j++) {
+				if (savedHeroesLegend[i].equals(savedHeroesLegend[j]))
+					sameNameCount++;
+			}
+			savedHeroesLegend[i] += (sameNameCount > 1) ? " (" + sameNameCount + ")" : "";
 		}
 
 		if (guiFrame != null)
@@ -60,8 +69,8 @@ public class HeroSelector {
 		if (cliFrame != null)
 			cliFrame.startSelectionPanel();
 
-		// Trick to be sure to enable creatingNew
-		creatingNew = false;
+		// Trick: if at least one hero saved then show load choice first, createNew otherwise
+		creatingNew = (savedHeroesLegend.length > 0) ? true : false;
 		toggleMode();
 	}
 
@@ -75,20 +84,15 @@ public class HeroSelector {
 			return;
 		}
 
-		if (creatingNew) {
-			if (guiFrame != null) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						guiFrame.selectionPanel.updateHeroSelected(activeIdx, hero);
-					}
-				});
-			}
-			if (cliFrame != null)
-				cliFrame.choicePanel.updateHeroSelected(activeIdx, hero);
+		if (guiFrame != null) {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					guiFrame.selectionPanel.updateHeroSelected(activeIdx, hero);
+				}
+			});
 		}
-		else {
-			// TODO
-		}
+		if (cliFrame != null)
+			cliFrame.choicePanel.updateHeroSelected(activeIdx, hero);
 	}
 
 	public void toggleMode() {
@@ -112,21 +116,25 @@ public class HeroSelector {
 		final String[] comboLabels = (creatingNew) ? heroTypesLegend : savedHeroesLegend;
 		final boolean isCreatingNew = creatingNew;
 		final AHero selectedHero = hero;
+		final boolean canToggle = (creatingNew && savedHeroes.size() == 0) ? false : true;
 
 		if (guiFrame != null) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					guiFrame.selectionPanel.updateSelectionMode(comboLabels, isCreatingNew, selectedHero);
+					guiFrame.selectionPanel.updateSelectionMode(comboLabels, isCreatingNew, selectedHero, canToggle);
 				}
 			});
 		}
 		if (cliFrame != null) {
-			cliFrame.choicePanel.updateSelectionMode(comboLabels, creatingNew, hero);
+			cliFrame.choicePanel.updateSelectionMode(comboLabels, creatingNew, hero, canToggle);
 		}
 	}
 
 	private boolean createHero(String name) {
 		if (creatingNew) {
+			// TODO: annotation validation
+			if (name == null || name.equals(""))
+				return false;
 			try {
 				hero = heroTypes.get(activeIdx).getConstructor(String.class, int.class).newInstance(name, 1);
 			}
@@ -138,11 +146,15 @@ public class HeroSelector {
 			hero = savedHeroes.get(activeIdx);
 		}
 
+		// TODO: annotation validation
+		// At least one char, only alphanum and spaces, no trailing spaces, max 20 chars
+
 		return true;
 	}
 
 	public void confirmSelection(String name) {
-		createHero(name);
+		if (!createHero(name))
+			return;
 
 		// hero = new KarateMan("yo2", 1);
 		// hero = new Backpacker("yo2", 1);

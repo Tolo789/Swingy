@@ -22,15 +22,16 @@ import javax.swing.JTextField;
 public class SelectionPanelGUI extends JPanel implements ISelectionPanel {
 	GridBagConstraints constraints = null;
 	JLabel title = new JLabel("Title");
-	JPanel comboContainer = new JPanel();
+	JPanel comboContainer = null;
 	JLabel comboLabel = new JLabel("Combo label");
 	JComboBox<String> typesCombo = null;
 	// JTextArea heroDescription = new JTextArea(150, 10);
 	JLabel heroDescription = new JLabel("Description");
-	JPanel nameContainer = new JPanel();
+	JPanel nameContainer = null;
 	JLabel nameLabel = new JLabel("Hero Name");
 	JTextField heroName = new JTextField(10);
 	HeroPanelGUI heroPanel = null;
+	JPanel toggleContainer = null;
 	JButton toggleButton = new JButton("Toggle");
 	JButton confirmButton = new JButton("Confirm");
 
@@ -47,8 +48,6 @@ public class SelectionPanelGUI extends JPanel implements ISelectionPanel {
 
 		confirmButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (heroName.getText().equals(""))
-					return;
 				Swingy.getInstance().getHeroSelector().confirmSelection(heroName.getText());
 			}
 		});
@@ -113,7 +112,7 @@ public class SelectionPanelGUI extends JPanel implements ISelectionPanel {
 		nameContainer.setMinimumSize(new Dimension(550, 100));
 		add(nameContainer, constraints);
 
-		JPanel toggleContainer = new JPanel();
+		toggleContainer = new JPanel();
 		constraints.gridx = 1;
 		constraints.gridy = 5;
 		constraints.weightx = 1;
@@ -138,13 +137,20 @@ public class SelectionPanelGUI extends JPanel implements ISelectionPanel {
 		add(confirmContainer, constraints);
 	}
 
-	public void updateSelectionMode(String[] comboLabels, boolean creatingNew, AHero hero) {
+	public void updateSelectionMode(String[] comboLabels, boolean creatingNew, AHero hero, boolean canToggle) {
 		if (creatingNew) {
 			title.setText("Create new Hero");
 			comboLabel.setText("Hero Class");
 			nameContainer.add(nameLabel);
 			nameContainer.add(heroName);
-			toggleButton.setText("View saved Heroes");
+
+			if (canToggle) {
+				toggleButton.setText("View saved Heroes");
+				toggleContainer.add(toggleButton);
+			}
+			else {
+				toggleContainer.remove(toggleButton);
+			}
 		}
 		else {
 			title.setText("Load saved Hero");
@@ -152,6 +158,7 @@ public class SelectionPanelGUI extends JPanel implements ISelectionPanel {
 			nameContainer.remove(nameLabel);
 			nameContainer.remove(heroName);
 			toggleButton.setText("Create new Hero");
+			toggleContainer.add(toggleButton);
 		}
 
 		if (typesCombo != null) {

@@ -29,7 +29,7 @@ public class ChoiceRunnable implements Runnable {
 					else {
 						choicePanel.printLegend();
 					}
-					answer = scanner.next();
+					answer = scanner.nextLine();
 					if (Thread.currentThread().isInterrupted())
 						return;
 				} while (!choicePanel.isValidAnswer(answer));
