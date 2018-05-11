@@ -83,8 +83,6 @@ public class MainGame {
 		if (hero.getLevel() > 1)
 			mapElems = LandscapeFactory.addLandscape(mapElems);
 
-		// TODO: be sure that landscape doesnt blocks path to exit
-
 		endTurn();
 	}
 
