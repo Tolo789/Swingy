@@ -26,7 +26,7 @@ Once all the requirements are met just type the following commands to start play
 - "$> mvn clean package"
 - "$> java -jar target/swingy-1.0-SNAPSHOT-jar-with-dependencies.jar [ui_option]"
 
-If you only want to play on the CLI, the ui_option is "cli".
+If you only want to play on the CLI, the ui_option is "console".
 If you only want to play on the GUI, the ui_option is "gui".
 
 # Gameplay Rules
