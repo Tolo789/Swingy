@@ -97,46 +97,49 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 
 // --- Validation logic --------------------------------------------------------
 	public boolean isValidAnswer(String answer) {
-		if (!waitingChoice)
+		if (!waitingChoice) // Prevent spam
 			return false;
 
 		HibernateValidatorConfiguration config = Validation.byProvider(HibernateValidator.class).configure();
 		ConstraintMapping mapping = config.createConstraintMapping();
 
-		// configure mapping instance
+		// Programmatic constraint
 		try {
-			if (selectingHero) {
-				if (needConfirm) {
+			if (selectingHero && needConfirm) {
 					validationString = answer;
 					mapping.type(ChoicePanelCLI.class)
 						.property("validationString", ElementType.FIELD)
 							.constraint(new NotNullDef());
-				}
-				else {
-					validationInt = Integer.parseInt(answer);
-					mapping.type(ChoicePanelCLI.class)
-						.property("validationInt", ElementType.FIELD)
-							.constraint(new MinDef().value(canToggle ? 0 : 1))
-							.constraint(new MaxDef().value(selectionLabels.length));
-				}
 			}
 			else {
 				validationInt = Integer.parseInt(answer);
-				switch (swingy.getMainGame().getGameState()) {
-					case WaitingDirectionChoice:
-						mapping.type(ChoicePanelCLI.class)
-							.property("validationInt", ElementType.FIELD)
-								.constraint(new MinDef().value(0))
-								.constraint(new MaxDef().value(MainGame.directions.length));
-					case WaitingFightChoice:
-					case WaitingArtifactChoice:
-						mapping.type(ChoicePanelCLI.class)
-							.property("validationInt", ElementType.FIELD)
-								.constraint(new MinDef().value(1))
-								.constraint(new MaxDef().value(2));
-					default:
-						return false;
+				int min;
+				int max;
+				if (selectingHero) {
+					min = canToggle ? 0 : 1;
+					max = selectionLabels.length;
 				}
+				else {
+					switch (swingy.getMainGame().getGameState()) {
+						case WaitingDirectionChoice:
+							min = 0;
+							max = MainGame.directions.length;
+							break;
+						case WaitingFightChoice:
+						case WaitingArtifactChoice:
+							min = 1;
+							max = 2;
+							break;
+						default:
+							System.out.println("ERROR !! Unkown validation pattern..!");
+							return false;
+					}
+				}
+
+				mapping.type(ChoicePanelCLI.class)
+					.property("validationInt", ElementType.FIELD)
+						.constraint(new MinDef().value(min))
+						.constraint(new MaxDef().value(max));
 			}
 		}
 		catch (NumberFormatException e) {
