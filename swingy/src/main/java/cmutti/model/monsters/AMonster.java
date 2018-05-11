@@ -58,7 +58,7 @@ public abstract class AMonster extends ACharacter {
 	}
 
 	public int getGrowthXp() {
-		return 30;
+		return 40;
 	}
 
 	public int getGrowthHp() {

@@ -34,8 +34,9 @@ public class ArtifactBuilder {
 	public static AArtifact getDroppedArtifact(AMonster monster) {
 		AArtifact artifact = null;
 
-		if (Swingy.getInstance().rand.nextInt(100) < monster.getArtifactDropChance()) {
-			int randomNbr = Swingy.getInstance().rand.nextInt(100);
+		int randomNbr = Swingy.getInstance().rand.nextInt(100);
+		randomNbr -= monster.getLevel(); // The higher the monster lvl, the higher the chance of a drop
+		if (randomNbr < monster.getArtifactDropChance()) {
 			if (randomNbr < monster.getEpicArtifactChance()) {
 				artifact = buildArtifact(epicArtifacts, monster.getLevel());
 			}

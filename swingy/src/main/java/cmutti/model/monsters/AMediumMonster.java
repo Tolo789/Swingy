@@ -28,15 +28,15 @@ public abstract class AMediumMonster extends AMonster {
 	}
 
 	public int getGrowthXp() {
-		return 60;
+		return 70;
 	}
 
 	// Artifacts drop chance by rarity
-	public int rareArtifactChance() {
+	public int getRareArtifactChance() {
 		return 23;
 	}
 
-	public int epicArtifactChance() {
+	public int getEpicArtifactChance() {
 		return 7;
 	}
 }

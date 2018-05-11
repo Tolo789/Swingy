@@ -32,11 +32,11 @@ public abstract class ALegendaryMonster extends AMonster {
 	}
 
 	// Artifacts drop chance by rarity
-	public int rareArtifactChance() {
+	public int getRareArtifactChance() {
 		return 100;
 	}
 
-	public int epicArtifactChance() {
+	public int getEpicArtifactChance() {
 		return 33;
 	}
 }

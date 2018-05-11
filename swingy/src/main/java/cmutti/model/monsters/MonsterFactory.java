@@ -12,11 +12,6 @@ import cmutti.model.monsters.legendary.*;
 import java.util.ArrayList;
 
 public class MonsterFactory {
-	public enum Tier {
-		Common,
-		Rare,
-		Epic
-	}
 	// Used to separate tiers
 	public final static int newbieLvl = 5;
 	public final static int rookieLvl = 10;
@@ -37,6 +32,7 @@ public class MonsterFactory {
 	static int posY;
 	static int smallerBound;
 	static int biggerBound;
+	static int monsterLvl;
 	static int bonusLvl;
 	static int artifactDropChance;
 	static boolean[][] hasMonster;	// fast way to check if monster at given pos has already been added
@@ -77,21 +73,22 @@ public class MonsterFactory {
 		hasMonster[mapSize / 2][mapSize / 2] = true; // Hero start pos
 
 		// Legendary
-		bonusLvl = heroLvl + 3;
+		monsterLvl = heroLvl + 3;
 		artifactDropChance = 100;
 		if (hasMew) {
 			setLegendaryPosition();
-			monsterList.add(new Mew(bonusLvl, posY, posX, artifactDropChance));
+			monsterList.add(new Mew(monsterLvl, posY, posX, artifactDropChance));
 		}
 		else if (hasMewTwo) {
 			setLegendaryPosition();
-			monsterList.add(new Mewtwo(bonusLvl, posY, posX, artifactDropChance));
+			monsterList.add(new Mewtwo(monsterLvl, posY, posX, artifactDropChance));
 		}
 
 		// Epic
 		smallerBound = (mapSize / 2) - 8;
 		biggerBound = (mapSize / 2) + 8;
-		bonusLvl = heroLvl + 4;
+		monsterLvl = heroLvl + 3;
+		bonusLvl = 2;
 		artifactDropChance = 99;
 		for (int i = percentEpic; i > 0; i--) {
 			AMonster newMonster = buildMonster(epicMonsters);
@@ -102,7 +99,8 @@ public class MonsterFactory {
 		// Rare
 		smallerBound = (mapSize / 2) - 5;
 		biggerBound = (mapSize / 2) + 5;
-		bonusLvl = heroLvl + 2;
+		monsterLvl = heroLvl + 2;
+		bonusLvl = 1;
 		artifactDropChance = 50;
 		for (int i = percentRare; i > 0; i--) {
 			AMonster newMonster = buildMonster(rareMonsters);
@@ -113,7 +111,8 @@ public class MonsterFactory {
 		// Common
 		smallerBound = (mapSize / 2) - 2;
 		biggerBound = (mapSize / 2) + 2;
-		bonusLvl = heroLvl;
+		monsterLvl = heroLvl;
+		bonusLvl = 0;
 		artifactDropChance = 10;
 		while (monsterList.size() < monstersNbr) {
 			AMonster newMonster = buildMonster(commonMonsters);
@@ -126,11 +125,12 @@ public class MonsterFactory {
 
 	private static AMonster buildMonster(ArrayList<Class<? extends AMonster>> monsterTypes) {
 		int idx = Swingy.getInstance().rand.nextInt(monsterTypes.size());
+		int level = monsterLvl + Swingy.getInstance().rand.nextInt(bonusLvl + 1);
 		AMonster newMonster = null;
         try
         {
 			setMonsterPosition();
-			newMonster = monsterTypes.get(idx).getConstructor(int.class, int.class, int.class, int.class).newInstance(bonusLvl, posY, posX, artifactDropChance);
+			newMonster = monsterTypes.get(idx).getConstructor(int.class, int.class, int.class, int.class).newInstance(level, posY, posX, artifactDropChance);
 		}
 		catch (Exception e)
 		{

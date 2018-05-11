@@ -28,15 +28,15 @@ public abstract class AHardMonster extends AMonster {
 	}
 
 	public int getGrowthXp() {
-		return 110;
+		return 150;
 	}
 
 	// Artifacts drop chance by rarity
-	public int rareArtifactChance() {
-		return 60;
+	public int getRareArtifactChance() {
+		return 70;
 	}
 
-	public int epicArtifactChance() {
-		return 20;
+	public int getEpicArtifactChance() {
+		return 25;
 	}
 }
