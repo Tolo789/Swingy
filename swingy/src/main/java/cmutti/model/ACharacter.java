@@ -23,9 +23,9 @@ public abstract class ACharacter extends AMapElement {
 	protected int attack = 0;
 	@Min(0)
 	protected int defense = 0;
-	@Min(0)
+	@Min(1)
 	protected int hp = 0;
-	@Min(0)
+	@Min(1)
 	protected int maxHp = 0;
 	@Min(0)
 	protected int agility = 0;
@@ -101,6 +101,10 @@ public abstract class ACharacter extends AMapElement {
 			posX--;
 		else if (dir.equals(MainGame.EAST))
 			posX++;
+	}
+
+	public void fullHeal() {
+		hp = maxHp;
 	}
 
 	protected void configImgWidth() {

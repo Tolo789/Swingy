@@ -4,4 +4,5 @@ public interface IChoicePanel {
 	public void showDirectionChoices();
 	public void showFightChoices();
 	public void showArtifactChoices();
+	public void showDeathChoices();
 }

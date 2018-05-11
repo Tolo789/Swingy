@@ -207,6 +207,26 @@ public class Swingy
 			cliFrame.choicePanel.stopArtifactChoice(choice);
 	}
 
+	public void showDeathChoices() {
+		if (guiFrame != null) {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					guiFrame.mainPanel.choicePanel.showDeathChoices();
+				}
+			});
+		}
+		if (cliFrame != null)
+			cliFrame.choicePanel.showDeathChoices();
+	}
+
+	public void retryGame() {
+		if (cliFrame != null)
+			cliFrame.choicePanel.stopDeathChoice();
+		displayMessage("");
+
+		mainGame.start();
+	}
+
 	public void endGame() {
 		if (guiFrame != null) {
 			guiFrame.dispose();

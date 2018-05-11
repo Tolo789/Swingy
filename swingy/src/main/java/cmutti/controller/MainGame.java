@@ -24,7 +24,8 @@ public class MainGame {
 		Loading,
 		WaitingDirectionChoice,
 		WaitingFightChoice,
-		WaitingArtifactChoice
+		WaitingArtifactChoice,
+		Dead
 	}
 
 	public final static String NORTH = "North";
@@ -409,8 +410,12 @@ public class MainGame {
 	}
 
 	private void onHeroDeath() {
-		// TODO: manage lose
+		gameState = GameState.Dead;
+
 		swingy.displayMessage(""); // add empty line to better see death
-		swingy.displayMessage("You are dead !!");
+		swingy.displayMessage("You died !!");
+
+		hero.fullHeal(); // Usefull for both saving and retry
+		swingy.showDeathChoices();
 	}
 }

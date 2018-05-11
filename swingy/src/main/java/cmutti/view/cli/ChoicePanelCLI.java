@@ -85,6 +85,9 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 				case WaitingArtifactChoice:
 					legend = "1 to Equip new, 2 to Keep old";
 					break;
+				case Dead:
+					legend = "1 to Retry game, 2 to Exit";
+					break;
 				default:
 					legend = "You missed smth..";
 					break;
@@ -127,6 +130,7 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 							break;
 						case WaitingFightChoice:
 						case WaitingArtifactChoice:
+						case Dead:
 							min = 1;
 							max = 2;
 							break;
@@ -193,6 +197,7 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 					return false;
 				case WaitingFightChoice:
 				case WaitingArtifactChoice:
+				case Dead:
 					if (answer.equals("1") || answer.equals("2"))
 						return true;
 					System.out.println("ERROR: Must give '1' or '2'");
@@ -242,6 +247,11 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 				case WaitingArtifactChoice:
 					swingy.getMainGame().artifactDecision(answer.equals("1"));
 					break;
+				case Dead:
+					if (answer.equals("2"))
+						swingy.endGame();
+					else
+						swingy.retryGame();
 				default:
 					// Should never end up here, but just in case
 					inputByCLI = false;
@@ -349,6 +359,19 @@ public class ChoicePanelCLI implements ISelectionPanel, IChoicePanel {
 			System.out.println(choice);
 		}
 		System.out.println("");
+	}
+
+	public void showDeathChoices() {
+		printLegend();
+		inputByCLI = false;
+		waitingChoice = true;
+	}
+
+	public void stopDeathChoice() {
+		waitingChoice = false;
+		if (!inputByCLI) {
+			System.out.println("1");
+		}
 	}
 
 // --- Force end of choice thread -------------------------------------------

@@ -28,6 +28,9 @@ public class ChoicePanelGUI extends JPanel implements IChoicePanel {
 	JButton equipButton = new JButton("Equip");
 	JButton cancelButton = new JButton("Cancel");
 
+	// Death utils
+	JButton retryButton = new JButton("Retry");
+
 	JButton exitButton = new JButton("Exit Game");
 
 	ChoicePanelGUI() {
@@ -69,6 +72,12 @@ public class ChoicePanelGUI extends JPanel implements IChoicePanel {
 			}
 		});
 
+		retryButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				swingy.retryGame();
+			}
+		});
+
 		// this.setBorder(BorderFactory.createMatteBorder(3, 0, 0, 0, Color.BLUE));
 	}
 
@@ -101,6 +110,17 @@ public class ChoicePanelGUI extends JPanel implements IChoicePanel {
 		// add(label);
 		add(equipButton);
 		add(cancelButton);
+
+		revalidate();
+		repaint();
+	}
+
+	public void showDeathChoices() {
+		label.setText("Retry or Exit ?");
+		this.removeAll();
+		// add(label);
+		add(retryButton);
+		add(exitButton);
 
 		revalidate();
 		repaint();

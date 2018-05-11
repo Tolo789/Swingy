@@ -214,6 +214,9 @@ public class SelectionPanelGUI extends JPanel implements ISelectionPanel {
 		heroPanel.setPreferredSize(new Dimension(FrameGUI.FRAME_WIDTH / 2, 4 * FrameGUI.FRAME_HEIGHT / 6));
 		heroPanel.setMinimumSize(new Dimension(FrameGUI.FRAME_WIDTH / 2, 4 * FrameGUI.FRAME_HEIGHT / 6));
 		add(heroPanel, constraints);
+
+		revalidate();
+		repaint();
 	}
 
 	public void displayError(String error) {
