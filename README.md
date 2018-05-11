@@ -49,3 +49,6 @@ Here is a list of additional game features:
 - Monster Moods: a monster may either roam, attack the hero, flee from the hero or don't move at all.
 - Map in the GUI: scrollable map with both hero and monsters sprites facing direction they last moved towards.
 - Obstacles: different types of obstacles, and some can even be destroyed !
+
+# Disclaimer
+I do not own any of the sprite used for this game, all ownership and credit goes to the respective spritesheet creator at https://www.spriters-resource.com/ds_dsi/pokemonblackwhite/
