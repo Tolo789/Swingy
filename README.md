@@ -18,7 +18,6 @@ Moreover, every user input must be validated through an annotation validation (H
 In order to play the game, check the following requirements first:
 - Java8 installed (and java and javac commands available on your terminal).
 - Maven installed (http://maven.apache.org/install.html).
-- Install JDBC driver in project repository (http://www.mkyong.com/maven/how-to-add-oracle-jdbc-driver-in-your-maven-local-repository/).
 
 # How to Launch
 Once all the requirements are met just type the following commands to start play:
